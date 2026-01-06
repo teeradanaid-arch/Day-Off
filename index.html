@@ -1,0 +1,1539 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Work Portal - Premium</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Prompt:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        :root {
+            --primary: #7C3AED;
+            --primary-light: #DDD6FE;
+            --secondary: #06B6D4;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+            --info: #3B82F6;
+            --bg: #F8FAFC;
+            --surface: #FFFFFF;
+            --text-main: #1E293B;
+            --text-muted: #64748B;
+            --border: #E2E8F0;
+            --radius-lg: 20px;
+            --radius-md: 12px;
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --sidebar-width: 260px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Prompt', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            overflow-x: hidden;
+        }
+
+        /* Desktop Sidebar */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--surface);
+            border-right: 1px solid var(--border);
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+            padding: 24px;
+            z-index: 1000;
+            transition: transform 0.3s ease;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 40px;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            list-style: none;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: var(--radius-md);
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+
+        /* Main Content */
+        .main-layout {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            padding: 32px;
+            max-width: 1400px;
+            width: 100%;
+        }
+
+        .top-bar {
+            margin-bottom: 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .search-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .search-container i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 14px 14px 14px 48px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+            background: var(--surface);
+            font-size: 15px;
+            transition: all 0.2s;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.1);
+        }
+
+        /* Cards */
+        .card {
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            margin-bottom: 24px;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Buttons */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), #9333ea);
+            color: white;
+            padding: 12px 24px;
+            border-radius: var(--radius-md);
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 6px -1px rgba(124, 58, 237, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(124, 58, 237, 0.4);
+        }
+
+        /* Tables & Results */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            border-radius: var(--radius-md);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            min-width: 800px;
+        }
+
+        th {
+            background: #F1F5F9;
+            padding: 16px;
+            text-align: left;
+            font-size: 12px;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--border);
+        }
+
+        td {
+            padding: 16px;
+            border-bottom: 1px solid var(--border);
+            font-size: 14px;
+            vertical-align: middle;
+        }
+
+        .badge {
+            padding: 6px 12px;
+            border-radius: 99px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .badge.bg-green {
+            background: #DCFCE7;
+            color: #166534;
+        }
+
+        .badge.bg-orange {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+
+        .badge.bg-blue {
+            background: #DBEAFE;
+            color: #1E40AF;
+        }
+
+        .badge.bg-muted {
+            background: #F1F5F9;
+            color: #475569;
+        }
+
+        /* Mobile Adjustments */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            padding: 12px 24px;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1001;
+            box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .mobile-nav-item {
+            color: var(--text-muted);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            font-size: 10px;
+            text-decoration: none;
+        }
+
+        .mobile-nav-item.active {
+            color: var(--primary);
+        }
+
+        @media (max-width: 991px) {
+            .sidebar {
+                transform: translateX(-100%);
+                width: 0;
+                padding: 0;
+                overflow: hidden;
+            }
+
+            .main-layout {
+                margin-left: 0;
+                padding: 20px;
+                padding-bottom: 80px;
+            }
+
+            .mobile-nav {
+                display: flex;
+            }
+
+            .top-bar {
+                flex-direction: column;
+                gap: 16px;
+                align-items: flex-start;
+            }
+
+            .search-container {
+                max-width: 100%;
+            }
+        }
+
+        /* Planner Summary */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .summary-card {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .summary-card-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--text-main);
+            border-bottom: 1px solid #f1f5f9;
+            padding-bottom: 8px;
+        }
+
+        .badge-list {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .req-badge {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            padding: 4px 8px;
+            background: #f8fafc;
+            border-radius: 6px;
+        }
+
+        .req-label {
+            color: var(--text-muted);
+        }
+
+        .req-value {
+            font-weight: 700;
+        }
+
+        .req-value.status-ok {
+            color: var(--success);
+        }
+
+        .req-value.status-low {
+            color: var(--danger);
+        }
+
+        /* Shift Cells */
+        .shift-cell {
+            padding: 8px;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+            user-select: none;
+            min-width: 60px;
+        }
+
+        .shift-cell:hover {
+            opacity: 0.8;
+            transform: scale(1.05);
+        }
+
+        .shift-22 {
+            background: #DCFCE7;
+            color: #166534;
+            border: 1px solid #BBF7D0;
+        }
+
+        .shift-21 {
+            background: #DBEAFE;
+            color: #1E40AF;
+            border: 1px solid #BFDBFE;
+        }
+
+        .shift-off {
+            background: #F1F5F9;
+            color: #475569;
+            border: 1px solid #E2E8F0;
+        }
+
+        .shift-ot {
+            background: #FEF3C7;
+            color: #92400E;
+            border: 1px solid #FDE68A;
+        }
+
+        .shift-vacation {
+            background: #F3E8FF;
+            color: #7E22CE;
+            border: 1px solid #E9D5FF;
+        }
+
+        .shift-personal {
+            background: #FDF4FF;
+            color: #A21CAF;
+            border: 1px solid #FAE8FF;
+        }
+
+        .shift-sick {
+            background: #FEE2E2;
+            color: #B91C1C;
+            border: 1px solid #FECACA;
+        }
+
+        .staff-status {
+            font-size: 11px;
+            margin-top: 4px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        .status-no-off {
+            background: #FEF2F2;
+            color: #991B1B;
+        }
+
+        .status-has-off {
+            background: #F0FDF4;
+            color: #166534;
+        }
+    </style>
+
+<body>
+    <!-- Desktop Sidebar -->
+    <aside class="sidebar">
+        <div class="logo">
+            <i data-lucide="layout-dashboard"></i>
+            <span>WORK PORTAL</span>
+        </div>
+        <nav class="nav-menu">
+            <a onclick="showView('home')" class="nav-item active" id="nav-home">
+                <i data-lucide="home"></i> หน้าหลัก
+            </a>
+            <a onclick="showView('schedule')" class="nav-item" id="nav-schedule">
+                <i data-lucide="calendar"></i> ตารางกะ
+            </a>
+            <a onclick="showView('history')" class="nav-item" id="nav-history">
+                <i data-lucide="file-text"></i> สรุปผลงาน
+            </a>
+            <a onclick="showView('forecast')" class="nav-item" id="nav-forecast">
+                <i data-lucide="bar-chart-3"></i> Forecast
+            </a>
+            <a onclick="showView('planner')" class="nav-item" id="nav-planner">
+                <i data-lucide="user-plus"></i> จัดกะงาน
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Mobile Navigation -->
+    <nav class="mobile-nav">
+        <a onclick="showView('home')" class="mobile-nav-item active" id="m-nav-home">
+            <i data-lucide="home"></i> หน้าหลัก
+        </a>
+        <a onclick="showView('schedule')" class="mobile-nav-item" id="m-nav-schedule">
+            <i data-lucide="calendar"></i> ตารางกะ
+        </a>
+        <a onclick="showView('history')" class="mobile-nav-item" id="m-nav-history">
+            <i data-lucide="file-text"></i> สรุป
+        </a>
+        <a onclick="showView('forecast')" class="mobile-nav-item" id="m-nav-forecast">
+            <i data-lucide="bar-chart-3"></i> FC
+        </a>
+        <a onclick="showView('planner')" class="mobile-nav-item" id="m-nav-planner">
+            <i data-lucide="settings"></i> จัดกะ
+        </a>
+    </nav>
+
+    <main class="main-layout">
+        <!-- Top Search Bar -->
+        <header class="top-bar">
+            <div class="search-container">
+                <i data-lucide="search" style="width:18px;"></i>
+                <input type="text" id="empId" class="search-input" placeholder="กรอกรหัสพนักงาน...">
+            </div>
+            <div id="desktopActions" style="display:flex; gap:12px;">
+                <!-- Desktop quick actions can go here -->
+            </div>
+        </header>
+
+        <!-- Dynamic Content Area -->
+        <div id="homeArea">
+            <div
+                style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:24px; margin-bottom:24px;">
+                <!-- Welcome Card -->
+                <div class="card"
+                    style="background: linear-gradient(135deg, var(--primary), #9333ea); color:white; grid-column: 1 / -1; margin-bottom:0;">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <div>
+                            <h2
+                                style="font-size:32px; margin-bottom:8px; color:white; text-align:left; letter-spacing:0;">
+                                สวัสดีครับ! 👋</h2>
+                            <p style="opacity:0.9; font-size:16px;">ยินดีต้อนรับสู่ระบบ Work Portal โฉมใหม่</p>
+                        </div>
+                        <div style="background:rgba(255,255,255,0.2); width:80px; height:80px; border-radius:50%; display:flex; align-items:center; justify-content:center;"
+                            class="desktop-only">
+                            <i data-lucide="sparkles" style="width:40px; height:40px;"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stats Card 1 -->
+                <div class="card" style="margin-bottom:0; padding:20px;">
+                    <div style="display:flex; align-items:center; gap:16px;">
+                        <div
+                            style="background:var(--primary-light); padding:12px; border-radius:12px; color:var(--primary)">
+                            <i data-lucide="calendar"></i>
+                        </div>
+                        <div>
+                            <div style="font-size:12px; color:var(--text-muted)">วันปัจจุบัน</div>
+                            <div style="font-weight:700;" id="currentDateDisplay">กำลังโหลด...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stats Card 2 -->
+                <div class="card" style="margin-bottom:0; padding:20px;">
+                    <div style="display:flex; align-items:center; gap:16px;">
+                        <div style="background:#DCFCE7; padding:12px; border-radius:12px; color:#166534">
+                            <i data-lucide="check-circle"></i>
+                        </div>
+                        <div>
+                            <div style="font-size:12px; color:var(--text-muted)">สถานะระบบ</div>
+                            <div style="font-weight:700; color:#166534">เชื่อมต่อดีเยี่ยม</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">🚀 เมนูแนะนำ</h3>
+                </div>
+                <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:16px;">
+                    <div class="schedule-card" onclick="showView('schedule')"
+                        style="cursor:pointer; flex-direction:column; align-items:flex-start; gap:12px;">
+                        <i data-lucide="clock" style="color:var(--primary)"></i>
+                        <strong>ตารางงานสัปดาห์นี้</strong>
+                        <span style="font-size:12px; color:var(--text-muted)">เช็คกะที่คุณจัดไว้ล่วงหน้า</span>
+                    </div>
+                    <div class="schedule-card" onclick="showView('history')"
+                        style="cursor:pointer; flex-direction:column; align-items:flex-start; gap:12px;">
+                        <i data-lucide="bar-chart-2" style="color:var(--secondary)"></i>
+                        <strong>สรุปผลงานจริง</strong>
+                        <span style="font-size:12px; color:var(--text-muted)">เปรียบเทียบกะงานกับเวลาสแกนนิ้ว</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Result Area (Schedule/History) -->
+        <div id="resultArea" style="display:none;">
+            <div class="card">
+                <div id="showName" class="info-header"
+                    style="color:var(--primary); border-bottom:1px solid var(--border); padding-bottom:15px; margin-bottom:20px; font-size:22px;">
+                </div>
+                <div id="contentDisplay"></div>
+            </div>
+        </div>
+
+        <!-- Forecast Area -->
+        <div id="forecastArea" style="display:none;">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title" style="color:var(--primary)"><i data-lucide="bar-chart-3"></i> กรอกยอด
+                        Forecast</h2>
+                </div>
+                <div style="margin-bottom:20px;">
+                    <label
+                        style="color: var(--text-muted); margin-bottom: 8px; display: block; font-size:14px;">เลือกวันที่เริ่มต้น
+                        (จันทร์):</label>
+                    <input type="date" id="forecastStartDate" class="search-input" style="padding-left:14px;"
+                        onchange="generateForecastGrid()">
+                </div>
+                <div id="forecastGrid" style="display:grid; gap:12px; margin-bottom:24px;"></div>
+                <button class="btn-primary" style="width:100%" onclick="saveForecast()">💾 บันทึก Forecast</button>
+            </div>
+        </div>
+
+        <!-- Planner Area -->
+        <div id="plannerArea" style="display:none;">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title" style="color:var(--warning)"><i data-lucide="user-plus"></i>
+                        จัดตารางกะประจำสัปดาห์</h2>
+                    <div style="display:flex; gap:8px;">
+                        <button onclick="exportPlannerAsImage()" class="btn-primary"
+                            style="padding:8px 16px; font-size:12px;">📸 Export</button>
+                        <button onclick="toggleDesktopMode()" class="btn-primary"
+                            style="padding:8px 16px; font-size:12px; background:var(--text-muted);">💻 จอใหญ่</button>
+                    </div>
+                </div>
+
+                <div style="margin-bottom:24px;">
+                    <label
+                        style="color: var(--text-muted); margin-bottom: 8px; display: block; font-size:14px;">เลือกสัปดาห์
+                        (วันจันทร์):</label>
+                    <input type="date" id="plannerStartDate" class="search-input" style="padding-left:14px;"
+                        onchange="loadPlannerData()">
+                </div>
+
+                <div id="plannerSummary"></div>
+                <div id="plannerGrid" class="planner-grid-wrapper"></div>
+
+                <button class="btn-primary" style="width:100%; margin-top:24px; background:var(--success)"
+                    onclick="saveSchedule()">💾 บันทึกตารางกะ</button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Google Apps Script URL
+        const GAS_URL = 'https://script.google.com/macros/s/AKfycbzTkad-uDgkcl69w7iL8NtNCO2TV3rHx_DTz32qpWXMnKWV2Msfhb2PWZgAz2UDNSsY/exec';
+
+        const sheetId = '16LK8B2Rpvowrcd5C4j26nRHdPkKk3Pu2AxbWWzRXw-Y';
+        const sheetGid1 = '403640033';
+        const sheetGid2 = '1099906058';
+        const sheetGid3 = '1164906206';
+
+        let plannerStaff = [];
+        let plannerDates = [];
+        let forecastDates = [];
+        window.plannerRequirements = {};
+
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Display current date on Home
+        const now = new Date();
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('currentDateDisplay').innerText = now.toLocaleDateString('th-TH', options);
+
+        function showView(view) {
+            // Hide all
+            ['homeArea', 'resultArea', 'forecastArea', 'plannerArea'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.style.display = 'none';
+            });
+
+            // Update Nav Classes
+            document.querySelectorAll('.nav-item, .mobile-nav-item').forEach(el => {
+                el.classList.remove('active');
+            });
+
+            // Show target
+            if (view === 'home') {
+                document.getElementById('homeArea').style.display = 'block';
+            } else if (view === 'schedule' || view === 'history') {
+                const empId = document.getElementById('empId').value.trim();
+                if (!empId && (view === 'schedule' || view === 'history')) {
+                    alert('กรุณากรอกรหัสพนักงานก่อนครับ');
+                    showView('home');
+                    return;
+                }
+                fetchData(view);
+                document.getElementById('resultArea').style.display = 'block';
+            } else if (view === 'forecast') {
+                showForecast();
+            } else if (view === 'planner') {
+                showPlanner();
+            }
+
+            // Set dynamic active class
+            const navId = `nav-${view}`;
+            const mNavId = `m-nav-${view}`;
+            if (document.getElementById(navId)) document.getElementById(navId).classList.add('active');
+            if (document.getElementById(mNavId)) document.getElementById(mNavId).classList.add('active');
+
+            // Refresh icons
+            lucide.createIcons();
+        }
+
+        // ========== ORIGINAL FUNCTIONS (Keep as is) ==========
+
+        function fetchSheetDataJSONP(sheetId, gid) {
+            if (gid === 'YOUR_GID_HERE') return Promise.resolve(null);
+            return new Promise((resolve, reject) => {
+                const callbackName = 'sheet_callback_' + Math.floor(Math.random() * 1000000);
+                const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=responseHandler:${callbackName}&gid=${gid}`;
+
+                window[callbackName] = function (json) {
+                    delete window[callbackName];
+                    document.body.removeChild(script);
+                    resolve(transformGVizData(json));
+                };
+
+                const script = document.createElement('script');
+                script.src = url;
+                script.onerror = function () {
+                    delete window[callbackName];
+                    document.body.removeChild(script);
+                    const errorMsg = `Failed to load data from sheet (GID: ${gid}). Please check your internet connection or Google Sheet permissions.`;
+                    console.error(errorMsg);
+                    reject(new Error(errorMsg));
+                };
+                document.body.appendChild(script);
+            });
+        }
+
+        function formatVal(val) {
+            if (!val) return '';
+            const dateMatch = String(val).match(/Date\((\d+),(\d+),(\d+)(?:,(\d+),(\d+),(\d+))?\)/);
+            if (dateMatch) {
+                const year = parseInt(dateMatch[1]);
+                const month = parseInt(dateMatch[2]) + 1;
+                const day = parseInt(dateMatch[3]);
+                const hour = dateMatch[4];
+                if (hour !== undefined) {
+                    return `${String(hour).padStart(2, '0')}:${String(dateMatch[5]).padStart(2, '0')}`;
+                }
+                return `${String(day).padStart(2, '0')}/${String(month).padStart(2, '0')}/${year}`;
+            }
+            return String(val);
+        }
+
+        function getThaiDay(dateStr) {
+            if (!dateStr) return '';
+            const normalized = normalizeDate(dateStr);
+            const parts = normalized.split('/');
+            if (parts.length !== 3) return '';
+            const d = new Date(parts[2], parts[1] - 1, parts[0]);
+            const days = ['อาทิตย์', 'จันทร์', 'อังคาร', 'พุธ', 'พฤหัสบดี', 'ศุกร์', 'เสาร์'];
+            return days[d.getDay()];
+        }
+
+        function normalizeDate(dateStr) {
+            if (!dateStr) return '';
+            if (typeof dateStr !== 'string') dateStr = String(dateStr);
+            let clean = dateStr.replace('Date(', '').replace(')', '').split(',').join('/');
+            const parts = clean.split(/[/-]/).filter(p => p !== '');
+            if (parts.length < 3) return dateStr;
+            let d, m, y;
+            if (parts[0].length === 4) { y = parseInt(parts[0]); m = parts[1]; d = parts[2]; }
+            else { d = parts[0]; m = parts[1]; y = parseInt(parts[2]); }
+            if (y > 2500) y -= 543;
+            if (y < 100) y += 2000;
+            return `${String(d).padStart(2, '0')}/${String(m).padStart(2, '0')}/${y}`;
+        }
+
+        function transformGVizData(json) {
+            const table = json.table;
+            const headers = table.cols.map(col => (col.label || '').toLowerCase().replace(/\s+/g, '').trim());
+            let rows = table.rows;
+            let finalHeaders = headers;
+
+            if (!headers[0] || headers[0] === '') {
+                const firstRow = rows[0];
+                if (firstRow) {
+                    const firstRowValues = firstRow.c.map(cell => (cell && cell.v) ? String(cell.v).toLowerCase().replace(/\s+/g, '').trim() : '');
+
+                    // Added 'shift' and 'กะ' to trigger header detection
+                    if (firstRowValues.some(v => v.includes('employee') || v.includes('workdate') || v.includes('schedule') || v.includes('shift') || v.includes('กะ'))) {
+                        finalHeaders = firstRowValues;
+                        rows = rows.slice(1);
+                    }
+                }
+            }
+
+            return rows.map(row => {
+                const obj = {};
+                row.c.forEach((cell, i) => {
+                    const raw = (cell && (cell.v !== null)) ? cell.v : '';
+                    const fmt = formatVal(raw);
+
+                    const h = finalHeaders[i];
+                    if (h) {
+                        obj[h] = fmt;
+                        obj[h + '_raw'] = raw;
+                    }
+
+                    obj['col' + i] = fmt;
+                });
+                return obj;
+            });
+        }
+
+        async function fetchData(type) {
+            const inputVal = document.getElementById('empId').value.trim();
+            if (!inputVal) return alert('กรุณากรอกรหัสพนักงาน');
+
+            try {
+                // 1. Fetch Ordered Schedule (Truth)
+                const scheduleResp = await fetch(`${GAS_URL}?action=getSchedule&employeeId=${inputVal}`);
+                const scheduleResult = await scheduleResp.json();
+                if (!scheduleResult.success) throw new Error(scheduleResult.message);
+                const staffSchedule = (scheduleResult.data || []).map(s => ({
+                    ...s,
+                    date: normalizeDate(s.date)
+                }));
+
+                if (staffSchedule.length === 0) {
+                    return alert('ไม่พบข้อมูลรหัส: ' + inputVal + ' ในตารางกะ (WeeklySchedule)\nรบกวนตรวจสอบว่าได้กดบันทึกตารางกะของสัปดาห์นี้หรือยังครับ');
+                }
+
+                // 2. Fetch Staff Info
+                const staffResp = await fetch(`${GAS_URL}?action=getStaffList`);
+                const staffResult = await staffResp.json();
+                const staffData = staffResult.data || [];
+                const staffInfo = staffData.find(row => row.employeeid === inputVal.toString());
+
+                const displayName = staffInfo ? staffInfo.fullname : 'พนักงาน';
+                const nickname = staffInfo ? staffInfo.nickname : '';
+                const position = staffInfo ? staffInfo.position : '';
+
+                let fullDisplayName = nickname ? `${displayName} (${nickname})` : displayName;
+                if (position) fullDisplayName += ` [${position}]`;
+
+                document.getElementById('resultArea').style.display = 'block';
+                document.getElementById('showName').innerText = `คุณ ${fullDisplayName} (${inputVal})`;
+
+                if (type === 'schedule') {
+                    let html = '<div class="data-item"><h3 style="margin-bottom:20px; color:var(--text-main); font-weight:700;">📅 ตารางกะประจำสัปดาห์</h3>';
+                    staffSchedule.forEach(row => {
+                        const date = row.date || '';
+                        const thaiDay = getThaiDay(date);
+                        const shift = row.shift || '-';
+
+                        html += `
+                        <div class="schedule-card">
+                            <div class="flex-col">
+                                <strong style="font-size:16px; color:var(--text-main)">${date}</strong>
+                                <span style="color:var(--text-muted); font-size:12px;">(${thaiDay})</span>
+                            </div>
+                            <div class="badge ${shift.includes('ลา') || shift.includes('พักร้อน') ? 'bg-blue' : shift === 'Day Off' ? 'bg-muted' : 'bg-green'}" style="font-size:16px; padding:8px 16px;">
+                                ${shift}
+                            </div>
+                        </div>`;
+                    });
+                    document.getElementById('contentDisplay').innerHTML = html + '</div>';
+
+                } else {
+                    // 3. Fetch Scan Logs (One Book System)
+                    const scanResp = await fetch(`${GAS_URL}?action=getScanLogs&employeeId=${inputVal}`);
+                    const scanResult = await scanResp.json();
+                    if (!scanResult.success) throw new Error(scanResult.message);
+                    const staffScans = (scanResult.data || []).map(s => ({
+                        ...s,
+                        workdate: normalizeDate(s.workdate)
+                    }));
+
+                    let htmlOutput = '<div class="data-item"><h3 style="margin-bottom:20px; color:var(--text-main); font-weight:700;">📊 สรุปการเข้า-ออก งาน</h3><div class="table-responsive"><table>';
+                    htmlOutput += `<thead><tr>
+                        <th>วันที่</th>
+                        <th style="background:rgba(var(--primary-rgb), 0.1)">กะที่จัด (Truth)</th>
+                        <th>เวลาเข้า-ออก</th>
+                        <th>ประเภทลา</th>
+                        <th>OT วันหยุด</th>
+                        <th>OT หลังกะ</th>
+                        <th>สถานะ</th>
+                    </tr></thead><tbody>`;
+
+                    staffSchedule.forEach(sch => {
+                        const date = sch.date || '';
+                        if (!date) return;
+
+                        const scan = staffScans.find(s => s.workdate === date) || {};
+
+                        const shiftOrganized = sch.shift || '-';
+                        const dayType = scan.daytype || '';
+                        const shiftSystem = scan.scheduletime || '-';
+                        const timeIn = scan.timein || '-';
+                        const timeOut = scan.timeout || '-';
+                        const leaveType = scan.leavetype || '-';
+                        const otHoliday = scan.otHoliday || '-';
+                        const otAfter = scan.otAfter || '-';
+
+                        let statusBadge = `<span class="badge bg-green">ปกติ</span>`;
+                        let note = '';
+
+                        const isLeave = shiftOrganized.includes('ลา') || shiftOrganized.includes('พักร้อน');
+                        const isDayOff = shiftOrganized.toLowerCase().includes('off') || shiftOrganized === 'วันหยุด';
+                        const isWorking = !isLeave && !isDayOff && shiftOrganized !== '-';
+
+                        if (isLeave) {
+                            statusBadge = `<span class="badge bg-blue">ลา (${shiftOrganized})</span>`;
+                        } else if (isDayOff) {
+                            if (dayType.toLowerCase() === 'working') {
+                                statusBadge = `<span class="badge bg-orange">แจ้งแก้ไข</span>`;
+                                note = `<div class="sub-text" style="color:var(--danger)">กะหยุด แต่ระบบ One Book เป็น Working</div>`;
+                            } else {
+                                statusBadge = `<span class="badge bg-muted">วันหยุด</span>`;
+                            }
+                        } else if (isWorking) {
+                            const isOneBookWeekend = dayType.toLowerCase() === 'weekend';
+                            const isShiftMismatch = !shiftSystem.includes(shiftOrganized.split(':')[0]);
+
+                            const isInvalid = (t) => !t || t === '-' || t === '_' || t.trim() === '' || !t.includes(':');
+                            const isTimeMissing = isInvalid(timeIn) || isInvalid(timeOut);
+
+                            if (isOneBookWeekend) {
+                                statusBadge = `<span class="badge bg-orange">แจ้งแก้ไขเป็น Working</span>`;
+                                note = `<div class="sub-text" style="color:var(--danger)">ระบบ One Book เป็น Weekend</div>`;
+                            } else if (isShiftMismatch && shiftSystem !== '-') {
+                                statusBadge = `<span class="badge bg-orange">แจ้งแก้ไขกะ</span>`;
+                                note = `<div class="sub-text" style="color:var(--danger)">กะไม่ตรง (ระบบ: ${shiftSystem})</div>`;
+                            } else if (isTimeMissing) {
+                                statusBadge = `<span class="badge bg-orange">แจ้งแก้ไขเวลา</span>`;
+                                note = `<div class="sub-text" style="color:var(--danger)">เวลาเข้า-ออกไม่ครบ</div>`;
+                            }
+                        } else if (shiftOrganized === '-') {
+                            statusBadge = `<span class="badge bg-muted">-</span>`;
+                        }
+
+                        const thaiDay = getThaiDay(date);
+                        htmlOutput += `<tr>
+                            <td style="border-bottom:1px solid var(--border)">
+                                <div>${date}</div>
+                                <div class="sub-text">${thaiDay}</div>
+                            </td>
+                            <td style="border-bottom:1px solid var(--border); font-weight:700; color:var(--primary)">${shiftOrganized}</td>
+                            <td style="border-bottom:1px solid var(--border)">
+                                <div class="flex-col">
+                                    <span>${timeIn} - ${timeOut}</span>
+                                </div>
+                            </td>
+                            <td style="border-bottom:1px solid var(--border)">${leaveType}</td>
+                            <td style="border-bottom:1px solid var(--border)">${otHoliday}</td>
+                            <td style="border-bottom:1px solid var(--border)">${otAfter}</td>
+                            <td style="border-bottom:1px solid var(--border); text-align:center">
+                                <div class="flex-col" style="align-items:center">
+                                    ${statusBadge}
+                                    ${note}
+                                </div>
+                            </td>
+                        </tr>`;
+                    });
+                    document.getElementById('contentDisplay').innerHTML = htmlOutput + '</tbody></table></div></div>';
+                }
+                lucide.createIcons();
+            } catch (e) {
+                console.error(e);
+                alert('เกิดข้อผิดพลาด: ' + e.message);
+            }
+        }
+
+        // ========== FORECAST FUNCTIONS ==========
+
+        function showForecast() {
+            const password = prompt('กรุณาใส่รหัสผ่านเพื่อเข้าใช้งาน:');
+            if (password !== '20260001') {
+                if (password !== null) alert('รหัสผ่านไม่ถูกต้อง!');
+                return;
+            }
+            hideAllAreas();
+            document.getElementById('forecastArea').style.display = 'block';
+
+            // Set default date to next Monday
+            const today = new Date();
+            const dayOfWeek = today.getDay();
+            const daysUntilMonday = dayOfWeek === 0 ? 1 : (8 - dayOfWeek);
+            const nextMonday = new Date(today);
+            nextMonday.setDate(today.getDate() + daysUntilMonday);
+
+            document.getElementById('forecastStartDate').valueAsDate = nextMonday;
+            generateForecastGrid();
+        }
+
+        function hideForecast() {
+            document.getElementById('forecastArea').style.display = 'none';
+        }
+
+        function generateForecastGrid() {
+            const startDateInput = document.getElementById('forecastStartDate').value;
+            if (!startDateInput) return;
+
+            const startDate = new Date(startDateInput);
+            forecastDates = [];
+
+            let html = '';
+            for (let i = 0; i < 7; i++) {
+                const date = new Date(startDate);
+                date.setDate(startDate.getDate() + i);
+
+                const dd = String(date.getDate()).padStart(2, '0');
+                const mm = String(date.getMonth() + 1).padStart(2, '0');
+                const yyyy = date.getFullYear();
+                const dateStr = `${dd}/${mm}/${yyyy}`;
+                const thaiDay = getThaiDay(dateStr);
+
+                forecastDates.push(dateStr);
+
+                html += `
+                <div class="forecast-row">
+                    <div>${dateStr}</div>
+                    <input type="number" id="fc_${i}" placeholder="กรอกยอด Pack" style="margin:0;">
+                    <div class="sub-text">${thaiDay}</div>
+                </div>`;
+            }
+
+            document.getElementById('forecastGrid').innerHTML = html;
+            loadForecastData();
+        }
+
+        async function loadForecastData() {
+            if (GAS_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') return;
+
+            try {
+                const startDate = forecastDates[0];
+                const endDate = forecastDates[6];
+
+                const response = await fetch(`${GAS_URL}?action=getForecast&startDate=${startDate}&endDate=${endDate}`);
+                const result = await response.json();
+
+                if (result.success && result.data) {
+                    result.data.forEach(item => {
+                        const index = forecastDates.indexOf(item.date);
+                        if (index !== -1) {
+                            const input = document.getElementById(`fc_${index}`);
+                            if (input) input.value = item.value;
+                        }
+                    });
+                }
+            } catch (e) {
+                console.error('Load forecast error:', e);
+            }
+        }
+
+        async function saveForecast() {
+            if (GAS_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
+                return alert('⚠️ กรุณาตั้งค่า Google Apps Script URL ก่อน\n\nดูวิธีการใน INSTALL_SCRIPT.md');
+            }
+
+            const forecasts = [];
+            for (let i = 0; i < 7; i++) {
+                const value = document.getElementById(`fc_${i}`).value;
+                if (!value) {
+                    return alert('กรุณากรอก Forecast ให้ครบทุกวัน');
+                }
+                forecasts.push({
+                    date: forecastDates[i],
+                    value: parseInt(value)
+                });
+            }
+
+            try {
+                const response = await fetch(GAS_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        action: 'saveForecast',
+                        forecasts: forecasts
+                    })
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    alert('✅ บันทึก Forecast สำเร็จ!');
+                } else {
+                    alert('❌ เกิดข้อผิดพลาด: ' + result.message);
+                }
+            } catch (e) {
+                console.error('Save forecast error:', e);
+                alert('❌ ไม่สามารถบันทึกได้: ' + e.message);
+            }
+        }
+
+        // ========== PLANNER FUNCTIONS ==========
+
+        function showPlanner() {
+            const password = prompt('กรุณาใส่รหัสผ่านเพื่อเข้าใช้งาน:');
+            if (password !== '20260001') {
+                if (password !== null) alert('รหัสผ่านไม่ถูกต้อง!');
+                return;
+            }
+            hideAllAreas();
+            document.getElementById('plannerArea').style.display = 'block';
+
+            // Set default date to next Monday
+            const today = new Date();
+            const dayOfWeek = today.getDay();
+            const daysUntilMonday = dayOfWeek === 0 ? 1 : (8 - dayOfWeek);
+            const nextMonday = new Date(today);
+            nextMonday.setDate(today.getDate() + daysUntilMonday);
+
+            document.getElementById('plannerStartDate').valueAsDate = nextMonday;
+            loadPlannerData();
+        }
+
+        function hidePlanner() {
+            document.getElementById('plannerArea').style.display = 'none';
+        }
+
+        async function loadPlannerData() {
+            const startDateInput = document.getElementById('plannerStartDate').value;
+            if (!startDateInput) return;
+
+            const startDate = new Date(startDateInput);
+            plannerDates = [];
+
+            for (let i = 0; i < 7; i++) {
+                const date = new Date(startDate);
+                date.setDate(startDate.getDate() + i);
+
+                const dd = String(date.getDate()).padStart(2, '0');
+                const mm = String(date.getMonth() + 1).padStart(2, '0');
+                const yyyy = date.getFullYear();
+                plannerDates.push(`${dd}/${mm}/${yyyy}`);
+            }
+
+            // Load staff
+            try {
+                const staffData = await fetchSheetDataJSONP(sheetId, sheetGid3);
+                plannerStaff = [];
+                const seen = new Set();
+
+                staffData.forEach(row => {
+                    const id = String(row.employeeid || row.id || row.col0 || '').trim();
+                    const name = row.fullname || row.name || row.col1 || '';
+                    const nick = row.nickname || row.col2 || '';
+                    const pos = row.position || row.role || row.col4 || row.col3 || '';
+
+                    if (id && !seen.has(id)) {
+                        seen.add(id);
+                        plannerStaff.push({ id, name, nick, pos });
+                    }
+                });
+
+                // REMOVED: plannerStaff.sort((a, b) => a.id - b.id);
+                // Keep the original order from Google Sheet as requested
+
+                // Load forecast for summary
+                await loadForecastForPlanner();
+
+                // Load existing schedule if any
+                await loadExistingSchedule();
+
+                renderPlanner();
+            } catch (e) {
+                console.error('Load planner error:', e);
+                alert('โหลดข้อมูลไม่สำเร็จ: ' + e.message);
+            }
+        }
+
+        async function loadForecastForPlanner() {
+            if (GAS_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') return;
+
+            try {
+                const startDate = plannerDates[0];
+                const endDate = plannerDates[6];
+
+                const response = await fetch(`${GAS_URL}?action=getForecast&startDate=${startDate}&endDate=${endDate}`);
+                const result = await response.json();
+
+                if (result.success && result.data) {
+                    const forecasts = result.data;
+                    window.plannerRequirements = {}; // Reset
+
+                    forecasts.forEach(fc => {
+                        const needed = Math.ceil(fc.value / 435.28);
+                        const night21 = Math.round(needed * 0.25);
+                        const night22 = needed - night21;
+                        const dayOff = 34 - needed;
+
+                        window.plannerRequirements[fc.date] = {
+                            needed,
+                            night21,
+                            night22,
+                            dayOff
+                        };
+                    });
+
+                    updatePlannerSummary();
+                }
+            } catch (e) {
+                console.error('Load forecast for planner error:', e);
+            }
+        }
+
+        function updatePlannerSummary() {
+            let summaryHtml = '<div class="summary-box" style="background:transparent; padding:0;"><h4 style="margin-bottom:15px; display:flex; align-items:center; gap:8px;">📊 สรุปความต้องการพนักงาน</h4>';
+            summaryHtml += '<div class="summary-grid">';
+
+            plannerDates.forEach((date, i) => {
+                const req = window.plannerRequirements[date];
+                if (req) {
+                    const thaiDay = getThaiDay(date);
+
+                    // Count various assignment types
+                    let count21 = 0;
+                    let count22 = 0;
+                    let countOff = 0;
+                    let countVacation = 0;
+                    let countSick = 0;
+                    let countPersonal = 0;
+                    let countOT = 0;
+
+                    plannerStaff.forEach(st => {
+                        const cell = document.getElementById(`cell_${st.id}_${i}`);
+                        if (cell) {
+                            const shift = cell.getAttribute('data-shift');
+                            if (shift === '21:00') count21++;
+                            else if (shift === '22:00') count22++;
+                            else if (shift === 'Day Off') countOff++;
+                            else if (shift === 'พักร้อน') countVacation++;
+                            else if (shift === 'ลาป่วย') countSick++;
+                            else if (shift === 'ลากิจ') countPersonal++;
+                            else if (shift === 'OT') countOT++;
+                        } else if (window.existingSchedule) {
+                            // Fallback if grid not fully rendered yet
+                            const existing = window.existingSchedule.find(s => s.employeeId === st.id && s.date === date);
+                            const shift = existing ? existing.shift : '22:00';
+                            if (shift === '21:00') count21++;
+                            else if (shift === '22:00') count22++;
+                            else if (shift === 'Day Off') countOff++;
+                            else if (shift === 'พักร้อน') countVacation++;
+                            else if (shift === 'ลาป่วย') countSick++;
+                            else if (shift === 'ลากิจ') countPersonal++;
+                            else if (shift === 'OT') countOT++;
+                        }
+                    });
+
+                    const totalAssigned = count21 + count22;
+                    const missingCount = Math.max(0, req.needed - totalAssigned);
+                    const getStatusClass = (cur, reqVal) => cur >= reqVal ? 'status-ok' : 'status-low';
+
+                    summaryHtml += `
+                    <div class="summary-card">
+                        <div class="summary-card-header">
+                            <span>${date}</span>
+                            <span style="color:var(--muted)">${thaiDay}</span>
+                        </div>
+                        <div class="badge-list">
+                            <div class="req-badge">
+                                <span class="req-label">รวม:</span>
+                                <span class="req-value ${getStatusClass(totalAssigned, req.needed)}">${totalAssigned}/${req.needed}</span>
+                            </div>
+                            <div class="req-badge">
+                                <span class="req-label">21:00:</span>
+                                <span class="req-value ${getStatusClass(count21, req.night21)}">${count21}/${req.night21}</span>
+                            </div>
+                            <div class="req-badge">
+                                <span class="req-label">22:00:</span>
+                                <span class="req-value ${getStatusClass(count22, req.night22)}">${count22}/${req.night22}</span>
+                            </div>
+                            <div class="req-badge">
+                                <span class="req-label">หยุด:</span>
+                                <span class="req-value ${getStatusClass(countOff, req.dayOff)}">${countOff}/${req.dayOff}</span>
+                            </div>
+                            ${missingCount > 0 ? `
+                            <div class="req-badge badge-missing">
+                                <span class="req-label" style="color:var(--danger)">หาเพิ่ม:</span>
+                                <span class="req-value status-low">${missingCount}</span>
+                            </div>` : ''}
+                            ${countVacation > 0 ? `
+                            <div class="req-badge badge-leave">
+                                <span class="req-label">พักร้อน:</span>
+                                <span class="req-value" style="color:var(--purple)">${countVacation}</span>
+                            </div>` : ''}
+                            ${countSick > 0 ? `
+                            <div class="req-badge badge-leave">
+                                <span class="req-label">ลาป่วย:</span>
+                                <span class="req-value" style="color:var(--danger)">${countSick}</span>
+                            </div>` : ''}
+                            ${countPersonal > 0 ? `
+                            <div class="req-badge badge-leave">
+                                <span class="req-label">ลากิจ:</span>
+                                <span class="req-value" style="color:#eab308">${countPersonal}</span>
+                            </div>` : ''}
+                            ${countOT > 0 ? `
+                            <div class="req-badge badge-ot">
+                                <span class="req-label">OT:</span>
+                                <span class="req-value" style="color:var(--orange)">${countOT}</span>
+                            </div>` : ''}
+                        </div>
+                    </div>`;
+                }
+            });
+
+            // Update Staff Day-Off Warning
+            plannerStaff.forEach(st => {
+                let staffOffCount = 0;
+                plannerDates.forEach((date, i) => {
+                    const cell = document.getElementById(`cell_${st.id}_${i}`);
+                    if (cell) {
+                        const shift = cell.getAttribute('data-shift');
+                        if (shift === 'Day Off' || shift === 'พักร้อน' || shift === 'ลาป่วย' || shift === 'ลากิจ') {
+                            staffOffCount++;
+                        }
+                    } else if (window.existingSchedule) {
+                        const existing = window.existingSchedule.find(s => s.employeeId === st.id && s.date === date);
+                        const shift = existing ? existing.shift : '22:00';
+                        if (shift === 'Day Off' || shift === 'พักร้อน' || shift === 'ลาป่วย' || shift === 'ลากิจ') {
+                            staffOffCount++;
+                        }
+                    }
+                });
+
+                const statusEl = document.getElementById(`staff_status_${st.id}`);
+                if (statusEl) {
+                    if (staffOffCount === 0) {
+                        statusEl.className = 'staff-status status-no-off';
+                        statusEl.innerHTML = '⚠️ ยังไม่มีวันหยุด';
+                    } else {
+                        statusEl.className = 'staff-status status-has-off';
+                        statusEl.innerHTML = `✅ หยุดแล้ว ${staffOffCount} วัน`;
+                    }
+                }
+            });
+
+            summaryHtml += '</div></div>';
+            document.getElementById('plannerSummary').innerHTML = summaryHtml;
+        }
+
+        async function loadExistingSchedule() {
+            if (GAS_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') return;
+
+            try {
+                const weekStart = plannerDates[0];
+                const response = await fetch(`${GAS_URL}?action=getSchedule&weekStart=${weekStart}`);
+                const result = await response.json();
+
+                if (result.success && result.data) {
+                    window.existingSchedule = result.data.map(s => ({
+                        ...s,
+                        date: normalizeDate(s.date)
+                    }));
+                }
+            } catch (e) {
+                console.error('Load existing schedule error:', e);
+            }
+        }
+
+        function renderPlanner() {
+            let html = '<table><thead><tr><th style="width:150px;">พนักงาน</th>';
+
+            plannerDates.forEach(d => {
+                const thaiDay = getThaiDay(d);
+                html += `<th style="text-align:center">
+                    <div>${d.split('/')[0]}/${d.split('/')[1]}</div>
+                    <div class="sub-text">${thaiDay}</div>
+                </th>`;
+            });
+
+            html += '</tr></thead><tbody>';
+
+            plannerStaff.forEach(st => {
+                const displayName = st.nick ? `${st.name} (${st.nick})` : st.name;
+                const displayId = st.pos ? `${st.id} (${st.pos})` : st.id;
+                html += `<tr>
+                    <td style="text-align:left;">
+                        <div style="font-weight:600; font-size:12px;">${displayName}</div>
+                        <div class="sub-text">${displayId}</div>
+                        <div id="staff_status_${st.id}" class="staff-status status-no-off">⚠️ ยังไม่มีวันหยุด</div>
+                    </td>`;
+
+                plannerDates.forEach((d, i) => {
+                    // Check if existing schedule exists
+                    let defaultShift = '22:00';
+                    if (window.existingSchedule) {
+                        const existing = window.existingSchedule.find(s => s.employeeId === st.id && s.date === d);
+                        if (existing) defaultShift = existing.shift;
+                    }
+
+                    html += `<td>
+                        <div id="cell_${st.id}_${i}" class="shift-cell shift-${getShiftClass(defaultShift)}" onclick="toggleShift('${st.id}', ${i})" data-shift="${defaultShift}">
+                            ${defaultShift}
+                        </div>
+                    </td>`;
+                });
+                html += '</tr>';
+            });
+
+            html += '</tbody></table>';
+            document.getElementById('plannerGrid').innerHTML = html;
+            updatePlannerSummary();
+        }
+
+        function getShiftClass(shift) {
+            if (shift === '22:00') return '22';
+            if (shift === '21:00') return '21';
+            if (shift === 'Day Off') return 'off';
+            if (shift === 'OT') return 'ot';
+            if (shift === 'พักร้อน') return 'vacation';
+            if (shift === 'ลากิจ') return 'personal';
+            if (shift === 'ลาป่วย') return 'sick';
+            return '22';
+        }
+
+        function toggleShift(staffId, dayIdx) {
+            const cell = document.getElementById(`cell_${staffId}_${dayIdx}`);
+            const current = cell.getAttribute('data-shift');
+
+            const shifts = ['22:00', '21:00', 'Day Off', 'OT', 'พักร้อน', 'ลากิจ', 'ลาป่วย'];
+            const currentIndex = shifts.indexOf(current);
+            const nextIndex = (currentIndex + 1) % shifts.length;
+            const nextShift = shifts[nextIndex];
+
+            cell.setAttribute('data-shift', nextShift);
+            cell.innerText = nextShift;
+            cell.className = `shift-cell shift-${getShiftClass(nextShift)}`;
+            updatePlannerSummary();
+        }
+
+        async function saveSchedule() {
+            if (GAS_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
+                return alert('⚠️ กรุณาตั้งค่า Google Apps Script URL ก่อน\n\nดูวิธีการใน INSTALL_SCRIPT.md');
+            }
+
+            const btn = event.target;
+            const originalText = btn.innerText;
+            btn.innerText = '⌛ กำลังบันทึก...';
+            btn.disabled = true;
+
+            const schedules = [];
+            plannerStaff.forEach(st => {
+                plannerDates.forEach((d, i) => {
+                    const cell = document.getElementById(`cell_${st.id}_${i}`);
+                    if (cell) {
+                        const shift = cell.getAttribute('data-shift');
+                        schedules.push({
+                            employeeId: st.id,
+                            name: st.name,
+                            nick: st.nick,
+                            date: d,
+                            shift: shift
+                        });
+                    }
+                });
+            });
+
+            try {
+                // Use text/plain to avoid preflight OPTIONS request
+                const response = await fetch(GAS_URL, {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: {
+                        'Content-Type': 'text/plain;charset=utf-8'
+                    },
+                    body: JSON.stringify({
+                        action: 'saveSchedule',
+                        weekStart: plannerDates[0],
+                        schedules: schedules
+                    })
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    alert('✅ บันทึกตารางกะสำเร็จ!');
+                } else {
+                    alert('❌ เกิดข้อผิดพลาด: ' + result.message);
+                }
+            } catch (e) {
+                console.error('Save schedule error:', e);
+                alert('❌ ไม่สามารถบันทึกได้: ' + e.message + '\n\nกรุณาตรวจสอบว่าได้ตั้งค่าสิทธิ์ Apps Script เป็น Anyone แล้ว');
+            } finally {
+                btn.innerText = originalText;
+                btn.disabled = false;
+            }
+        }
+
+        function hideAllAreas() {
+            ['homeArea', 'resultArea', 'forecastArea', 'plannerArea'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.style.display = 'none';
+            });
+        }
+
+        function toggleDesktopMode() {
+            const main = document.querySelector('.main-layout');
+            if (main.style.maxWidth === 'none') {
+                main.style.maxWidth = '1400px';
+            } else {
+                main.style.maxWidth = 'none';
+            }
+        }
+
+        async function exportPlannerAsImage() {
+            const grid = document.getElementById('plannerArea');
+            if (!grid) return;
+
+            // Show a temporary loading alert
+            const btn = event.target;
+            const originalText = btn.innerText;
+            btn.innerText = '⌛ กำลังสร้างรูปภาพ...';
+            btn.disabled = true;
+
+            try {
+                // Determine scale for high quality
+                const scale = window.devicePixelRatio || 2;
+
+                const canvas = await html2canvas(grid, {
+                    scale: scale,
+                    useCORS: true,
+                    backgroundColor: '#ffffff', // Force white background for light theme
+                    logging: false,
+                    onclone: (clonedDoc) => {
+                        // Optional: Adjust styles for the screenshot specifically
+                        const clonedArea = clonedDoc.getElementById('plannerArea');
+                        clonedArea.style.padding = '20px';
+                        // Ensure all elements are visible
+                        clonedArea.style.display = 'block';
+                    }
+                });
+
+                const link = document.createElement('a');
+                const weekStr = plannerDates[0] ? plannerDates[0].replace(/\//g, '-') : 'schedule';
+                link.download = `Work_Schedule_${weekStr}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            } catch (e) {
+                console.error('Export error:', e);
+                alert('ไม่สามารถสร้างรูปภาพได้: ' + e.message);
+            } finally {
+                btn.innerText = originalText;
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+
+</html>
