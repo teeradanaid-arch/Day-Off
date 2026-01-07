@@ -940,6 +940,9 @@
             <a onclick="showView('history')" class="nav-item" id="nav-history">
                 <i data-lucide="file-text"></i> สรุปผลงาน
             </a>
+            <a onclick="showView('overview')" class="nav-item" id="nav-overview">
+                <i data-lucide="table"></i> สรุปตารางรวม
+            </a>
             <a onclick="showView('forecast')" class="nav-item" id="nav-forecast">
                 <i data-lucide="bar-chart-3"></i> Forecast
             </a>
@@ -968,6 +971,9 @@
         </a>
         <a onclick="showView('history')" class="mobile-nav-item" id="m-nav-history">
             <i data-lucide="file-text"></i> สรุป
+        </a>
+        <a onclick="showView('overview')" class="mobile-nav-item" id="m-nav-overview">
+            <i data-lucide="table"></i> ตารางรวม
         </a>
         <a onclick="showView('forecast')" class="mobile-nav-item" id="m-nav-forecast">
             <i data-lucide="bar-chart-3"></i> FC
@@ -1292,6 +1298,31 @@
             </div>
         </div>
 
+        <!-- Overview Schedule Area -->
+        <div id="overviewArea" style="display:none;">
+            <div class="card">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                    <div>
+                        <h2 style="font-size:20px; font-weight:700; margin-bottom:4px;">สรุปตารางกะ (รวม)</h2>
+                        <p style="color:var(--text-muted); font-size:14px;">ดูตารางงานของพนักงานทุกคนในสัปดาห์</p>
+                    </div>
+                </div>
+
+                <div
+                    style="display:flex; align-items:center; gap:12px; margin-bottom:20px; background:#f8fafc; padding:12px; border-radius:12px; border:1px solid #e2e8f0;">
+                    <i data-lucide="calendar" style="color:var(--primary);"></i>
+                    <span style="font-size:14px; font-weight:600;">เลือกสัปดาห์:</span>
+                    <input type="date" id="overviewStartDate" class="date-input" onchange="loadOverviewData()">
+                </div>
+
+                <div class="table-container" style="overflow-x:auto;">
+                    <div id="overviewGrid">
+                        <p style="text-align:center; padding:20px;">กำลังโหลดข้อมูล...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Planner Area -->
         <div id="plannerArea" style="display:none;">
             <div class="card">
@@ -1384,7 +1415,7 @@
 
         function showView(view) {
             // Hide all
-            ['homeArea', 'resultArea', 'forecastArea', 'plannerArea', 'requestArea', 'dashboardArea', 'personalDashboardArea'].forEach(id => {
+            ['homeArea', 'resultArea', 'forecastArea', 'plannerArea', 'requestArea', 'dashboardArea', 'personalDashboardArea', 'overviewArea'].forEach(id => {
                 const el = document.getElementById(id);
                 if (el) el.style.display = 'none';
             });
@@ -1408,6 +1439,8 @@
                 document.getElementById('resultArea').style.display = 'block';
             } else if (view === 'forecast') {
                 showForecast();
+            } else if (view === 'overview') {
+                showOverview();
             } else if (view === 'planner') {
                 showPlanner();
             } else if (view === 'request') {
@@ -2302,6 +2335,135 @@
                 console.error('Save forecast error:', e);
                 alert('❌ ไม่สามารถบันทึกได้: ' + e.message);
             }
+        }
+
+        // ========== PLANNER FUNCTIONS ==========
+
+        // ========== OVERVIEW LOGIC ==========
+
+        function showOverview() {
+            hideAllAreas();
+            document.getElementById('overviewArea').style.display = 'block';
+
+            // Set default date to Current Week's Monday
+            const today = new Date();
+            const dayOfWeek = today.getDay(); // 0 (Sun) - 6 (Sat)
+            const diffToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+            const monday = new Date(today);
+            monday.setDate(today.getDate() + diffToMonday);
+
+            document.getElementById('overviewStartDate').valueAsDate = monday;
+            loadOverviewData();
+        }
+
+        async function loadOverviewData() {
+            const startDateInput = document.getElementById('overviewStartDate').value;
+            if (!startDateInput) return;
+
+            const overviewGrid = document.getElementById('overviewGrid');
+            overviewGrid.innerHTML = '<p style="text-align:center; padding:20px; color:var(--text-muted);">⏳ กำลังดึงข้อมูลตารางงาน...</p>';
+
+            const startDate = new Date(startDateInput);
+            plannerDates = []; // Reuse plannerDates variable or create new? Let's assume we can reuse/reset it safely as views are exclusive.
+
+            for (let i = 0; i < 7; i++) {
+                const date = new Date(startDate);
+                date.setDate(startDate.getDate() + i);
+
+                const dd = String(date.getDate()).padStart(2, '0');
+                const mm = String(date.getMonth() + 1).padStart(2, '0');
+                const yyyy = date.getFullYear();
+                plannerDates.push(`${dd}/${mm}/${yyyy}`);
+            }
+
+            try {
+                // 1. Load Staff
+                const staffData = await fetchSheetDataJSONP(sheetId, sheetGid3);
+                plannerStaff = [];
+                const seen = new Set();
+                staffData.forEach(row => {
+                    const id = String(row.employeeid || row.id || row.col0 || '').trim();
+                    const name = row.fullname || row.name || row.col1 || '';
+                    const nick = row.nickname || row.col2 || '';
+                    const pos = row.position || row.role || row.col4 || row.col3 || '';
+                    if (id && !seen.has(id)) {
+                        seen.add(id);
+                        plannerStaff.push({ id, name, nick, pos });
+                    }
+                });
+
+                // 2. Load Schedule
+                if (GAS_URL !== 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
+                    const weekStart = plannerDates[0];
+                    const response = await fetch(`${GAS_URL}?action=getSchedule&weekStart=${weekStart}`);
+                    const result = await response.json();
+                    if (result.success && result.data) {
+                        window.existingSchedule = result.data.map(s => ({
+                            ...s,
+                            date: normalizeDate(s.date)
+                        }));
+                    }
+                }
+
+                renderOverview();
+
+            } catch (e) {
+                console.error(e);
+                overviewGrid.innerHTML = `<p style="text-align:center; color:red;">❌ โหลดข้อมูลไม่สำเร็จ: ${e.message}</p>`;
+            }
+        }
+
+        function renderOverview() {
+            let html = '<table style="width:100%; border-collapse:collapse; white-space:nowrap;"><thead><tr><th style="padding:12px; background:#f1f5f9; text-align:left; border-radius:8px 0 0 8px;">พนักงาน</th>';
+
+            plannerDates.forEach(d => {
+                const thaiDay = getThaiDay(d);
+                const isToday = d === new Date().toLocaleDateString('en-GB'); // Basic check, might need format adjustment
+                const bg = isToday ? '#e0e7ff' : '#f1f5f9';
+                html += `<th style="padding:12px; text-align:center; background:${bg}; min-width:80px;">
+                    <div style="font-size:14px; font-weight:700;">${d.split('/')[0]}/${d.split('/')[1]}</div>
+                    <div style="font-size:12px; color:var(--text-muted);">${thaiDay}</div>
+                </th>`;
+            });
+
+            html += '</tr></thead><tbody>';
+
+            plannerStaff.forEach((st, idx) => {
+                const bgRow = idx % 2 === 0 ? 'white' : '#f8fafc';
+                const displayName = st.nick ? `${st.name} (${st.nick})` : st.name;
+                html += `<tr style="background:${bgRow}; border-bottom:1px solid #e2e8f0;">
+                    <td style="padding:12px;">
+                        <div style="font-weight:600; font-size:13px;">${displayName}</div>
+                        <div style="font-size:11px; color:var(--text-muted);">${st.pos || st.id}</div>
+                    </td>`;
+
+                plannerDates.forEach(d => {
+                    let shift = '22:00'; // Default? Or show 'Not Set'? Let's show empty/loading if not set, but planner defaults to 22:00 usually. 
+                    // To be safe, if no data, we assume standard '22:00' or display '-' if user prefers. 
+                    // But matching Planner logic: Planner defaults to 22:00 if not found in saved. 
+
+                    if (window.existingSchedule) {
+                        const existing = window.existingSchedule.find(s => s.employeeId === st.id && s.date === d);
+                        if (existing) shift = existing.shift;
+                        else shift = '-'; // If not in DB, show - to distinguish? Or 22:00? 
+                        // User said "When I finish scheduling". If they finished, it should be in DB. 
+                        // If not in DB, it means not scheduled yet. Better show separate status.
+                    }
+
+                    const badgeClass = shift === '-' ? 'shift-off' : `shift-${getShiftClass(shift)}`;
+                    const displayShift = shift === '-' ? 'รอจัด' : shift;
+
+                    html += `<td style="padding:8px; text-align:center;">
+                        <span class="${badgeClass}" style="display:inline-block; padding:4px 10px; border-radius:6px; font-size:12px; font-weight:600; min-width:60px;">
+                            ${displayShift}
+                        </span>
+                    </td>`;
+                });
+                html += '</tr>';
+            });
+            html += '</tbody></table>';
+
+            document.getElementById('overviewGrid').innerHTML = html;
         }
 
         // ========== PLANNER FUNCTIONS ==========
