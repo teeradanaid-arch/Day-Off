@@ -952,6 +952,9 @@
             <a onclick="showView('request')" class="nav-item" id="nav-request">
                 <i data-lucide="send"></i> ยื่นลา/แจ้งสาย
             </a>
+            <a onclick="showView('outsource-checkin')" class="nav-item" id="nav-outsource-checkin">
+                <i data-lucide="user-check"></i> ลงชื่อทำงาน Outsource
+            </a>
         </nav>
     </aside>
 
@@ -983,6 +986,9 @@
         </a>
         <a onclick="showView('request')" class="mobile-nav-item" id="m-nav-request">
             <i data-lucide="send"></i> ยื่นลา
+        </a>
+        <a onclick="showView('outsource-checkin')" class="mobile-nav-item" id="m-nav-outsource-checkin">
+            <i data-lucide="user-check"></i> ลงชื่อ
         </a>
     </nav>
 
@@ -1389,6 +1395,42 @@
                     </button>
                 </div>
             </div>
+        </div>
+
+        <!-- Outsource Check-In Area -->
+        <div id="outsourceCheckInArea" style="display:none;">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title" style="color:var(--success)">
+                        <i data-lucide="user-check"></i> ลงชื่อทำงาน Outsource
+                    </h2>
+                </div>
+
+                <div
+                    style="background:#f0fdf4; border-left:4px solid #10B981; padding:16px; border-radius:8px; margin-bottom:24px;">
+                    <p style="margin:0; color:var(--text-main); font-size:14px;">
+                        👋 สวัสดีครับ! กรุณาเลือกชื่อของคุณและกดยืนยันเพื่อลงชื่อเข้างานวันนี้
+                    </p>
+                </div>
+
+                <div style="display:grid; gap:16px;">
+                    <div>
+                        <label class="sub-text" style="display:block; margin-bottom:8px;">เลือกชื่อของคุณ:</label>
+                        <select id="outsourceStaffSelect" class="search-input"
+                            style="padding-left:14px; background:white;">
+                            <option value="">กำลังโหลดรายชื่อ...</option>
+                        </select>
+                    </div>
+
+                    <button id="btnCheckIn" class="btn-primary" style="width:100%;" onclick="submitOutsourceCheckIn()">
+                        ✅ ยืนยันเช็คอิน
+                    </button>
+
+                    <div id="checkInStatus" style="margin-top:12px; padding:12px; border-radius:8px; display:none;">
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 
     <script>
@@ -1415,7 +1457,7 @@
 
         function showView(view) {
             // Hide all
-            ['homeArea', 'resultArea', 'forecastArea', 'plannerArea', 'requestArea', 'dashboardArea', 'personalDashboardArea', 'overviewArea'].forEach(id => {
+            ['homeArea', 'resultArea', 'forecastArea', 'plannerArea', 'requestArea', 'dashboardArea', 'personalDashboardArea', 'overviewArea', 'outsourceCheckInArea'].forEach(id => {
                 const el = document.getElementById(id);
                 if (el) el.style.display = 'none';
             });
@@ -1464,6 +1506,9 @@
                 }
                 document.getElementById('personalDashboardArea').style.display = 'block';
                 loadPersonalDashboardData(empId);
+            } else if (view === 'outsource-checkin') {
+                document.getElementById('outsourceCheckInArea').style.display = 'block';
+                loadOutsourceStaff();
             }
 
             // Set dynamic active class
@@ -3020,6 +3065,81 @@
                 }
             } catch (e) {
                 console.log("Announcement fetch failed silently");
+            }
+        }
+
+        // ========== OUTSOURCE CHECK-IN FUNCTIONS ==========
+
+        async function loadOutsourceStaff() {
+            const selectEl = document.getElementById('outsourceStaffSelect');
+            selectEl.innerHTML = '<option value="">กำลังโหลดรายชื่อ...</option>';
+
+            try {
+                const response = await fetch(`${GAS_URL}?action=getOutsourceStaff`);
+                const result = await response.json();
+
+                if (result.success && result.data) {
+                    result.data.forEach(staff => {
+                        const option = document.createElement('option');
+                        option.value = staff.displayName;
+                        option.textContent = staff.displayName;
+                        selectEl.appendChild(option);
+                    });
+                } else {
+                    alert('❌ ไม่สามารถโหลดรายชื่อได้: ' + (result.message || 'Unknown error'));
+                }
+            } catch (error) {
+                console.error('Load staff error:', error);
+                alert('❌ เกิดข้อผิดพลาดในการโหลดข้อมูล');
+            }
+        }
+
+        async function submitOutsourceCheckIn() {
+            const selectEl = document.getElementById('outsourceStaffSelect');
+            const name = selectEl.value;
+            const statusEl = document.getElementById('checkInStatus');
+            const btnEl = document.getElementById('btnCheckIn');
+
+            if (!name) {
+                statusEl.style.display = 'block';
+                statusEl.style.background = '#FEE2E2';
+                statusEl.style.color = '#991B1B';
+                statusEl.innerHTML = '⚠️ กรุณาเลือกชื่อของคุณก่อนครับ';
+                return;
+            }
+
+            const now = new Date();
+            const date = now.toLocaleDateString('th-TH');
+            const time = now.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' });
+
+            btnEl.disabled = true;
+            btnEl.innerHTML = '⏳ กำลังบันทึก...';
+
+            try {
+                const response = await fetch(`${GAS_URL}?action=submitOutsourceCheckIn&name=${encodeURIComponent(name)}&date=${encodeURIComponent(date)}&time=${encodeURIComponent(time)}`);
+                const result = await response.json();
+
+                if (result.success) {
+                    statusEl.style.display = 'block';
+                    statusEl.style.background = '#DCFCE7';
+                    statusEl.style.color = '#166534';
+                    statusEl.innerHTML = `✅ <strong>ลงชื่อสำเร็จ!</strong><br>ชื่อ: ${name}<br>วันที่: ${date}<br>เวลา: ${time}`;
+                    selectEl.value = '';
+                } else {
+                    statusEl.style.display = 'block';
+                    statusEl.style.background = '#FEE2E2';
+                    statusEl.style.color = '#991B1B';
+                    statusEl.innerHTML = '❌ เกิดข้อผิดพลาด: ' + (result.message || 'Unknown error');
+                }
+            } catch (error) {
+                console.error('Check-in error:', error);
+                statusEl.style.display = 'block';
+                statusEl.style.background = '#FEE2E2';
+                statusEl.style.color = '#991B1B';
+                statusEl.innerHTML = '❌ ไม่สามารถเชื่อมต่อได้';
+            } finally {
+                btnEl.disabled = false;
+                btnEl.innerHTML = '✅ ยืนยันเช็คอิน';
             }
         }
     </script>
