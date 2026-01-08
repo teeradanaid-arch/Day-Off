@@ -64,8 +64,47 @@
             display: flex;
             flex-direction: column;
             padding: 24px;
-            z-index: 1000;
-            transition: transform 0.3s ease;
+            z-index: 2000;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .sidebar-header-mobile {
+            display: none;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .sidebar-close-btn {
+            background: var(--bg);
+            border: none;
+            color: var(--text-main);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 1999;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar-overlay.active {
+            display: block;
+            opacity: 1;
         }
 
         .logo {
@@ -266,11 +305,12 @@
             width: 100%;
             background: var(--surface);
             border-top: 1px solid var(--border);
-            padding: 12px 24px;
-            justify-content: space-between;
+            padding: 12px 10px;
+            justify-content: space-around;
             align-items: center;
             z-index: 1001;
-            box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+            border-radius: 20px 20px 0 0;
         }
 
         .mobile-nav-item {
@@ -278,9 +318,17 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 4px;
-            font-size: 10px;
+            gap: 6px;
+            font-size: 11px;
             text-decoration: none;
+            flex: 1;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .mobile-nav-item i {
+            width: 22px;
+            height: 22px;
         }
 
         .mobile-nav-item.active {
@@ -290,9 +338,17 @@
         @media (max-width: 991px) {
             .sidebar {
                 transform: translateX(-100%);
-                width: 0;
-                padding: 0;
-                overflow: hidden;
+                width: 280px;
+                padding: 24px;
+                box-shadow: 20px 0 50px rgba(0, 0, 0, 0.1);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .sidebar-header-mobile {
+                display: flex;
             }
 
             .main-layout {
@@ -1060,10 +1116,22 @@
         }
     </style>
 
-<body>
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
     <!-- Desktop Sidebar -->
-    <aside class="sidebar">
-        <div class="logo">
+    <aside class="sidebar" id="mainSidebar">
+        <div class="sidebar-header-mobile">
+            <div class="logo" style="margin-bottom: 0;">
+                <i data-lucide="layout-dashboard"></i>
+                <span>MENU</span>
+            </div>
+            <button class="sidebar-close-btn" onclick="toggleSidebar()">
+                <i data-lucide="x"></i>
+            </button>
+        </div>
+
+        <div class="logo desktop-only">
             <i data-lucide="layout-dashboard"></i>
             <span>WORK PORTAL</span>
         </div>
@@ -1104,40 +1172,19 @@
         </nav>
     </aside>
 
-    <!-- Mobile Navigation -->
+    <!-- Mobile Navigation (Simplified) -->
     <nav class="mobile-nav">
-        <a onclick="showView('dashboard')" class="mobile-nav-item" id="m-nav-dashboard">
-            <i data-lucide="pie-chart"></i> ดอร์ด
-        </a>
-        <a onclick="showView('personal-dashboard')" class="mobile-nav-item" id="m-nav-personal-dashboard">
-            <i data-lucide="user"></i> ส่วนตัว
-        </a>
         <a onclick="showView('home')" class="mobile-nav-item active" id="m-nav-home">
             <i data-lucide="home"></i> หน้าหลัก
+        </a>
+        <a onclick="showView('dashboard')" class="mobile-nav-item" id="m-nav-dashboard">
+            <i data-lucide="pie-chart"></i> แดชบอร์ด
         </a>
         <a onclick="showView('schedule')" class="mobile-nav-item" id="m-nav-schedule">
             <i data-lucide="calendar"></i> ตารางกะ
         </a>
-        <a onclick="showView('history')" class="mobile-nav-item" id="m-nav-history">
-            <i data-lucide="file-text"></i> สรุป
-        </a>
-        <a onclick="showView('overview')" class="mobile-nav-item" id="m-nav-overview">
-            <i data-lucide="table"></i> ตารางรวม
-        </a>
-        <a onclick="showView('forecast')" class="mobile-nav-item" id="m-nav-forecast">
-            <i data-lucide="bar-chart-3"></i> FC
-        </a>
-        <a onclick="showView('planner', 'Veg')" class="mobile-nav-item" id="m-nav-planner-veg">
-            <i data-lucide="settings"></i> จัดกะ (ผัก)
-        </a>
-        <a onclick="showView('planner', 'Meat')" class="mobile-nav-item" id="m-nav-planner-meat">
-            <i data-lucide="settings"></i> จัดกะ (เนื้อ)
-        </a>
-        <a onclick="showView('request')" class="mobile-nav-item" id="m-nav-request">
-            <i data-lucide="send"></i> ยื่นลา
-        </a>
-        <a onclick="showView('outsource-checkin')" class="mobile-nav-item" id="m-nav-outsource-checkin">
-            <i data-lucide="user-check"></i> ลงชื่อ
+        <a onclick="toggleSidebar()" class="mobile-nav-item">
+            <i data-lucide="menu"></i> เมนู
         </a>
     </nav>
 
@@ -1622,13 +1669,17 @@
         let currentDept = 'Veg'; // Default department
         window.plannerRequirements = {};
 
-        // Initialize Lucide Icons
-        lucide.createIcons();
-
         // Display current date on Home
         const now = new Date();
         const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
         document.getElementById('currentDateDisplay').innerText = now.toLocaleDateString('th-TH', options);
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('mainSidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('active');
+        }
 
         function showView(view, dept) {
             // Hide all
@@ -1697,6 +1748,14 @@
 
             if (document.getElementById(navId)) document.getElementById(navId).classList.add('active');
             if (document.getElementById(mNavId)) document.getElementById(mNavId).classList.add('active');
+
+            // Close sidebar on mobile after selection
+            if (window.innerWidth <= 991) {
+                const sidebar = document.getElementById('mainSidebar');
+                const overlay = document.getElementById('sidebarOverlay');
+                if (sidebar) sidebar.classList.remove('open');
+                if (overlay) overlay.classList.remove('active');
+            }
 
             // Refresh icons
             lucide.createIcons();
@@ -3413,6 +3472,6 @@
             }
         }
     </script>
-</body>
+    </body>
 
 </html>
