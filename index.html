@@ -349,6 +349,138 @@
             gap: 6px;
         }
 
+        /* Forecast Redesign */
+        .forecast-controls {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .control-group label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .input-modern {
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            font-size: 14px;
+            background: white;
+            transition: all 0.2s;
+        }
+
+        .input-modern:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+            outline: none;
+        }
+
+        .forecast-grid-modern {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        .forecast-card-modern {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            transition: all 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .forecast-card-modern:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+            border-color: var(--primary-light);
+        }
+
+        .forecast-card-modern .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .forecast-card-modern .date-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .forecast-card-modern .date-str {
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--text-main);
+        }
+
+        .forecast-card-modern .day-name {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .forecast-card-modern .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .forecast-card-modern .input-group label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .forecast-input-big {
+            width: 100%;
+            padding: 12px 16px;
+            font-size: 18px;
+            font-weight: 700;
+            border: 2px solid var(--bg-soft);
+            border-radius: 12px;
+            background: var(--bg-soft);
+            transition: all 0.2s;
+            color: var(--primary);
+        }
+
+        .forecast-input-big:focus {
+            background: white;
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.1);
+        }
+
+        .action-bar-modern {
+            margin-top: 40px;
+            padding: 20px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            display: flex;
+            justify-content: flex-end;
+            position: sticky;
+            bottom: 20px;
+            z-index: 10;
+            box-shadow: 0 -10px 20px -5px rgba(0, 0, 0, 0.05);
+        }
+
         .req-badge {
             display: flex;
             justify-content: space-between;
@@ -452,7 +584,18 @@
             color: #166534;
         }
 
-        /* Dashboard Styles */
+        /* Planner Summary Sticky */
+        #plannerSummary {
+            position: sticky;
+            top: 0;
+            background: var(--surface);
+            z-index: 100;
+            padding: 16px 0;
+            margin-bottom: 24px;
+            border-bottom: 2px solid var(--primary-light);
+            box-shadow: 0 8px 15px -10px rgba(0, 0, 0, 0.1);
+        }
+
         .dashboard-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -946,8 +1089,11 @@
             <a onclick="showView('forecast')" class="nav-item" id="nav-forecast">
                 <i data-lucide="bar-chart-3"></i> Forecast
             </a>
-            <a onclick="showView('planner')" class="nav-item" id="nav-planner">
-                <i data-lucide="user-plus"></i> จัดกะงาน
+            <a onclick="showView('planner', 'Veg')" class="nav-item" id="nav-planner-veg">
+                <i data-lucide="user-plus"></i> จัดกะ (ผัก)
+            </a>
+            <a onclick="showView('planner', 'Meat')" class="nav-item" id="nav-planner-meat">
+                <i data-lucide="user-plus"></i> จัดกะ (เนื้อ)
             </a>
             <a onclick="showView('request')" class="nav-item" id="nav-request">
                 <i data-lucide="send"></i> ยื่นลา/แจ้งสาย
@@ -981,8 +1127,11 @@
         <a onclick="showView('forecast')" class="mobile-nav-item" id="m-nav-forecast">
             <i data-lucide="bar-chart-3"></i> FC
         </a>
-        <a onclick="showView('planner')" class="mobile-nav-item" id="m-nav-planner">
-            <i data-lucide="settings"></i> จัดกะ
+        <a onclick="showView('planner', 'Veg')" class="mobile-nav-item" id="m-nav-planner-veg">
+            <i data-lucide="settings"></i> จัดกะ (ผัก)
+        </a>
+        <a onclick="showView('planner', 'Meat')" class="mobile-nav-item" id="m-nav-planner-meat">
+            <i data-lucide="settings"></i> จัดกะ (เนื้อ)
         </a>
         <a onclick="showView('request')" class="mobile-nav-item" id="m-nav-request">
             <i data-lucide="send"></i> ยื่นลา
@@ -1120,9 +1269,15 @@
                 </div>
             </div>
 
-            <!-- Comparison Selection Row -->
             <div class="date-selector-row">
-                <span style="font-weight: 600; font-size: 14px; color: var(--text-muted);">เลือกวันดู
+                <span style="font-weight: 600; font-size: 14px; color: var(--text-muted);">ฟิลเตอร์โซน:</span>
+                <select id="zoneSelector" class="select-custom" onchange="applyZoneFilter()">
+                    <option value="All">ทั้งหมด (All Zones)</option>
+                    <option value="Ambient">Ambient</option>
+                    <option value="Chill">Chill</option>
+                </select>
+
+                <span style="font-weight: 600; font-size: 14px; color: var(--text-muted); margin-left:12px;">เลือกวันดู
                     Leaderboard:</span>
                 <select id="lbDateSelector" class="select-custom" onchange="loadDashboardData(this.value)">
                     <option value="0">วันล่าสุด (Day 0)</option>
@@ -1286,21 +1441,40 @@
         </div>
 
         <!-- Forecast Area -->
-        <div id="forecastArea" style="display:none;">
-            <div class="card">
-                <div class="card-header">
-                    <h2 class="card-title" style="color:var(--primary)"><i data-lucide="bar-chart-3"></i> กรอกยอด
-                        Forecast</h2>
+        <div id="forecastArea" class="content-area" style="display: none;">
+            <div class="header-card">
+                <div class="header-title">
+                    <i data-lucide="trending-up"></i>
+                    <h2>กรอกยอด Forecast</h2>
                 </div>
-                <div style="margin-bottom:20px;">
-                    <label
-                        style="color: var(--text-muted); margin-bottom: 8px; display: block; font-size:14px;">เลือกวันที่เริ่มต้น
-                        (จันทร์):</label>
-                    <input type="date" id="forecastStartDate" class="search-input" style="padding-left:14px;"
-                        onchange="generateForecastGrid()">
+                <p class="header-subtitle">จัดการประมาณการยอดแพ็คประจำสัปดาห์แยกตามหมวดหมู่</p>
+
+                <div class="forecast-controls">
+                    <div class="control-group">
+                        <label for="forecastStartDate">วันที่เริ่มต้น (จันทร์):</label>
+                        <input type="date" id="forecastStartDate" class="input-modern"
+                            onchange="generateForecastGrid()">
+                    </div>
+                    <div class="control-group">
+                        <label for="forecastCategory">หมวดหมู่ / โซน:</label>
+                        <select id="forecastCategory" class="select-custom" onchange="generateForecastGrid()">
+                            <option value="Veg">ผัก (Vegetable)</option>
+                            <option value="Ambient">Meat - Ambient</option>
+                            <option value="Chill">Meat - Chill</option>
+                        </select>
+                    </div>
                 </div>
-                <div id="forecastGrid" style="display:grid; gap:12px; margin-bottom:24px;"></div>
-                <button class="btn-primary" style="width:100%" onclick="saveForecast()">💾 บันทึก Forecast</button>
+            </div>
+
+            <div id="forecastGrid" class="forecast-grid-modern">
+                <!-- Forecast Cards will be generated here -->
+            </div>
+
+            <div class="action-bar-modern">
+                <button class="btn btn-primary" onclick="saveForecast()">
+                    <i data-lucide="save"></i>
+                    บันทึก Forecast ทั้งหมด
+                </button>
             </div>
         </div>
 
@@ -1445,6 +1619,7 @@
         let plannerStaff = [];
         let plannerDates = [];
         let forecastDates = [];
+        let currentDept = 'Veg'; // Default department
         window.plannerRequirements = {};
 
         // Initialize Lucide Icons
@@ -1455,7 +1630,7 @@
         const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
         document.getElementById('currentDateDisplay').innerText = now.toLocaleDateString('th-TH', options);
 
-        function showView(view) {
+        function showView(view, dept) {
             // Hide all
             ['homeArea', 'resultArea', 'forecastArea', 'plannerArea', 'requestArea', 'dashboardArea', 'personalDashboardArea', 'overviewArea', 'outsourceCheckInArea'].forEach(id => {
                 const el = document.getElementById(id);
@@ -1484,7 +1659,8 @@
             } else if (view === 'overview') {
                 showOverview();
             } else if (view === 'planner') {
-                showPlanner();
+                if (dept) currentDept = dept;
+                showPlanner(currentDept);
             } else if (view === 'request') {
                 const empId = document.getElementById('empId').value.trim();
                 if (!empId) {
@@ -1512,8 +1688,13 @@
             }
 
             // Set dynamic active class
-            const navId = `nav-${view}`;
-            const mNavId = `m-nav-${view}`;
+            let navId = `nav-${view}`;
+            let mNavId = `m-nav-${view}`;
+            if (view === 'planner') {
+                navId = `nav-planner-${currentDept.toLowerCase()}`;
+                mNavId = `m-nav-planner-${currentDept.toLowerCase()}`;
+            }
+
             if (document.getElementById(navId)) document.getElementById(navId).classList.add('active');
             if (document.getElementById(mNavId)) document.getElementById(mNavId).classList.add('active');
 
@@ -1636,17 +1817,61 @@
             document.getElementById('topDeptVal').innerText = topDept;
             document.getElementById('avgEffVal').innerText = deptCount > 0 ? (totalAvg / deptCount).toFixed(2) : '0';
 
-            // Create/Update Donut Charts
             updateDonutChart('receiverDonut', summary['Receiver']?.avgPackHr || 0, '#7C3AED', 'Receiver');
             updateDonutChart('dropperDonut', summary['Dropper']?.avgPackHr || 0, '#06B6D4', 'Dropper');
             updateDonutChart('cashierDonut', summary['Cashier']?.avgPackHr || 0, '#F59E0B', 'Cashier');
+
+            // Save raw data for local filtering
+            window.lastDashboardData = data;
 
             // Update Historical Line Chart
             updateHistoryChart(history);
 
             // Update Leaderboards
-            updateLeaderboardUI(leaderboard, latestDate, 'leaderboardGrid', 'lbDate');
-            updateLeaderboardUI(data.leaderboardPack, latestDate, 'leaderboardGridVol', 'lbDateVol');
+            applyZoneFilter();
+        }
+
+        function applyZoneFilter() {
+            const data = window.lastDashboardData;
+            if (!data) return;
+
+            const selectedZone = document.getElementById('zoneSelector').value;
+            const rawLeaderboard = data.leaderboard || {};
+            const latestDate = data.latestDate;
+
+            // 1. Filter by Zone
+            const filtered = filterByZone(rawLeaderboard, selectedZone);
+
+            // 2. Sort for Efficiency (Top 5 Performers - Pack/Hr)
+            const sortedEff = {};
+            for (const dept in filtered) {
+                sortedEff[dept] = [...filtered[dept]]
+                    .sort((a, b) => b.packHr - a.packHr)
+                    .slice(0, 5);
+            }
+
+            // 3. Sort for Volume (Top 5 Pack Volume - Total Pack)
+            const sortedVol = {};
+            for (const dept in filtered) {
+                sortedVol[dept] = [...filtered[dept]]
+                    .sort((a, b) => b.pack - a.pack)
+                    .slice(0, 5);
+            }
+
+            updateLeaderboardUI(sortedEff, latestDate, 'leaderboardGrid', 'lbDate');
+            updateLeaderboardUI(sortedVol, latestDate, 'leaderboardGridVol', 'lbDateVol');
+        }
+
+        function filterByZone(lbData, zone) {
+            if (zone === 'All') return lbData;
+            const filtered = {};
+            for (const dept in lbData) {
+                // Case-insensitive filtering
+                filtered[dept] = (lbData[dept] || []).filter(item =>
+                    String(item.zone || '').toLowerCase() === String(zone).toLowerCase()
+                );
+            }
+            return filtered;
         }
 
         function updateLeaderboardUI(leaderboardData, latestDate, gridId, dateId) {
@@ -2115,7 +2340,11 @@
                 const staffSchedule = (scheduleResult.data || []).map(s => ({
                     ...s,
                     date: normalizeDate(s.date)
-                }));
+                })).sort((a, b) => {
+                    const [d1, m1, y1] = a.date.split('/').map(Number);
+                    const [d2, m2, y2] = b.date.split('/').map(Number);
+                    return new Date(y2, m2 - 1, d2) - new Date(y1, m1 - 1, d1);
+                });
 
                 if (staffSchedule.length === 0) {
                     return alert('ไม่พบข้อมูลรหัส: ' + inputVal + ' ในตารางกะ (WeeklySchedule)\nรบกวนตรวจสอบว่าได้กดบันทึกตารางกะของสัปดาห์นี้หรือยังครับ');
@@ -2138,7 +2367,7 @@
                 document.getElementById('showName').innerText = `คุณ ${fullDisplayName} (${inputVal})`;
 
                 if (type === 'schedule') {
-                    let html = '<div class="data-item"><h3 style="margin-bottom:20px; color:var(--text-main); font-weight:700;">📅 ตารางกะประจำสัปดาห์</h3>';
+                    let html = '<div class="data-item"><h3 style="margin-bottom:20px; color:var(--text-main); font-weight:700;">📅 ตารางกะพนักงาน</h3>';
                     staffSchedule.forEach(row => {
                         const date = row.date || '';
                         const thaiDay = getThaiDay(date);
@@ -2292,6 +2521,7 @@
             const startDateInput = document.getElementById('forecastStartDate').value;
             if (!startDateInput) return;
 
+            const category = document.getElementById('forecastCategory').value;
             const startDate = new Date(startDateInput);
             forecastDates = [];
 
@@ -2309,14 +2539,23 @@
                 forecastDates.push(dateStr);
 
                 html += `
-                <div class="forecast-row">
-                    <div>${dateStr}</div>
-                    <input type="number" id="fc_${i}" placeholder="กรอกยอด Pack" style="margin:0;">
-                    <div class="sub-text">${thaiDay}</div>
+                <div class="forecast-card-modern">
+                    <div class="card-header">
+                        <div class="date-info">
+                            <span class="date-str">${dateStr}</span>
+                            <span class="day-name">${thaiDay}</span>
+                        </div>
+                        <i data-lucide="calendar" class="text-muted" style="width:18px;"></i>
+                    </div>
+                    <div class="input-group">
+                        <label for="fc_${i}">ยอดประมาณการ (Pack)</label>
+                        <input type="number" id="fc_${i}" class="forecast-input-big" placeholder="0">
+                    </div>
                 </div>`;
             }
 
             document.getElementById('forecastGrid').innerHTML = html;
+            lucide.createIcons();
             loadForecastData();
         }
 
@@ -2324,13 +2563,17 @@
             if (GAS_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') return;
 
             try {
-                const startDate = forecastDates[0];
-                const endDate = forecastDates[6];
-
-                const response = await fetch(`${GAS_URL}?action=getForecast&startDate=${startDate}&endDate=${endDate}`);
+                const category = document.getElementById('forecastCategory').value;
+                const response = await fetch(`${GAS_URL}?action=getForecast&category=${category}`);
                 const result = await response.json();
 
                 if (result.success && result.data) {
+                    // Clear inputs first
+                    for (let i = 0; i < 7; i++) {
+                        const input = document.getElementById(`fc_${i}`);
+                        if (input) input.value = '';
+                    }
+
                     result.data.forEach(item => {
                         const index = forecastDates.indexOf(item.date);
                         if (index !== -1) {
@@ -2346,9 +2589,10 @@
 
         async function saveForecast() {
             if (GAS_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
-                return alert('⚠️ กรุณาตั้งค่า Google Apps Script URL ก่อน\n\nดูวิธีการใน INSTALL_SCRIPT.md');
+                return alert('⚠️ กรุณาตั้งค่า Google Apps Script URL ก่อน');
             }
 
+            const category = document.getElementById('forecastCategory').value;
             const forecasts = [];
             for (let i = 0; i < 7; i++) {
                 const value = document.getElementById(`fc_${i}`).value;
@@ -2366,13 +2610,14 @@
                     method: 'POST',
                     body: JSON.stringify({
                         action: 'saveForecast',
+                        category: category,
                         forecasts: forecasts
                     })
                 });
 
                 const result = await response.json();
                 if (result.success) {
-                    alert('✅ บันทึก Forecast สำเร็จ!');
+                    alert(`✅ บันทึก Forecast หมวด ${category} สำเร็จ!`);
                 } else {
                     alert('❌ เกิดข้อผิดพลาด: ' + result.message);
                 }
@@ -2422,15 +2667,20 @@
             }
 
             try {
-                // 1. Load Staff
-                const staffData = await fetchSheetDataJSONP(sheetId, sheetGid3);
+                // 1. Load Staff (Respecting department choice if we add one to overview later, for now we can show both or default)
+                // Let's assume overview should show ALL or we add a selector.
+                // For now, let's just make it fetch Veg by default or handle currentDept.
+                const staffResp = await fetch(`${GAS_URL}?action=getStaffList&dept=${currentDept || 'Veg'}`);
+                const staffResult = await staffResp.json();
+                const staffData = staffResult.data || [];
+
                 plannerStaff = [];
                 const seen = new Set();
                 staffData.forEach(row => {
-                    const id = String(row.employeeid || row.id || row.col0 || '').trim();
-                    const name = row.fullname || row.name || row.col1 || '';
-                    const nick = row.nickname || row.col2 || '';
-                    const pos = row.position || row.role || row.col4 || row.col3 || '';
+                    const id = row.employeeid;
+                    const name = row.fullname;
+                    const nick = row.nickname;
+                    const pos = row.position;
                     if (id && !seen.has(id)) {
                         seen.add(id);
                         plannerStaff.push({ id, name, nick, pos });
@@ -2513,8 +2763,10 @@
 
         // ========== PLANNER FUNCTIONS ==========
 
-        function showPlanner() {
-            const password = prompt('กรุณาใส่รหัสผ่านเพื่อเข้าใช้งาน:');
+        function showPlanner(dept) {
+            if (dept) currentDept = dept;
+
+            const password = prompt(`[${currentDept}] กรุณาใส่รหัสผ่านเพื่อเข้าใช้งาน:`);
             if (password !== '20260001') {
                 if (password !== null) alert('รหัสผ่านไม่ถูกต้อง!');
                 return;
@@ -2554,9 +2806,13 @@
                 plannerDates.push(`${dd}/${mm}/${yyyy}`);
             }
 
-            // Load staff
+            // Load staff via GAS endpoint (handled Sheet3 vs Sheet4)
             try {
-                const staffData = await fetchSheetDataJSONP(sheetId, sheetGid3);
+                const staffResp = await fetch(`${GAS_URL}?action=getStaffList&dept=${currentDept}`);
+                const staffResult = await staffResp.json();
+                if (!staffResult.success) throw new Error(staffResult.message);
+
+                const staffData = staffResult.data || [];
                 plannerStaff = [];
                 const seen = new Set();
 
@@ -2592,23 +2848,36 @@
             if (GAS_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') return;
 
             try {
-                const startDate = plannerDates[0];
-                const endDate = plannerDates[6];
+                // Map Department to Forecast Categories
+                const categoryMap = {
+                    'Veg': 'Veg',
+                    'Meat': 'Ambient,Chill'
+                };
+                const categories = categoryMap[currentDept] || 'Veg';
 
-                const response = await fetch(`${GAS_URL}?action=getForecast&startDate=${startDate}&endDate=${endDate}`);
+                const response = await fetch(`${GAS_URL}?action=getForecast&category=${categories}`);
                 const result = await response.json();
 
                 if (result.success && result.data) {
-                    const forecasts = result.data;
+                    const rawForecasts = result.data;
                     window.plannerRequirements = {}; // Reset
 
-                    forecasts.forEach(fc => {
-                        const needed = Math.ceil(fc.value / 435.28);
+                    // Group by date and sum values (if multiple categories)
+                    const summedForecasts = {};
+                    rawForecasts.forEach(item => {
+                        if (!summedForecasts[item.date]) summedForecasts[item.date] = 0;
+                        summedForecasts[item.date] += Number(item.value || 0);
+                    });
+
+                    // Calculate requirements for each date in plannerDates
+                    plannerDates.forEach(dateStr => {
+                        const totalValue = summedForecasts[dateStr] || 0;
+                        const needed = Math.ceil(totalValue / 435.28);
                         const night21 = Math.round(needed * 0.25);
                         const night22 = needed - night21;
                         const dayOff = 34 - needed;
 
-                        window.plannerRequirements[fc.date] = {
+                        window.plannerRequirements[dateStr] = {
                             needed,
                             night21,
                             night22,
@@ -2763,7 +3032,7 @@
 
             try {
                 const weekStart = plannerDates[0];
-                const response = await fetch(`${GAS_URL}?action=getSchedule&weekStart=${weekStart}`);
+                const response = await fetch(`${GAS_URL}?action=getSchedule&weekStart=${weekStart}&department=${currentDept}`);
                 const result = await response.json();
 
                 if (result.success && result.data) {
@@ -2886,6 +3155,7 @@
                     body: JSON.stringify({
                         action: 'saveSchedule',
                         weekStart: plannerDates[0],
+                        department: currentDept,
                         schedules: schedules
                     })
                 });
