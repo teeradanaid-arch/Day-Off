@@ -35,6 +35,7 @@
             --radius-md: 12px;
             --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
             --sidebar-width: 260px;
+            --sidebar-width-collapsed: 85px;
         }
 
         * {
@@ -65,7 +66,43 @@
             flex-direction: column;
             padding: 24px;
             z-index: 2000;
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-y: auto;
+            overflow-x: hidden;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary-light) transparent;
+        }
+
+        .sidebar.collapsed {
+            width: var(--sidebar-width-collapsed);
+            padding: 24px 12px;
+        }
+
+        .sidebar.collapsed .logo span,
+        .sidebar.collapsed .nav-item span {
+            display: none;
+        }
+
+        .sidebar.collapsed .logo,
+        .sidebar.collapsed .nav-item {
+            justify-content: center;
+            padding: 12px;
+            gap: 0;
+        }
+
+        .sidebar.collapsed .nav-item i {
+            margin: 0;
+            width: 24px;
+            height: 24px;
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background-color: var(--primary-light);
+            border-radius: 10px;
         }
 
         .sidebar-header-mobile {
@@ -123,6 +160,7 @@
             flex-direction: column;
             gap: 8px;
             list-style: none;
+            padding-bottom: 100px;
         }
 
         .nav-item {
@@ -144,6 +182,33 @@
             color: var(--primary);
         }
 
+        .btn-collapse {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-collapse:hover {
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .sidebar.collapsed .btn-collapse i {
+            transform: rotate(180deg);
+        }
+
+        .sidebar.collapsed .logo {
+            margin-bottom: 24px;
+        }
+
         /* Main Content */
         .main-layout {
             flex: 1;
@@ -151,6 +216,11 @@
             padding: 32px;
             max-width: 1400px;
             width: 100%;
+            transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .main-layout.collapsed {
+            margin-left: var(--sidebar-width-collapsed);
         }
 
         .top-bar {
@@ -338,7 +408,7 @@
         @media (max-width: 991px) {
             .sidebar {
                 transform: translateX(-100%);
-                width: 280px;
+                width: 280px !important;
                 padding: 24px;
                 box-shadow: 20px 0 50px rgba(0, 0, 0, 0.1);
             }
@@ -369,6 +439,10 @@
 
             .search-container {
                 max-width: 100%;
+            }
+
+            .btn-collapse {
+                display: none;
             }
         }
 
@@ -1118,6 +1192,767 @@
         .select-custom:focus {
             border-color: var(--primary);
         }
+
+        /* Attendance Redesign - Premium Mockup Style */
+        .attendance-premium-header {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card-premium {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 16px 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card-premium:hover {
+            transform: translateY(-2px);
+        }
+
+        .stat-card-premium .stat-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .stat-card-premium.highlight-box {
+            background: linear-gradient(135deg, white, #FEF2F2);
+            border-color: #F87171;
+        }
+
+        .stat-card-premium .stat-main-val {
+            font-size: 28px;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .stat-card-premium .stat-sub-val {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .stat-card-premium .stat-label {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-top: 4px;
+        }
+
+        .stat-leave-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4px;
+            margin-top: 4px;
+        }
+
+        .leave-stat-item {
+            font-size: 10px;
+            display: flex;
+            justify-content: space-between;
+            padding: 2px 4px;
+            background: #F8FAFC;
+            border-radius: 4px;
+        }
+
+        .leave-stat-item.active {
+            background: #FEE2E2;
+            color: #B91C1C;
+            font-weight: 700;
+        }
+
+        /* Volume & Productivity Panel */
+        .productivity-panel {
+            background: #F8FAFC;
+            border-radius: var(--radius-md);
+            padding: 20px;
+            margin-bottom: 24px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            border: 1px solid var(--border);
+        }
+
+        .prod-column {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .prod-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .prod-input-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .prod-input-group label {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 600;
+            min-width: 80px;
+        }
+
+        .prod-input-group input {
+            border: none;
+            font-weight: 700;
+            font-size: 16px;
+            width: 100%;
+            outline: none;
+        }
+
+        .prod-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 5px;
+        }
+
+        .prod-stat-box {
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .prod-stat-val {
+            display: block;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .prod-stat-lbl {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .alert-missing {
+            background: #FEE2E2;
+            color: #B91C1C;
+            padding: 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 10px;
+        }
+
+        /* Premium Attendance Cards */
+        .attendance-item-premium {
+            background: white;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            transition: all 0.2s;
+        }
+
+        .attendance-item-premium:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border-color: var(--primary-light);
+        }
+
+        .staff-profile {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex: 1;
+        }
+
+        .staff-avatar-ring {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 2px solid var(--primary);
+            padding: 2px;
+        }
+
+        .staff-avatar-inner {
+            width: 100%;
+            height: 100%;
+            background: #F1F5F9;
+            border-radius: 50%;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .staff-name-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        /* Status Highlight Classes */
+        .attendance-item-premium.status-day-off {
+            background-color: #FEF2F2 !important;
+            border: 2px solid #F87171 !important;
+        }
+
+        .attendance-item-premium.status-ot {
+            background-color: #FEF9C3 !important;
+            border: 2px solid #FACC15 !important;
+        }
+
+        .attendance-item-premium.status-absent {
+            background-color: #FFF1F2 !important;
+            border: 2px solid #FDA4AF !important;
+        }
+
+        .attendance-item-premium.status-vacation {
+            background-color: #F3E8FF !important;
+            border: 2px solid #C084FC !important;
+        }
+
+        .leave-menu-container {
+            position: relative;
+        }
+
+        .leave-dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+            display: none;
+            z-index: 100;
+            min-width: 120px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+
+        .leave-dropdown-menu.show {
+            display: block;
+        }
+
+        .leave-option {
+            padding: 10px 16px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.2s;
+            color: var(--text-main);
+            white-space: nowrap;
+        }
+
+        .leave-option:hover {
+            background: #F1F5F9;
+        }
+
+        .leave-option.active {
+            background: #FEF2F2;
+            color: #EF4444;
+            font-weight: 700;
+        }
+
+        .staff-name {
+            font-weight: 700;
+            color: var(--text-main);
+            font-size: 15px;
+        }
+
+        .staff-meta {
+            font-size: 12px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .badge-type {
+            background: #F1F5F9;
+            color: var(--text-muted);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .badge-type.ot {
+            background: #DBEAFE;
+            color: #1E40AF;
+        }
+
+        .badge-type.outsource {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+
+        .badge-type.spr {
+            background: #F3E8FF;
+            color: #7E22CE;
+        }
+
+        /* Reassignment Toggles */
+        .side-toggle-group {
+            display: flex;
+            background: #F1F5F9;
+            padding: 3px;
+            border-radius: 20px;
+            margin-right: 24px;
+        }
+
+        .side-toggle-btn {
+            padding: 6px 14px;
+            font-size: 11px;
+            font-weight: 700;
+            border-radius: 18px;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            transition: all 0.2s;
+        }
+
+        .side-toggle-btn.active-veg {
+            background: #DCFCE7;
+            color: #166534;
+        }
+
+        .side-toggle-btn.active-meat {
+            background: #DBEAFE;
+            color: #1E40AF;
+        }
+
+        /* Modern Action Buttons */
+        .status-button-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-checkin-status {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: white;
+            color: var(--text-muted);
+        }
+
+        .btn-checkin-status:hover {
+            transform: scale(1.1);
+        }
+
+        .btn-checkin-status.p.active {
+            background: #DCFCE7;
+            color: #166534;
+            border-color: #BBF7D0;
+        }
+
+        .btn-checkin-status.status-ot {
+            background: #FEF9C3 !important;
+            color: #854D0E !important;
+            border-color: #FACC15 !important;
+        }
+
+        .btn-checkin-status.l.active {
+            background: #FEF3C7;
+            color: #92400E;
+            border-color: #FDE68A;
+        }
+
+        .btn-checkin-status.a.active {
+            background: #FEE2E2;
+            color: #B91C1C;
+            border-color: #FECACA;
+        }
+
+        /* Floating Button */
+        .btn-add-external {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 56px;
+            height: 56px;
+            border-radius: 28px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 100;
+            transition: all 0.3s;
+        }
+
+        .btn-add-external:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Modal SPR */
+        .modal-spr {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-spr-content {
+            background: white;
+            padding: 30px;
+            border-radius: var(--radius-lg);
+            width: 400px;
+            max-width: 90%;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .exception-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .exception-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px;
+            background: #F8FAFC;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+        }
+
+        /* Attendance Tabs & Summary Polishing */
+        .attendance-tabs {
+            display: flex;
+            background: #F1F5F9;
+            padding: 4px;
+            border-radius: 12px;
+            gap: 4px;
+        }
+
+        .attendance-tab {
+            padding: 8px 20px;
+            font-size: 14px;
+            font-weight: 700;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: transparent;
+            color: var(--text-muted);
+        }
+
+        .attendance-tab.active {
+            background: white;
+            color: var(--primary);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .summary-table-card {
+            background: white;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        .summary-table-header {
+            background: #F8FAFC;
+            padding: 12px 20px;
+            font-weight: 800;
+            font-size: 14px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-main);
+        }
+
+        .attendance-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .attendance-table th {
+            text-align: left;
+            padding: 12px 20px;
+            font-size: 12px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--border);
+            background: #FAFAFA;
+        }
+
+        .attendance-table td {
+            padding: 12px 20px;
+            font-size: 14px;
+            color: var(--text-main);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .attendance-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .badge-mini {
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        /* Position Plan Premium Styles */
+        .pos-plan-tabs {
+            display: flex;
+            background: #F1F5F9;
+            padding: 4px;
+            border-radius: 12px;
+            gap: 4px;
+            width: fit-content;
+            margin-bottom: 20px;
+        }
+
+        .pos-plan-tab {
+            padding: 8px 24px;
+            font-size: 14px;
+            font-weight: 700;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: transparent;
+            color: var(--text-muted);
+        }
+
+        .pos-plan-tab.active {
+            background: white;
+            color: var(--primary);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .pos-plan-summary-bar {
+            background: #1E293B;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 12px;
+            display: flex;
+            gap: 24px;
+            margin-bottom: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .pos-summary-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pos-summary-item .lbl {
+            font-size: 13px;
+            font-weight: 600;
+            color: #94A3B8;
+        }
+
+        .pos-summary-item .val {
+            font-size: 18px;
+            font-weight: 800;
+            color: #F8FAFC;
+        }
+
+        .pos-summary-item input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            width: 100px;
+            padding: 4px 10px;
+            border-radius: 6px;
+        }
+
+        .pos-plan-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .pos-section {
+            background: #F8FAFC;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .pos-section-header {
+            background: #1E293B;
+            color: white;
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 700;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .hc-badge {
+            background: var(--primary);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
+        .pos-assign-list {
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            min-height: 50px;
+        }
+
+        .pos-assign-item {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto auto;
+            gap: 8px;
+            align-items: center;
+            background: white;
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .pos-assign-item select,
+        .pos-assign-item input {
+            width: 100%;
+            padding: 6px 8px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            font-size: 13px;
+        }
+
+        .btn-add-pos {
+            margin: 12px;
+            padding: 8px;
+            border: 1px dashed var(--primary);
+            border-radius: 8px;
+            background: transparent;
+            color: var(--primary);
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+
+        .btn-add-pos:hover {
+            background: var(--primary-light);
+            border-style: solid;
+        }
+
+        .btn-remove-pos {
+            color: var(--danger);
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            display: flex;
+            align-items: center;
+        }
+
+        /* NEW Staff Management premium styles */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .btn-icon-manage {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid var(--border);
+            background: white;
+            color: var(--text-main);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .btn-icon-manage:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-icon-manage.edit:hover {
+            background: #EFF6FF;
+            color: var(--primary);
+            border-color: #BFDBFE;
+        }
+
+        .btn-icon-manage.delete:hover {
+            background: #FEF2F2;
+            color: var(--danger);
+            border-color: #FECACA;
+        }
+
+        .staff-list-table th {
+            background: #F8FAFC !important;
+            color: #64748B !important;
+            font-weight: 700 !important;
+            font-size: 13px !important;
+            text-transform: none !important;
+        }
+
+        .staff-list-table td {
+            font-size: 14px;
+            padding: 16px 12px !important;
+        }
     </style>
 
     <!-- Sidebar Overlay -->
@@ -1135,43 +1970,61 @@
             </button>
         </div>
 
-        <div class="logo desktop-only">
-            <i data-lucide="layout-dashboard"></i>
-            <span>WORK PORTAL</span>
+        <div class="logo desktop-only"
+            style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <i data-lucide="layout-dashboard"></i>
+                <span>WORK PORTAL</span>
+            </div>
+            <button class="btn-collapse" onclick="toggleSidebarCollapse()" title="Toggle Sidebar">
+                <i data-lucide="chevron-left" id="collapseIcon"></i>
+            </button>
         </div>
         <nav class="nav-menu">
             <a onclick="showView('dashboard')" class="nav-item" id="nav-dashboard">
-                <i data-lucide="layout-dashboard"></i> Dashboard
+                <i data-lucide="layout-dashboard"></i> <span>Dashboard</span>
             </a>
             <a onclick="showView('personal-dashboard')" class="nav-item" id="nav-personal-dashboard">
-                <i data-lucide="user"></i> แดชบอร์ดส่วนตัว
+                <i data-lucide="user"></i> <span>แดชบอร์ดส่วนตัว</span>
             </a>
             <a onclick="showView('home')" class="nav-item active" id="nav-home">
-                <i data-lucide="home"></i> หน้าหลัก
+                <i data-lucide="home"></i> <span>หน้าหลัก</span>
             </a>
             <a onclick="showView('schedule')" class="nav-item" id="nav-schedule">
-                <i data-lucide="calendar"></i> ตารางกะ
+                <i data-lucide="calendar"></i> <span>ตารางกะ</span>
             </a>
             <a onclick="showView('history')" class="nav-item" id="nav-history">
-                <i data-lucide="file-text"></i> สรุปผลงาน
+                <i data-lucide="file-text"></i> <span>สรุปผลงาน</span>
             </a>
             <a onclick="showView('overview')" class="nav-item" id="nav-overview">
-                <i data-lucide="table"></i> สรุปตารางรวม
+                <i data-lucide="table"></i> <span>สรุปตารางรวม</span>
             </a>
             <a onclick="showView('forecast')" class="nav-item" id="nav-forecast">
-                <i data-lucide="bar-chart-3"></i> Forecast
+                <i data-lucide="bar-chart-3"></i> <span>Forecast</span>
             </a>
             <a onclick="showView('planner', 'Veg')" class="nav-item" id="nav-planner-veg">
-                <i data-lucide="user-plus"></i> จัดกะ (ผัก)
+                <i data-lucide="user-plus"></i> <span>จัดกะ (ผัก)</span>
             </a>
             <a onclick="showView('planner', 'Meat')" class="nav-item" id="nav-planner-meat">
-                <i data-lucide="user-plus"></i> จัดกะ (เนื้อ)
+                <i data-lucide="user-plus"></i> <span>จัดกะ (เนื้อ)</span>
             </a>
             <a onclick="showView('request')" class="nav-item" id="nav-request">
-                <i data-lucide="send"></i> ยื่นลา/แจ้งสาย
+                <i data-lucide="send"></i> <span>ยื่นลา/แจ้งสาย</span>
             </a>
             <a onclick="showView('outsource-checkin')" class="nav-item" id="nav-outsource-checkin">
-                <i data-lucide="user-check"></i> ลงชื่อทำงาน Outsource
+                <i data-lucide="user-check"></i> <span>ลงชื่อทำงาน Outsource</span>
+            </a>
+            <a onclick="showView('attendance')" class="nav-item" id="nav-attendance">
+                <i data-lucide="clipboard-check"></i> <span>เช็คชื่อเข้างาน</span>
+            </a>
+            <a onclick="showView('position-plan')" class="nav-item" id="nav-position-plan">
+                <i data-lucide="layout"></i> <span>Position Plan</span>
+            </a>
+            <a onclick="showView('outsource-staff')" class="nav-item" id="nav-outsource-staff">
+                <i data-lucide="users"></i> <span>พนักงาน Outsource</span>
+            </a>
+            <a onclick="showView('spr-staff')" class="nav-item" id="nav-spr-staff">
+                <i data-lucide="user-plus"></i> <span>พนักงาน SPR</span>
             </a>
         </nav>
     </aside>
@@ -1585,6 +2438,825 @@
             </div>
         </div>
 
+        <script>
+            // ========== ATTENDANCE FUNCTIONS (REDESIGNED) ==========
+            let attendanceState = {
+                staff: [], // Consolidated list of all working staff
+                forecast: { veg: 0, meat: 0 },
+                date: ''
+            };
+
+            function showAttendanceView() {
+                document.getElementById('attendanceArea').style.display = 'block';
+                if (!attendanceState.date) {
+                    const today = new Date().toISOString().split('T')[0];
+                    document.getElementById('attendanceDate').value = today;
+                    attendanceState.date = today;
+                }
+                loadAttendanceData();
+            }
+
+            function switchAttendanceTab(tab) {
+                const checkinBtn = document.getElementById('tab-checkin');
+                const summaryBtn = document.getElementById('tab-summary');
+                const checkinTab = document.getElementById('attendanceCheckinTab');
+                const summaryTab = document.getElementById('attendanceSummaryTab');
+
+                if (tab === 'checkin') {
+                    checkinBtn.classList.add('active');
+                    summaryBtn.classList.remove('active');
+                    checkinTab.style.display = 'block';
+                    summaryTab.style.display = 'none';
+                } else {
+                    summaryBtn.classList.add('active');
+                    checkinBtn.classList.remove('active');
+                    checkinTab.style.display = 'none';
+                    summaryTab.style.display = 'block';
+                    updateAttendanceSummary();
+                }
+            }
+
+            async function loadAttendanceData() {
+                const date = document.getElementById('attendanceDate').value;
+                const listEl = document.getElementById('attendanceList');
+                listEl.innerHTML = '<p style="text-align:center; padding:20px; color:var(--text-muted);">กำลังรวบรวมข้อมูลพนักงาน...</p>';
+
+                try {
+                    const response = await fetch(`${GAS_URL}?action=getAttendanceViewData&date=${date}`);
+                    const result = await response.json();
+
+                    if (!result.success) throw new Error('Failed to fetch attendance data');
+
+                    const d = result.data;
+                    attendanceState.date = date;
+                    attendanceState.forecast = d.forecast;
+
+                    // Display Forecasts
+                    document.getElementById('veg-forecast-val').innerText = d.forecast.veg.toLocaleString();
+                    document.getElementById('meat-forecast-val').innerText = d.forecast.meat.toLocaleString();
+
+                    // 1. Process Regular Scheduled Staff
+                    let combinedStaff = d.schedules.map(s => {
+                        const side = (s.dept || '').toLowerCase().includes('meat') || (s.dept || '').toLowerCase().includes('chill') || (s.dept || '').toLowerCase().includes('ambient') ? 'Meat' : 'Veg';
+                        return {
+                            id: s.id,
+                            name: s.name,
+                            nick: s.nick,
+                            type: 'Regular',
+                            originalSide: side,
+                            currentSide: side,
+                            shift: s.shift || '',
+                            pos: s.pos || 'Staff',
+                            status: ''
+                        };
+                    });
+
+                    // 2. Process Outsource Staff from Master
+                    d.osMaster.forEach(m => {
+                        const existingInList = combinedStaff.find(s => s.id === m.id);
+                        if (!existingInList) {
+                            combinedStaff.push({
+                                id: m.id,
+                                name: m.name,
+                                nick: m.nick || '',
+                                type: 'Outsource',
+                                originalSide: m.side || 'Meat',
+                                currentSide: m.side || 'Meat',
+                                pos: m.pos || 'Outsource',
+                                status: d.outsource.find(o => o.name === m.name) ? 'มา' : '' // 'มา' if already did OS check-in
+                            });
+                        }
+                    });
+
+                    // 3. Process SPR Staff from Master
+                    d.sprMaster.forEach(m => {
+                        const existingInList = combinedStaff.find(s => s.id === m.id);
+                        if (!existingInList) {
+                            combinedStaff.push({
+                                id: m.id,
+                                name: m.name,
+                                nick: m.nick || '',
+                                type: 'SPR',
+                                originalSide: m.side || 'Veg',
+                                currentSide: m.side || 'Veg',
+                                pos: m.pos || 'SPR',
+                                status: ''
+                            });
+                        }
+                    });
+
+                    // 4. Restore Existing Attendance State (Status & Type & Side)
+                    d.existing.forEach(ex => {
+                        let staff = combinedStaff.find(s => s.id === ex.id);
+                        if (staff) {
+                            staff.status = ex.status;
+                            staff.currentSide = ex.side || staff.currentSide;
+                            if (ex.pos) staff.pos = ex.pos;
+                        } else if (ex.type === 'SPR' || ex.type === 'Outsource') {
+                            // Restore manual entries or legacy data not in master
+                            combinedStaff.push({
+                                id: ex.id,
+                                name: ex.name,
+                                type: ex.type,
+                                originalSide: ex.side,
+                                currentSide: ex.side,
+                                pos: ex.pos,
+                                status: ex.status
+                            });
+                        }
+                    });
+
+                    attendanceState.staff = combinedStaff;
+
+                    // 4. Restore Actual Pack Metrics
+                    if (d.metrics) {
+                        document.getElementById('actual-veg-pack').value = d.metrics.vegActualPack || '';
+                        document.getElementById('actual-meat-pack').value = d.metrics.meatActualPack || '';
+                    } else {
+                        document.getElementById('actual-veg-pack').value = '';
+                        document.getElementById('actual-meat-pack').value = '';
+                    }
+
+                    renderAttendanceList();
+                    calculateProductivity();
+                } catch (e) {
+                    console.error('Load attendance error:', e);
+                    listEl.innerHTML = '<p style="text-align:center; padding:20px; color:var(--danger);">เกิดข้อผิดพลาดในการโหลดข้อมูล</p>';
+                }
+            }
+
+            function renderAttendanceList() {
+                const search = document.getElementById('attendanceSearch').value.toLowerCase();
+                const zoneFilter = document.getElementById('attendanceZoneFilter').value;
+                const listEl = document.getElementById('attendanceList');
+
+                let filtered = attendanceState.staff.filter(st => {
+                    const matchesSearch = st.name.toLowerCase().includes(search) || st.id.toLowerCase().includes(search);
+                    const matchesZone = (zoneFilter === 'All') || (st.currentSide === zoneFilter);
+                    return matchesSearch && matchesZone;
+                });
+
+                if (filtered.length === 0) {
+                    listEl.innerHTML = '<p style="text-align:center; padding:20px; color:var(--text-muted);">ไม่พบรายชื่อพนักงาน</p>';
+                    return;
+                }
+
+                const types = ['Regular', 'Outsource', 'SPR'];
+                const typeLabels = {
+                    'Regular': '<i data-lucide="users" style="width:18px;"></i> พนักงานประจำ (Regular)',
+                    'Outsource': '<i data-lucide="external-link" style="width:18px;"></i> พนักงาน Outsource',
+                    'SPR': '<i data-lucide="zap" style="width:18px;"></i> พนักงาน SPR'
+                };
+
+                let html = '';
+
+                types.forEach(type => {
+                    const typeStaff = filtered.filter(s => s.type === type);
+                    if (typeStaff.length > 0) {
+                        html += `
+                            <div class="attendance-section-header" style="margin-top:20px; margin-bottom:12px; font-weight:700; color:var(--text-main); display:flex; align-items:center; gap:8px;">
+                                ${typeLabels[type]}
+                                <span class="badge-mini" style="background:var(--primary-light); color:var(--primary)">${typeStaff.length}</span>
+                            </div>
+                        `;
+
+                        html += typeStaff.map(st => {
+                            const avatarContent = st.name ? st.name.charAt(0) : '?';
+
+                            // Determine highlighting class
+                            let highlightClass = '';
+                            const shiftStr = (st.shift || '').toLowerCase();
+                            const isDayOffSched = shiftStr.includes('day off');
+                            const isVacationSched = shiftStr.includes('พักร้อน');
+                            const isOTSched = shiftStr.includes('ot');
+
+                            if (st.status === 'OT' || (isOTSched && (['มา', 'สาย', ''].includes(st.status || '')))) {
+                                highlightClass = 'status-ot';
+                            } else if (st.status === 'พักร้อน' || (isVacationSched && !st.status)) {
+                                highlightClass = 'status-vacation';
+                            } else if (['ขาด', 'ลากิจ', 'ลาป่วย'].includes(st.status)) {
+                                highlightClass = 'status-absent';
+                            } else if (isDayOffSched && st.status !== 'มา' && st.status !== 'OT') {
+                                highlightClass = 'status-day-off';
+                            }
+
+                            return `
+                            <div class="attendance-item-premium ${highlightClass}">
+                                <div class="staff-profile">
+                                    <div class="staff-avatar-ring">
+                                        <div class="staff-avatar-inner">${avatarContent}</div>
+                                    </div>
+                                    <div class="staff-name-wrap">
+                                        <div class="staff-name">${st.name} ${st.nick ? `<span style="color:var(--primary); font-size:13px;">(${st.nick})</span>` : ''}</div>
+                                        <div class="staff-meta">
+                                            <span class="badge-type ${st.type.toLowerCase()}">${st.type}</span>
+                                            <span>ID: ${st.id} • ${st.pos} ${st.shift ? `• ${st.shift}` : ''}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Side Selector -->
+                                <div class="side-toggle-group">
+                                    <button class="side-toggle-btn ${st.currentSide === 'Veg' ? 'active-veg' : ''}" onclick="updateStaffSide('${st.id}', 'Veg')">ผัก (Veg)</button>
+                                    <button class="side-toggle-btn ${st.currentSide === 'Meat' ? 'active-meat' : ''}" onclick="updateStaffSide('${st.id}', 'Meat')">เนื้อ (Meat)</button>
+                                </div>
+
+                                <!-- Status Buttons -->
+                                <div class="status-button-group">
+                                    <div class="btn-checkin-status p ${(['มา', 'สาย', 'OT'].includes(st.status)) ? 'active' : ''} ${(st.status === 'OT' || (isOTSched && (st.status === 'มา' || st.status === 'สาย'))) ? 'status-ot' : ''}" onclick="updateAttendanceStatus('${st.id}', 'มา')" title="มางาน">
+                                        <i data-lucide="check"></i>
+                                    </div>
+                                    <div class="btn-checkin-status l ${st.status === 'สาย' ? 'active' : ''}" onclick="updateAttendanceStatus('${st.id}', 'สาย')" title="สาย">
+                                        <i data-lucide="clock"></i>
+                                    </div>
+                                    <div class="leave-menu-container">
+                                        <div class="btn-checkin-status a ${['ขาด', 'ลากิจ', 'ลาป่วย', 'พักร้อน'].includes(st.status) ? 'active' : ''}" onclick="toggleLeaveMenu('${st.id}')" id="leave-btn-${st.id}" title="ขาด/ลา">
+                                            <i data-lucide="x"></i>
+                                        </div>
+                                        <div class="leave-dropdown-menu" id="leave-menu-${st.id}">
+                                            <div class="leave-option ${st.status === 'ขาด' ? 'active' : ''}" onclick="updateAttendanceStatus('${st.id}', 'ขาด')">ขาดงาน</div>
+                                            <div class="leave-option ${st.status === 'ลากิจ' ? 'active' : ''}" onclick="updateAttendanceStatus('${st.id}', 'ลากิจ')">ลากิจ</div>
+                                            <div class="leave-option ${st.status === 'ลาป่วย' ? 'active' : ''}" onclick="updateAttendanceStatus('${st.id}', 'ลาป่วย')">ลาป่วย</div>
+                                            <div class="leave-option ${st.status === 'พักร้อน' ? 'active' : ''}" onclick="updateAttendanceStatus('${st.id}', 'พักร้อน')">พักร้อน</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>`;
+                        }).join('');
+                    }
+                });
+
+                listEl.innerHTML = html || '<p style="text-align:center; padding:20px; color:var(--text-muted);">ไม่พบรายชื่อพนักงาน</p>';
+
+                lucide.createIcons();
+                updateStatsHeader();
+            }
+
+            function toggleLeaveMenu(id) {
+                // Close all other menus first
+                document.querySelectorAll('.leave-dropdown-menu').forEach(menu => {
+                    if (menu.id !== `leave-menu-${id}`) menu.classList.remove('show');
+                });
+                const menu = document.getElementById(`leave-menu-${id}`);
+                menu.classList.toggle('show');
+
+                // Close menu when clicking outside
+                const closeHandler = (e) => {
+                    if (!e.target.closest('.leave-menu-container')) {
+                        menu.classList.remove('show');
+                        document.removeEventListener('click', closeHandler);
+                    }
+                };
+                setTimeout(() => document.addEventListener('click', closeHandler), 10);
+            }
+
+            function updateAttendanceStatus(id, status) {
+                const staff = attendanceState.staff.find(s => s.id === id);
+                if (staff) {
+                    const isDayOff = (staff.shift || '').toLowerCase().includes('day off');
+
+                    if (staff.status === status) {
+                        staff.status = '';
+                    } else {
+                        // Special logic for Day Off -> OT
+                        if (isDayOff && status === 'มา') {
+                            staff.status = 'OT';
+                        } else {
+                            staff.status = status;
+                        }
+                    }
+
+                    // Close menu if it was open
+                    const menu = document.getElementById(`leave-menu-${id}`);
+                    if (menu) menu.classList.remove('show');
+
+                    renderAttendanceList();
+                    calculateProductivity();
+                }
+            }
+
+            function updateStaffSide(id, side) {
+                const staff = attendanceState.staff.find(s => s.id === id);
+                if (staff) {
+                    staff.currentSide = side;
+                    renderAttendanceList();
+                    calculateProductivity();
+                }
+            }
+
+            function updateStatsHeader() {
+                const vegPack = Number(document.getElementById('actual-veg-pack').value) || 0;
+                const meatPack = Number(document.getElementById('actual-meat-pack').value) || 0;
+                const totalPack = vegPack + meatPack;
+                const requiredHC = Math.ceil(totalPack / 400);
+
+                const totalForecast = attendanceState.forecast.veg + attendanceState.forecast.meat;
+
+                const counts = {
+                    present: 0,
+                    dayOff: 0,
+                    veg: { absent: 0, sick: 0, personal: 0, vacation: 0 },
+                    meat: { absent: 0, sick: 0, personal: 0, vacation: 0 },
+                    // Box 6 Metrics
+                    hc: 0,      // Regular present (Not OT)
+                    ot: 0,      // Total OT
+                    newJoin: 0,
+                    spr: 0,
+                    outsource: 0
+                };
+
+                attendanceState.staff.forEach(s => {
+                    const isDayOff = (s.shift || '').toLowerCase().includes('day off');
+                    if (isDayOff && s.status !== 'OT' && s.status !== 'มา') counts.dayOff++;
+
+                    const isPresent = (s.status === 'มา' || s.status === 'สาย' || s.status === 'OT');
+
+                    if (isPresent) {
+                        counts.present++;
+
+                        // Box 6 Logic
+                        const shiftStr = (s.shift || '').toLowerCase();
+                        const isOTSched = shiftStr.includes('ot');
+
+                        if (s.status === 'OT' || isOTSched) {
+                            counts.ot++;
+                        } else if (s.type === 'Regular') {
+                            counts.hc++;
+                        }
+
+                        if (s.type === 'SPR') counts.spr++;
+                        if (s.type === 'Outsource') counts.outsource++;
+                    } else if (s.status) {
+                        const side = s.currentSide.toLowerCase(); // 'veg' or 'meat'
+                        if (s.status === 'ขาด') counts[side].absent++;
+                        else if (s.status === 'ลาป่วย') counts[side].sick++;
+                        else if (s.status === 'ลากิจ') counts[side].personal++;
+                        else if (s.status === 'พักร้อน') counts[side].vacation++;
+                    }
+                });
+
+                // BOX 1: Required HC
+                document.getElementById('summary-required-hc').innerText = requiredHC;
+                document.getElementById('summary-total-forecast').innerText = `Forecast: ${totalForecast.toLocaleString()}`;
+                document.getElementById('summary-total-actual').innerText = `Actual: ${totalPack.toLocaleString()}`;
+
+                // BOX 2: Comparison
+                const gap = counts.present - requiredHC;
+                document.getElementById('summary-present-hc').innerText = counts.present;
+                document.getElementById('summary-gap-hc').innerText = `ขาด/เกิน: ${gap > 0 ? '+' : ''}${gap}`;
+
+                const compBox = document.getElementById('comparison-box-card');
+                if (gap < 0) compBox.classList.add('highlight-box');
+                else compBox.classList.remove('highlight-box');
+
+                // BOX 3: Day Off
+                document.getElementById('summary-dayoff-hc').innerText = counts.dayOff;
+
+                // BOX 4: Veg Leave
+                document.getElementById('veg-leave-absent').innerText = counts.veg.absent;
+                document.getElementById('veg-leave-sick').innerText = counts.veg.sick;
+                document.getElementById('veg-leave-personal').innerText = counts.veg.personal;
+                document.getElementById('veg-leave-vacation').innerText = counts.veg.vacation;
+
+                // BOX 5: Meat Leave
+                document.getElementById('meat-leave-absent').innerText = counts.meat.absent;
+                document.getElementById('meat-leave-sick').innerText = counts.meat.sick;
+                document.getElementById('meat-leave-personal').innerText = counts.meat.personal;
+                document.getElementById('meat-leave-vacation').innerText = counts.meat.vacation;
+
+                // BOX 6: Total Breakdown
+                document.getElementById('summary-total-hc').innerText = counts.hc;
+                document.getElementById('summary-total-ot').innerText = counts.ot;
+                document.getElementById('summary-total-newjoin').innerText = counts.newJoin;
+                document.getElementById('summary-total-spr').innerText = counts.spr;
+                document.getElementById('summary-total-os').innerText = counts.outsource;
+
+                // Active indicators for leave
+                const updateLeaveActive = (id, val) => {
+                    const el = document.getElementById(id).parentElement;
+                    if (val > 0) el.classList.add('active');
+                    else el.classList.remove('active');
+                };
+                updateLeaveActive('veg-leave-absent', counts.veg.absent);
+                updateLeaveActive('veg-leave-sick', counts.veg.sick);
+                updateLeaveActive('veg-leave-personal', counts.veg.personal);
+                updateLeaveActive('veg-leave-vacation', counts.veg.vacation);
+                updateLeaveActive('meat-leave-absent', counts.meat.absent);
+                updateLeaveActive('meat-leave-sick', counts.meat.sick);
+                updateLeaveActive('meat-leave-personal', counts.meat.personal);
+                updateLeaveActive('meat-leave-vacation', counts.meat.vacation);
+            }
+
+            function calculateProductivity() {
+                const vegPack = Number(document.getElementById('actual-veg-pack').value) || 0;
+                const meatPack = Number(document.getElementById('actual-meat-pack').value) || 0;
+
+                const vegHC = attendanceState.staff.filter(s => s.currentSide === 'Veg' && (s.status === 'มา' || s.status === 'สาย' || s.status === 'OT')).length;
+                const meatHC = attendanceState.staff.filter(s => s.currentSide === 'Meat' && (s.status === 'มา' || s.status === 'สาย' || s.status === 'OT')).length;
+
+                const vegPHC = vegHC > 0 ? (vegPack / vegHC).toFixed(1) : 0;
+                const meatPHC = meatHC > 0 ? (meatPack / meatHC).toFixed(1) : 0;
+
+                document.getElementById('veg-phc-val').innerText = vegPHC;
+                document.getElementById('meat-phc-val').innerText = meatPHC;
+
+                updateStatsHeader(); // Update the 5 boxes in header as well
+
+                // Alerts (Target: ~400 items per HC)
+                const TARGET_PHC = 400;
+
+                if (vegPack > 0) {
+                    const reqVeg = Math.ceil(vegPack / TARGET_PHC);
+                    if (vegHC < reqVeg) {
+                        document.getElementById('veg-short-alert').style.display = 'flex';
+                        document.getElementById('veg-missing-count').innerText = reqVeg - vegHC;
+                    } else {
+                        document.getElementById('veg-short-alert').style.display = 'none';
+                    }
+                }
+
+                if (meatPack > 0) {
+                    const reqMeat = Math.ceil(meatPack / TARGET_PHC);
+                    if (meatHC < reqMeat) {
+                        document.getElementById('meat-short-alert').style.display = 'flex';
+                        document.getElementById('meat-missing-count').innerText = reqMeat - meatHC;
+                    } else {
+                        document.getElementById('meat-short-alert').style.display = 'none';
+                    }
+                }
+            }
+
+            function openSPRModal() { document.getElementById('sprModal').style.display = 'flex'; }
+            function closeSPRModal() { document.getElementById('sprModal').style.display = 'none'; }
+
+            function addSPRStaff() {
+                const name = document.getElementById('sprName').value;
+                const pos = document.getElementById('sprPos').value;
+                const side = document.querySelector('input[name="sprSide"]:checked').value;
+
+                if (!name) return alert('กรุณาใส่ชื่อพนักงาน');
+
+                const newSPR = {
+                    id: 'SPR-' + Date.now().toString(36),
+                    name: name,
+                    type: 'SPR',
+                    originalSide: side,
+                    currentSide: side,
+                    pos: pos,
+                    status: 'มา'
+                };
+
+                attendanceState.staff.push(newSPR);
+                renderAttendanceList();
+                calculateProductivity();
+                closeSPRModal();
+
+                // Clear inputs
+                document.getElementById('sprName').value = '';
+            }
+
+            async function saveAttendanceData() {
+                const date = attendanceState.date;
+                const vegActual = Number(document.getElementById('actual-veg-pack').value) || 0;
+                const meatActual = Number(document.getElementById('actual-meat-pack').value) || 0;
+
+                const data = attendanceState.staff.map(s => ({
+                    employeeId: s.id,
+                    name: s.name,
+                    status: s.status,
+                    side: s.currentSide,
+                    type: s.type,
+                    position: s.pos
+                }));
+
+                const btn = event.currentTarget || event.target;
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<i data-lucide="loader-2" class="animate-spin" style="width:16px;"></i> กำลังบันทึก...';
+                btn.disabled = true;
+                lucide.createIcons();
+
+                try {
+                    const response = await fetch(GAS_URL, {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            action: 'saveAttendance',
+                            date: date,
+                            vegActualPack: vegActual,
+                            meatActualPack: meatActual,
+                            data: data
+                        })
+                    });
+                    const result = await response.json();
+                    if (result.success) {
+                        alert('✅ บันทึกข้อมูลการเช็คชื่อและยอดแพ็คจริงสำเร็จ!');
+                    } else {
+                        throw new Error(result.message);
+                    }
+                } catch (e) {
+                    console.error('Save attendance error:', e);
+                    alert('❌ เกิดข้อผิดพลาดในการบันทึกข้อมูล: ' + e.message);
+                } finally {
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                    lucide.createIcons();
+                }
+            }
+
+            // Summary Tab Polishing
+            function updateAttendanceSummary() {
+                const summaryEl = document.getElementById('attendanceDetailedSummary');
+
+                // Grouping logic for summary table
+                const stats = {
+                    Veg: { present: 0, absent: 0, list: [] },
+                    Meat: { present: 0, absent: 0, list: [] }
+                };
+
+                attendanceState.staff.forEach(s => {
+                    const side = s.currentSide;
+                    if (s.status === 'มา' || s.status === 'สาย' || s.status === 'OT') stats[side].present++;
+                    else {
+                        stats[side].absent++;
+                        if (s.status) stats[side].list.push(s);
+                    }
+                });
+
+                // Breakdown by type
+                const typeStats = {
+                    Regular: 0,
+                    Outsource: 0,
+                    SPR: 0
+                };
+                attendanceState.staff.forEach(s => {
+                    if (s.status === 'มา' || s.status === 'สาย' || s.status === 'OT') {
+                        typeStats[s.type]++;
+                    }
+                });
+
+                summaryEl.innerHTML = `
+                <div class="summary-table-grid">
+                    <div class="summary-table-card">
+                        <div class="summary-table-header"><i data-lucide="layout"></i> สรุปตามพื้นที่ (Side Summary)</div>
+                        <table class="attendance-table">
+                            <thead>
+                                <tr><th>พื้นที่</th><th>มางาน</th><th>ขาด/ลา</th><th>รวม HC</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>VEGETABLE (ผัก)</td><td>${stats.Veg.present}</td><td>${stats.Veg.absent}</td><td>${stats.Veg.present + stats.Veg.absent}</td></tr>
+                                <tr><td>MEAT (เนื้อ)</td><td>${stats.Meat.present}</td><td>${stats.Meat.absent}</td><td>${stats.Meat.present + stats.Meat.absent}</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="summary-table-card">
+                        <div class="summary-table-header" style="color:var(--primary)"><i data-lucide="users"></i> สรุปตามประเภท (Type Summary)</div>
+                        <table class="attendance-table">
+                            <thead>
+                                <tr><th>ประเภท</th><th>มางาน (คน)</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>พนักงานประจำ</td><td>${typeStats.Regular}</td></tr>
+                                <tr><td>Outsource</td><td>${typeStats.Outsource}</td></tr>
+                                <tr><td>SPR / Part-time</td><td>${typeStats.SPR}</td></tr>
+                                <tr style="font-weight:700; background:#f8fafc;"><td>รวมทั้งหมด</td><td>${typeStats.Regular + typeStats.Outsource + typeStats.SPR}</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="summary-table-grid" style="margin-top:20px;">
+                    <div class="summary-table-card">
+                        <div class="summary-table-header" style="color:var(--danger)"><i data-lucide="user-x"></i> รายชื่อพนักงานที่ไม่มา (Absent List)</div>
+                        <div class="exception-list" style="padding:15px;">
+                            ${stats.Veg.list.concat(stats.Meat.list).map(s => `
+                                <div class="exception-item">
+                                    <span>${s.name} (${s.currentSide})</span>
+                                    <span class="badge-mini" style="background:${s.status === 'OT' ? '#FEF9C3' : '#FEE2E2'}; color:${s.status === 'OT' ? '#854d0e' : '#B91C1C'}; padding:2px 8px; border-radius:4px;">${s.status}</span>
+                                </div>
+                            `).join('') || '<p style="text-align:center; color:var(--text-muted);">ไม่มีรายการพนักงานขาดงาน</p>'}
+                        </div>
+                    </div>
+                </div>`;
+                lucide.createIcons();
+            }
+        </script>
+
+        <!-- Attendance Area (Premium Redesign) -->
+        <div id="attendanceArea" style="display:none;">
+            <div class="attendance-premium-header" id="attendanceStatsPremium">
+                <!-- BOX 1: Required HC (Actual/400) - Green Theme -->
+                <div class="stat-card-premium" style="background:#F0FDF4; border-color:#86EFAC;">
+                    <div class="stat-icon" style="background:#DCFCE7; color:#15803D;"><i data-lucide="target"></i></div>
+                    <div class="stat-main-val" id="summary-required-hc" style="color:#15803D;">0</div>
+                    <div class="stat-sub-val" id="summary-total-forecast">Forecast: 0</div>
+                    <div class="stat-sub-val" id="summary-total-actual">Actual: 0</div>
+                    <div class="stat-label">พนักงานที่ควรใช้ (Required HC)</div>
+                </div>
+
+                <!-- BOX 2: Workforce Comparison - Blue Theme -->
+                <div class="stat-card-premium" id="comparison-box-card"
+                    style="background:#EFF6FF; border-color:#93C5FD;">
+                    <div class="stat-icon" style="background:#DBEAFE; color:#1D4ED8;"><i data-lucide="users"></i></div>
+                    <div class="stat-main-val" id="summary-present-hc" style="color:#1D4ED8;">0</div>
+                    <div class="stat-sub-val" id="summary-gap-hc">ขาด/เกิน: 0</div>
+                    <div class="stat-label">ภาพรวมพนักงาน (Total Present)</div>
+                </div>
+
+                <!-- BOX 3: Day Off - Red Theme -->
+                <div class="stat-card-premium" style="background:#FFF1F2; border-color:#FDA4AF;">
+                    <div class="stat-icon" style="background:#FFE4E6; color:#E11D48;"><i data-lucide="calendar-off"></i>
+                    </div>
+                    <div class="stat-main-val" id="summary-dayoff-hc" style="color:#E11D48;">0</div>
+                    <div class="stat-sub-val">ตามกะการทำงาน</div>
+                    <div class="stat-label">พนักงาน Day Off</div>
+                </div>
+
+                <!-- BOX 4: Veg Leave Breakdown - Amber/Orange Theme -->
+                <div class="stat-card-premium" style="background:#FFFBEB; border-color:#FCD34D;">
+                    <div class="stat-icon" style="background:#FEF3C7; color:#B45309;"><i data-lucide="leaf"></i></div>
+                    <div class="stat-label" style="margin-top:0; color:#B45309;">พนักงาน ผัก (VEG)</div>
+                    <div class="stat-leave-grid" id="veg-leave-summary-grid">
+                        <div class="leave-stat-item"><span>ขาด:</span><span id="veg-leave-absent">0</span></div>
+                        <div class="leave-stat-item"><span>ป่วย:</span><span id="veg-leave-sick">0</span></div>
+                        <div class="leave-stat-item"><span>กิจ:</span><span id="veg-leave-personal">0</span></div>
+                        <div class="leave-stat-item"><span>พักร้อน:</span><span id="veg-leave-vacation">0</span></div>
+                    </div>
+                </div>
+
+                <!-- BOX 5: Meat Leave Breakdown - Purple Theme -->
+                <div class="stat-card-premium" style="background:#FAF5FF; border-color:#D8B4FE;">
+                    <div class="stat-icon" style="background:#F3E8FF; color:#7E22CE;"><i data-lucide="beef"></i></div>
+                    <div class="stat-label" style="margin-top:0; color:#7E22CE;">พนักงาน เนื้อ (MEAT)</div>
+                    <div class="stat-leave-grid" id="meat-leave-summary-grid">
+                        <div class="leave-stat-item"><span>ขาด:</span><span id="meat-leave-absent">0</span></div>
+                        <div class="leave-stat-item"><span>ป่วย:</span><span id="meat-leave-sick">0</span></div>
+                        <div class="leave-stat-item"><span>กิจ:</span><span id="meat-leave-personal">0</span></div>
+                        <div class="leave-stat-item"><span>พักร้อน:</span><span id="meat-leave-vacation">0</span></div>
+                    </div>
+                </div>
+
+                <!-- BOX 6: Total Employee Breakdown - Teal/Cyan Theme -->
+                <div class="stat-card-premium" style="background:#F0FDFA; border-color:#5EEAD4;">
+                    <div class="stat-icon" style="background:#CCFBF1; color:#0F766E;"><i data-lucide="globe"></i></div>
+                    <div class="stat-label" style="margin-top:0; color:#0F766E;">ยอดรวมพนักงานทั้ง 2 ฝั่ง</div>
+                    <div class="stat-leave-grid" style="grid-template-columns: 1fr; gap: 2px;">
+                        <div class="leave-stat-item"><span>HC:</span><span id="summary-total-hc">0</span></div>
+                        <div class="leave-stat-item"><span>OT 2.0:</span><span id="summary-total-ot">0</span></div>
+                        <div class="leave-stat-item"><span>New join:</span><span id="summary-total-newjoin">0</span>
+                        </div>
+                        <div class="leave-stat-item"><span>SPR:</span><span id="summary-total-spr">0</span></div>
+                        <div class="leave-stat-item"><span>Outsource:</span><span id="summary-total-os">0</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Volume & Productivity Comparison Panel -->
+            <div class="productivity-panel">
+                <!-- Veg Side -->
+                <div class="prod-column">
+                    <div class="prod-header">
+                        <span><i data-lucide="leaf"></i> VEGETABLE (ผัก)</span>
+                        <span id="veg-missing-badge"></span>
+                    </div>
+                    <div class="prod-input-group">
+                        <label>Actual Pack:</label>
+                        <input type="number" id="actual-veg-pack" placeholder="ยอดแพ็คจริง"
+                            oninput="calculateProductivity()">
+                    </div>
+                    <div class="prod-stats">
+                        <div class="prod-stat-box">
+                            <span class="prod-stat-val" id="veg-forecast-val">0</span>
+                            <span class="prod-stat-lbl">Forecast</span>
+                        </div>
+                        <div class="prod-stat-box">
+                            <span class="prod-stat-val" id="veg-phc-val">0</span>
+                            <span class="prod-stat-lbl">Pack / HC</span>
+                        </div>
+                    </div>
+                    <div id="veg-short-alert" class="alert-missing" style="display:none;">
+                        <i data-lucide="alert-circle"></i> ขาดพนักงาน <span id="veg-missing-count">0</span> คน
+                    </div>
+                </div>
+
+                <!-- Meat Side -->
+                <div class="prod-column">
+                    <div class="prod-header">
+                        <span><i data-lucide="beef"></i> MEAT (เนื้อ)</span>
+                        <span id="meat-missing-badge"></span>
+                    </div>
+                    <div class="prod-input-group">
+                        <label>Actual Pack:</label>
+                        <input type="number" id="actual-meat-pack" placeholder="ยอดแพ็คจริง"
+                            oninput="calculateProductivity()">
+                    </div>
+                    <div class="prod-stats">
+                        <div class="prod-stat-box">
+                            <span class="prod-stat-val" id="meat-forecast-val">0</span>
+                            <span class="prod-stat-lbl">Forecast</span>
+                        </div>
+                        <div class="prod-stat-box">
+                            <span class="prod-stat-val" id="meat-phc-val">0</span>
+                            <span class="prod-stat-lbl">Pack / HC</span>
+                        </div>
+                    </div>
+                    <div id="meat-short-alert" class="alert-missing" style="display:none;">
+                        <i data-lucide="alert-circle"></i> ขาดพนักงาน <span id="meat-missing-count">0</span> คน
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="attendance-tabs">
+                        <button class="attendance-tab active" id="tab-checkin"
+                            onclick="switchAttendanceTab('checkin')">เช็คชื่อพนักงาน</button>
+                        <button class="attendance-tab" id="tab-summary"
+                            onclick="switchAttendanceTab('summary')">สรุปภาพรวม</button>
+                    </div>
+                    <div style="display:flex; gap:12px;">
+                        <input type="date" id="attendanceDate" class="input-modern" style="width:140px;"
+                            onchange="loadAttendanceData()">
+                        <button class="btn btn-primary" onclick="saveAttendanceData()">
+                            <i data-lucide="save"></i> บันทึก
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Filter & Search -->
+                <div style="padding: 16px; border-bottom: 1px solid var(--border); display:flex; gap:12px;">
+                    <div style="position:relative; flex:1;">
+                        <i data-lucide="search"
+                            style="position:absolute; left:12px; top:50%; transform:translateY(-50%); width:16px; color:var(--text-muted);"></i>
+                        <input type="text" id="attendanceSearch" class="input-modern"
+                            style="padding-left:36px; width:100%;" placeholder="ค้นหาชื่อ หรือ ID พนักงาน..."
+                            oninput="renderAttendanceList()">
+                    </div>
+                    <select id="attendanceZoneFilter" class="select-custom" style="width:150px;"
+                        onchange="renderAttendanceList()">
+                        <option value="All">ทุกทุกโซน</option>
+                        <option value="Veg">ผัก (Veg)</option>
+                        <option value="Meat">เนื้อ (Meat)</option>
+                    </select>
+                </div>
+
+                <!-- Tab content -->
+                <div id="attendanceCheckinTab" style="padding: 16px;">
+                    <div id="attendanceList" class="attendance-list-container">
+                        <!-- Employee Cards Generated Here -->
+                    </div>
+                </div>
+
+                <div id="attendanceSummaryTab" style="display:none; padding: 16px;">
+                    <div id="attendanceDetailedSummary"></div>
+                </div>
+            </div>
+
+            <!-- Floating Add Button -->
+            <button class="btn-add-external" onclick="openSPRModal()" title="เพิ่มพนักงาน SPR / OT เร่งด่วน">
+                <i data-lucide="user-plus"></i>
+            </button>
+
+            <!-- SPR Modal -->
+            <div id="sprModal" class="modal-spr">
+                <div class="modal-spr-content">
+                    <h3 style="margin-bottom:20px; color:var(--primary); display:flex; align-items:center; gap:8px;">
+                        <i data-lucide="user-plus"></i> เพิ่มพนักงาน SPR / พาร์ทไทม์
+                    </h3>
+                    <div style="display:flex; flex-direction:column; gap:16px;">
+                        <div>
+                            <label
+                                style="font-size:12px; color:var(--text-muted); font-weight:600;">ชื่อ-นามสกุล:</label>
+                            <input type="text" id="sprName" class="input-modern" style="width:100%;"
+                                placeholder="ชื่อพนักงาน">
+                        </div>
+                        <div>
+                            <label style="font-size:12px; color:var(--text-muted); font-weight:600;">ตำแหน่ง:</label>
+                            <select id="sprPos" class="select-custom" style="width:100%;">
+                                <option value="Picker">Picker</option>
+                                <option value="Receiver">Receiver</option>
+                                <option value="Dropper">Dropper</option>
+                                <option value="Cashier">Cashier</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label style="font-size:12px; color:var(--text-muted); font-weight:600;">ประจำฝั่ง:</label>
+                            <div style="display:flex; gap:10px; margin-top:5px;">
+                                <label style="display:flex; align-items:center; gap:5px; cursor:pointer;">
+                                    <input type="radio" name="sprSide" value="Veg" checked> ผัก (Veg)
+                                </label>
+                                <label style="display:flex; align-items:center; gap:5px; cursor:pointer;">
+                                    <input type="radio" name="sprSide" value="Meat"> เนื้อ (Meat)
+                                </label>
+                            </div>
+                        </div>
+                        <div style="display:flex; gap:10px; margin-top:10px;">
+                            <button class="btn" style="flex:1;" onclick="closeSPRModal()">ยกเลิก</button>
+                            <button class="btn btn-primary" style="flex:1;"
+                                onclick="addSPRStaff()">เพิ่มรายชื่อ</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Request Area (Leave/Late) -->
         <div id="requestArea" style="display:none;">
             <div class="card">
@@ -1656,6 +3328,152 @@
                 </div>
             </div>
         </div>
+        </div>
+        </div>
+        </div>
+        </div>
+
+        <!-- Position Plan Area -->
+        <div id="positionPlanArea" style="display:none;">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title" style="color:var(--primary)"><i data-lucide="layout"></i> Position Plan
+                        (Workforce Planning)</h2>
+                    <div style="display:flex; gap:12px;">
+                        <input type="date" id="posPlanDate" class="input-modern" style="width:140px;"
+                            onchange="loadPositionPlan()">
+                        <button class="btn btn-primary" onclick="savePositionPlanData()">
+                            <i data-lucide="save"></i> บันทึกแผน
+                        </button>
+                    </div>
+                </div>
+
+                <div class="pos-plan-tabs">
+                    <button class="pos-plan-tab active" id="pos-side-veg" onclick="switchPosSide('Veg')">ผัก
+                        (Ambient)</button>
+                    <button class="pos-plan-tab" id="pos-side-meat" onclick="switchPosSide('Meat')">เนื้อ
+                        (Chill)</button>
+                </div>
+
+                <div class="pos-plan-summary-bar">
+                    <div class="pos-summary-item">
+                        <span class="lbl">Total Pack:</span>
+                        <input type="number" id="posTotalPack" value="0" oninput="calculatePositionHC()">
+                    </div>
+                    <div class="pos-summary-item">
+                        <span class="lbl">Optimum HC:</span>
+                        <span class="val" id="posOptimumHC">0.00</span>
+                    </div>
+                    <div class="pos-summary-item">
+                        <span class="lbl">Total Assigned:</span>
+                        <span class="val" id="posTotalAssigned">0</span>
+                    </div>
+                    <div class="pos-summary-item">
+                        <span class="lbl">Gap:</span>
+                        <span class="val" id="posGapHC">0.00</span>
+                    </div>
+                </div>
+
+                <div class="pos-plan-grid" id="posPlanGrid">
+                    <!-- Sections: Receiver, Transporter, Pallet, Cashier, Dropper, Egg -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Outsource Staff Area -->
+        <div id="outsourceStaffArea" style="display:none;">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title" style="color:var(--primary)"><i data-lucide="users"></i> พนักงาน Outsource
+                    </h2>
+                    <div style="display:flex; gap:10px;">
+                        <button class="btn btn-outline" onclick="repairIds()"
+                            title="ซ่อมแซมรหัสพนักงานให้เป็นสากล (OSxxx)">
+                            <i data-lucide="wrench"></i> ซ่อมแซมรหัส
+                        </button>
+                        <button class="btn btn-primary" onclick="openStaffModal('Outsource')">
+                            <i data-lucide="user-plus"></i> เพิ่มพนักงาน
+                        </button>
+                    </div>
+                </div>
+                <div id="outsourceStaffList" style="margin-top:20px;">
+                    <!-- Staff list will be populated here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- SPR Staff Area -->
+        <div id="sprStaffArea" style="display:none;">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title" style="color:var(--secondary)"><i data-lucide="user-plus"></i> พนักงาน SPR
+                    </h2>
+                    <div style="display:flex; gap:10px;">
+                        <button class="btn btn-outline" onclick="repairIds()"
+                            title="ซ่อมแซมรหัสพนักงานให้เป็นสากล (SPRxxx)">
+                            <i data-lucide="wrench"></i> ซ่อมแซมรหัส
+                        </button>
+                        <button class="btn btn-primary" onclick="openStaffModal('SPR')">
+                            <i data-lucide="user-plus"></i> เพิ่มพนักงาน
+                        </button>
+                    </div>
+                </div>
+                <div id="sprStaffList" style="margin-top:20px;">
+                    <!-- Staff list will be populated here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Staff Modal (Add/Edit) -->
+        <div id="staffModal" class="modal-spr" style="display:none;">
+            <div class="modal-spr-content">
+                <h3 style="margin-bottom:20px; color:var(--primary); display:flex; align-items:center; gap:8px;">
+                    <i data-lucide="user-plus" id="staffModalIcon"></i> <span id="staffModalTitle">เพิ่มพนักงาน</span>
+                    <span id="staffTypeLabel"></span>
+                </h3>
+                <input type="hidden" id="staffId">
+                <div style="display:flex; flex-direction:column; gap:16px;">
+                    <div>
+                        <label style="font-size:12px; color:var(--text-muted); font-weight:600;">ชื่อ-นามสกุล:</label>
+                        <input type="text" id="staffName" class="input-modern" style="width:100%;"
+                            placeholder="ชื่อพนักงาน">
+                    </div>
+                    <div>
+                        <label style="font-size:12px; color:var(--text-muted); font-weight:600;">ชื่อเล่น
+                            (เลือกได้):</label>
+                        <input type="text" id="staffNick" class="input-modern" style="width:100%;"
+                            placeholder="ชื่อเล่น">
+                    </div>
+                    <div>
+                        <label style="font-size:12px; color:var(--text-muted); font-weight:600;">ตำแหน่ง:</label>
+                        <select id="staffPosition" class="select-custom" style="width:100%;">
+                            <option value="Picker">Picker</option>
+                            <option value="Receiver">Receiver</option>
+                            <option value="Dropper">Dropper</option>
+                            <option value="Cashier">Cashier</option>
+                            <option value="Transporter">Transporter</option>
+                            <option value="Inventory">Inventory</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label style="font-size:12px; color:var(--text-muted); font-weight:600;">ประจำฝั่ง:</label>
+                        <div style="display:flex; gap:10px; margin-top:5px;">
+                            <label style="display:flex; align-items:center; gap:5px; cursor:pointer;">
+                                <input type="radio" name="staffSide" id="sideVeg" value="Veg" checked> ผัก (Veg)
+                            </label>
+                            <label style="display:flex; align-items:center; gap:5px; cursor:pointer;">
+                                <input type="radio" name="staffSide" id="sideMeat" value="Meat"> เนื้อ (Meat)
+                            </label>
+                        </div>
+                    </div>
+                    <div style="display:flex; gap:10px; margin-top:10px;">
+                        <button class="btn" style="flex:1;" onclick="closeStaffModal()">ยกเลิก</button>
+                        <button class="btn btn-primary" style="flex:1;" onclick="submitStaffForm()"
+                            id="btnSubmitStaff">เพิ่มรายชื่อ</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 
     <script>
@@ -1685,12 +3503,40 @@
             overlay.classList.toggle('active');
         }
 
+        function toggleSidebarCollapse() {
+            const sidebar = document.getElementById('mainSidebar');
+            const main = document.querySelector('.main-layout');
+            const isCollapsed = sidebar.classList.toggle('collapsed');
+            main.classList.toggle('collapsed');
+
+            // Save preference
+            localStorage.setItem('sidebarCollapsed', isCollapsed);
+
+            // Refresh icons if needed (for rotate etc)
+            lucide.createIcons();
+        }
+
+        // Initialize Sidebar State
+        document.addEventListener('DOMContentLoaded', () => {
+            const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+            if (isCollapsed && window.innerWidth > 991) {
+                document.getElementById('mainSidebar').classList.add('collapsed');
+                document.querySelector('.main-layout').classList.add('collapsed');
+            }
+        });
+
         function showView(view, dept) {
             // Hide all
-            ['homeArea', 'resultArea', 'forecastArea', 'plannerArea', 'requestArea', 'dashboardArea', 'personalDashboardArea', 'overviewArea', 'outsourceCheckInArea'].forEach(id => {
+            ['homeArea', 'resultArea', 'forecastArea', 'plannerArea', 'requestArea', 'dashboardArea', 'personalDashboardArea', 'overviewArea', 'outsourceCheckInArea', 'attendanceArea', 'positionPlanArea', 'outsourceStaffArea', 'sprStaffArea'].forEach(id => {
                 const el = document.getElementById(id);
                 if (el) el.style.display = 'none';
             });
+
+            // Close mobile sidebar if open
+            const sidebar = document.getElementById('mainSidebar');
+            if (sidebar.classList.contains('open')) {
+                toggleSidebar();
+            }
 
             // Update Nav Classes
             document.querySelectorAll('.nav-item, .mobile-nav-item').forEach(el => {
@@ -1716,6 +3562,10 @@
             } else if (view === 'planner') {
                 if (dept) currentDept = dept;
                 showPlanner(currentDept);
+            } else if (view === 'attendance') {
+                showAttendanceView();
+            } else if (view === 'position-plan') {
+                showPositionPlan();
             } else if (view === 'request') {
                 const empId = document.getElementById('empId').value.trim();
                 if (!empId) {
@@ -1740,6 +3590,12 @@
             } else if (view === 'outsource-checkin') {
                 document.getElementById('outsourceCheckInArea').style.display = 'block';
                 loadOutsourceStaff();
+            } else if (view === 'outsource-staff') {
+                document.getElementById('outsourceStaffArea').style.display = 'block';
+                loadStaffList('Outsource');
+            } else if (view === 'spr-staff') {
+                document.getElementById('sprStaffArea').style.display = 'block';
+                loadStaffList('SPR');
             }
 
             // Set dynamic active class
@@ -3485,6 +5341,525 @@
             } finally {
                 btnEl.disabled = false;
                 btnEl.innerHTML = '✅ ยืนยันเช็คอิน';
+            }
+        }
+
+        // ========== POSITION PLAN LOGIC ==========
+        window.presentStaffForPlan = [];
+        window.currentPosSide = 'Veg';
+
+        async function showPositionPlan() {
+            document.getElementById('positionPlanArea').style.display = 'block';
+            if (!document.getElementById('posPlanDate').value) {
+                document.getElementById('posPlanDate').valueAsDate = new Date();
+            }
+            await loadPositionPlan();
+            lucide.createIcons();
+        }
+
+        function switchPosSide(side) {
+            window.currentPosSide = side;
+            document.querySelectorAll('.pos-plan-tab').forEach(t => t.classList.remove('active'));
+            document.getElementById(`pos-side-${side.toLowerCase()}`).classList.add('active');
+            loadPositionPlan();
+        }
+
+        async function loadPositionPlan() {
+            const date = document.getElementById('posPlanDate').value;
+            const side = window.currentPosSide;
+            if (!date) return;
+
+            try {
+                // 1. Fetch Present Staff & Attendance Metrics
+                const attRes = await fetch(`${GAS_URL}?action=getAttendanceViewData&date=${date}`);
+                const attData = await attRes.json();
+
+                if (attData.success) {
+                    const presentStaff = [];
+
+                    // 1.1 First, identify everyone present in AttendanceLog (Existing)
+                    (attData.data.existing || []).forEach(e => {
+                        if (['มา', 'สาย', 'OT'].includes(e.status)) {
+                            // Determine type and look for more details in Master or Schedules
+                            const isOS = e.type === 'Outsource' || String(e.id).startsWith('OS');
+                            const isSPR = e.type === 'SPR' || String(e.id).startsWith('SPR');
+
+                            let masterInfo = null;
+                            if (isOS) masterInfo = (attData.data.osMaster || []).find(m => m.id === e.id || m.name === e.name);
+                            else if (isSPR) masterInfo = (attData.data.sprMaster || []).find(m => m.id === e.id || m.name === e.name);
+                            else masterInfo = (attData.data.schedules || []).find(s => s.id === e.id); // Regular staff info
+
+                            presentStaff.push({
+                                id: e.id,
+                                name: e.name || (masterInfo ? masterInfo.name : e.id),
+                                nick: masterInfo ? masterInfo.nick : '',
+                                pos: e.pos || (masterInfo ? masterInfo.pos : (isOS ? 'Outsource' : (isSPR ? 'SPR' : 'Staff'))),
+                                side: e.side || (masterInfo ? masterInfo.side : 'Veg')
+                            });
+                        }
+                    });
+
+                    // 1.2 Also add Outsource who scanned in via OutsourceCheckIn (if not already in AttendanceLog)
+                    (attData.data.outsource || []).forEach(o => {
+                        const alreadyExists = presentStaff.some(p => p.name === o.name);
+                        if (!alreadyExists) {
+                            const m = (attData.data.osMaster || []).find(os => os.name === o.name);
+                            presentStaff.push({
+                                id: m ? m.id : 'OS-' + o.name,
+                                name: o.name,
+                                nick: m ? m.nick : '',
+                                pos: m ? m.pos : 'Outsource',
+                                side: m ? m.side : 'Meat'
+                            });
+                        }
+                    });
+
+                    window.presentStaffForPlan = presentStaff;
+
+                    // 2. Auto-Populate Total Pack from Metrics based on side
+                    if (attData.data.metrics) {
+                        const val = side === 'Veg' ? (attData.data.metrics.vegActualPack || 0) : (attData.data.metrics.meatActualPack || 0);
+                        document.getElementById('posTotalPack').value = val;
+                    }
+
+                    // 3. Fetch existing Position Plan for this side
+                    const planRes = await fetch(`${GAS_URL}?action=getPositionPlan&date=${date}&side=${side}`);
+                    const planData = await planRes.json();
+
+                    if (planData.success && planData.data) {
+                        // Merge staff from plan into present list if they are missing
+                        // This prevents names from disappearing if attendance wasn't saved
+                        planData.data.forEach(a => {
+                            if (a.empId && !window.presentStaffForPlan.some(p => p.id === a.empId)) {
+                                window.presentStaffForPlan.push({
+                                    id: a.empId,
+                                    name: a.name,
+                                    nick: '',
+                                    pos: '',
+                                    side: side
+                                });
+                            }
+                        });
+                    }
+
+                    renderPositionPlanGrid(planData.success ? planData.data : []);
+                } else {
+                    alert('⚠️ ไม่สามารถดึงข้อมูลพนักงานได้: ' + attData.message);
+                }
+            } catch (e) {
+                console.error('Load position plan error:', e);
+                alert('ไม่สามารถโหลดข้อมูลแผนผังได้: ' + e.toString());
+            }
+        }
+
+        function formatPosSelectDisplay(select) {
+            const selectedOpt = select.options[select.selectedIndex];
+            if (!selectedOpt || !selectedOpt.value) return;
+
+            // When closed, we only want the Nickname.
+            // When opening/re-rendering, we want Nickname (Position).
+            // This is a bit tricky with standard selects. 
+            // We'll update the TEXT of the selected option to just be the nick.
+            // But we must restore others to Nick (Pos) so they look good in the list.
+
+            Array.from(select.options).forEach(opt => {
+                if (!opt.value) return;
+                const staff = window.presentStaffForPlan.find(s => s.id === opt.value);
+                if (staff) {
+                    if (opt === selectedOpt) {
+                        opt.text = staff.nick || staff.name.split(' ')[0];
+                    } else {
+                        opt.text = `${staff.nick || staff.name.split(' ')[0]} (${staff.pos || ''})`;
+                    }
+                }
+            });
+        }
+
+        function renderPositionPlanGrid(existingAssignments) {
+            const grid = document.getElementById('posPlanGrid');
+            const side = window.currentPosSide;
+            const sections = side === 'Veg'
+                ? ['Receiver', 'Transporter', 'Pallet', 'Cashier', 'Dropper', 'Egg']
+                : ['Chill Receiver', 'Chill Pre-sort', 'Gel Pack', 'Sea food', 'Chill Transport', 'Chill Drop', 'Chill - Pallet', 'Inventory', 'Chill Cashier'];
+
+            grid.innerHTML = sections.map(sec => `
+                <div class="pos-section" id="section-${sec.toLowerCase().replace(/\s+/g, '-')}">
+                    <div class="pos-section-header">
+                        <span>${sec}</span>
+                        <span class="hc-badge" id="hc-count-${sec.toLowerCase().replace(/\s+/g, '-')}">0</span>
+                    </div>
+                    <div class="pos-assign-list" id="list-${sec.toLowerCase().replace(/\s+/g, '-')}"></div>
+                    <button class="btn-add-pos" onclick="addPosRow('${sec}')">
+                        <i data-lucide="plus" style="width:14px;"></i> เพิ่มพนักงาน
+                    </button>
+                </div>
+            `).join('');
+
+            lucide.createIcons();
+
+            // Populate existing
+            if (existingAssignments && existingAssignments.length > 0) {
+                existingAssignments.forEach(a => {
+                    addPosRow(a.section, a);
+                });
+            }
+
+            calculatePositionHC();
+        }
+
+        function addPosRow(section, data = null) {
+            const listId = `list-${section.toLowerCase().replace(/\s+/g, '-')}`;
+            const list = document.getElementById(listId);
+            if (!list) return;
+
+            const itemId = 'row-' + Math.random().toString(36).substr(2, 9);
+            const div = document.createElement('div');
+            div.className = 'pos-assign-item';
+            div.id = itemId;
+
+            const staffOptions = (window.presentStaffForPlan || [])
+                .filter(s => s.side === window.currentPosSide)
+                .map(s => {
+                    const nick = s.nick || s.name.split(' ')[0];
+                    return `<option value="${s.id}" ${data && data.empId === s.id ? 'selected' : ''}>${nick} (${s.pos || ''})</option>`;
+                }).join('');
+
+            div.innerHTML = `
+                <select class="sel-staff" onchange="formatPosSelectDisplay(this); calculatePositionHC()">
+                    <option value="">-- เลือกพนักงาน --</option>
+                    ${staffOptions}
+                </select>
+                <input type="text" class="input-subrole" placeholder="Role/Table" value="${data ? (data.subRole || '') : ''}" oninput="calculatePositionHC()">
+                <select class="sel-break" onchange="calculatePositionHC()">
+                    <option value="">Break</option>
+                    <option value="0:40" ${data && data.breakTime === '0:40' ? 'selected' : ''}>0:40</option>
+                    <option value="1:00" ${data && data.breakTime === '1:00' ? 'selected' : ''}>1:00</option>
+                    <option value="1:20" ${data && data.breakTime === '1:20' ? 'selected' : ''}>1:20</option>
+                    <option value="1:40" ${data && data.breakTime === '1:40' ? 'selected' : ''}>1:40</option>
+                    <option value="2:00" ${data && data.breakTime === '2:00' ? 'selected' : ''}>2:00</option>
+                    <option value="2:20" ${data && data.breakTime === '2:20' ? 'selected' : ''}>2:20</option>
+                    <option value="3:00" ${data && data.breakTime === '3:00' ? 'selected' : ''}>3:00</option>
+                </select>
+                <button class="btn-remove-pos" onclick="removePosRow('${itemId}')"><i data-lucide="trash-2" style="width:14px;"></i></button>
+            `;
+
+            list.appendChild(div);
+
+            // Format display immediately if we have data
+            const sel = div.querySelector('.sel-staff');
+            if (sel.value) formatPosSelectDisplay(sel);
+
+            lucide.createIcons();
+            calculatePositionHC();
+        }
+
+        function removePosRow(id) {
+            const el = document.getElementById(id);
+            if (el) el.remove();
+            calculatePositionHC();
+        }
+
+        function calculatePositionHC() {
+            const side = window.currentPosSide;
+            const sections = side === 'Veg'
+                ? ['Receiver', 'Transporter', 'Pallet', 'Cashier', 'Dropper', 'Egg']
+                : ['Chill Receiver', 'Chill Pre-sort', 'Gel Pack', 'Sea food', 'Chill Transport', 'Chill Drop', 'Chill - Pallet', 'Inventory', 'Chill Cashier'];
+
+            let totalAssigned = 0;
+
+            sections.forEach(sec => {
+                const list = document.getElementById(`list-${sec.toLowerCase().replace(/\s+/g, '-')}`);
+                const rows = list ? list.querySelectorAll('.pos-assign-item') : [];
+                let count = 0;
+                rows.forEach(r => {
+                    if (r.querySelector('.sel-staff').value) count++;
+                });
+                const badge = document.getElementById(`hc-count-${sec.toLowerCase().replace(/\s+/g, '-')}`);
+                if (badge) badge.innerText = count;
+                totalAssigned += count;
+            });
+
+            const totalPack = Number(document.getElementById('posTotalPack').value) || 0;
+            const optimum = totalPack / 400;
+            const gap = totalAssigned - optimum;
+
+            document.getElementById('posOptimumHC').innerText = optimum.toFixed(2);
+            document.getElementById('posTotalAssigned').innerText = totalAssigned;
+            const gapEl = document.getElementById('posGapHC');
+            if (gapEl) {
+                gapEl.innerText = (gap >= 0 ? '+' : '') + gap.toFixed(2);
+                gapEl.style.color = gap < 0 ? '#EF4444' : '#10B981';
+            }
+        }
+
+        async function savePositionPlanData() {
+            const date = document.getElementById('posPlanDate').value;
+            const side = window.currentPosSide;
+            const sections = side === 'Veg'
+                ? ['Receiver', 'Transporter', 'Pallet', 'Cashier', 'Dropper', 'Egg']
+                : ['Chill Receiver', 'Chill Pre-sort', 'Gel Pack', 'Sea food', 'Chill Transport', 'Chill Drop', 'Chill - Pallet', 'Inventory', 'Chill Cashier'];
+
+            const assignments = [];
+
+            sections.forEach(sec => {
+                const list = document.getElementById(`list-${sec.toLowerCase().replace(/\s+/g, '-')}`);
+                if (list) {
+                    list.querySelectorAll('.pos-assign-item').forEach(item => {
+                        const empId = item.querySelector('.sel-staff').value;
+                        const subRole = item.querySelector('.input-subrole').value;
+                        const breakTime = item.querySelector('.sel-break').value;
+
+                        if (empId) {
+                            const staff = window.presentStaffForPlan.find(s => s.id === empId);
+                            assignments.push({
+                                section: sec,
+                                empId: empId,
+                                name: staff ? staff.name : '',
+                                subRole: subRole,
+                                breakTime: breakTime
+                            });
+                        }
+                    });
+                }
+            });
+
+            if (assignments.length === 0) {
+                alert('⚠️ กรุณาเพิ่มข้อมูลตำแหน่งพนักงานก่อนบันทึกครับ');
+                return;
+            }
+
+            const btn = event.target.closest('button');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i data-lucide="loader" class="animate-spin" style="width:16px;"></i> กำลังบันทึก...';
+            btn.disabled = true;
+            lucide.createIcons();
+
+            try {
+                const res = await fetch(GAS_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        action: 'savePositionPlan',
+                        date: date,
+                        side: side,
+                        assignments: assignments
+                    })
+                });
+                const result = await res.json();
+                if (result.success) {
+                    alert(`✅ บันทึกแผนผังตำแหน่ง (${side === 'Veg' ? 'ผัก' : 'เนื้อ'}) เรียบร้อยแล้ว`);
+                } else {
+                    alert('❌ เกิดข้อผิดพลาด: ' + result.message);
+                }
+            } catch (e) {
+                console.error('Save position plan error:', e);
+                alert('❌ Connection Error: ' + e.toString());
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                lucide.createIcons();
+            }
+        }
+
+        // ========== STAFF MANAGEMENT FUNCTIONS ==========
+        let currentStaffType = '';
+        let staffListStates = {
+            'Outsource': [],
+            'SPR': []
+        };
+
+        function openStaffModal(type, index = null) {
+            currentStaffType = type;
+            document.getElementById('staffTypeLabel').innerText = type;
+            document.getElementById('staffModal').style.display = 'flex';
+
+            const title = document.getElementById('staffModalTitle');
+            const submitBtn = document.getElementById('btnSubmitStaff');
+            const icon = document.getElementById('staffModalIcon');
+
+            const staff = (index !== null) ? staffListStates[type][index] : null;
+            if (staff) {
+                title.innerText = 'แก้ไขข้อมูล';
+                submitBtn.innerText = 'บันทึกการแก้ไข';
+                icon.setAttribute('data-lucide', 'edit-3');
+                document.getElementById('staffId').value = staff.id;
+                document.getElementById('staffName').value = staff.name;
+                document.getElementById('staffNick').value = staff.nick || '';
+                document.getElementById('staffPosition').value = staff.pos || 'Picker';
+                if (staff.side === 'Veg') document.getElementById('sideVeg').checked = true;
+                else document.getElementById('sideMeat').checked = true;
+            } else {
+                title.innerText = 'เพิ่มพนักงาน';
+                submitBtn.innerText = 'เพิ่มรายชื่อ';
+                icon.setAttribute('data-lucide', 'user-plus');
+                document.getElementById('staffId').value = '';
+                document.getElementById('staffName').value = '';
+                document.getElementById('staffNick').value = '';
+                document.getElementById('staffPosition').value = 'Picker';
+                document.getElementById('sideVeg').checked = true;
+            }
+            lucide.createIcons();
+        }
+
+        function closeStaffModal() {
+            document.getElementById('staffModal').style.display = 'none';
+        }
+
+        async function submitStaffForm() {
+            const id = document.getElementById('staffId').value;
+            const name = document.getElementById('staffName').value.trim();
+            const nickname = document.getElementById('staffNick').value.trim();
+            const position = document.getElementById('staffPosition').value;
+            const side = document.querySelector('input[name="staffSide"]:checked').value;
+
+            if (!name) {
+                alert('⚠️ กรุณากรอกชื่อพนักงาน');
+                return;
+            }
+
+            const isEdit = !!id;
+            const btn = document.getElementById('btnSubmitStaff');
+            const originalText = btn.innerText;
+            btn.disabled = true;
+            btn.innerText = 'กำลังประมวลผล...';
+
+            try {
+                const res = await fetch(GAS_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        action: isEdit ? 'updateStaffMember' : 'addStaffMember',
+                        type: currentStaffType,
+                        id: id,
+                        name: name,
+                        nickname: nickname,
+                        position: position,
+                        side: side
+                    })
+                });
+                const result = await res.json();
+                if (result.success) {
+                    alert(`✅ ${result.message}`);
+                    closeStaffModal();
+                    loadStaffList(currentStaffType);
+                } else {
+                    alert('❌ เกิดข้อผิดพลาด: ' + result.message);
+                }
+            } catch (e) {
+                console.error('Staff form error:', e);
+                alert('❌ Connection Error: ' + e.toString());
+            } finally {
+                btn.disabled = false;
+                btn.innerText = originalText;
+            }
+        }
+
+        async function deleteStaff(id, name, type) {
+            if (!confirm(`คุณต้องการลบรายชื่อ "${name}" ใช่หรือไม่?`)) return;
+
+            try {
+                const res = await fetch(GAS_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        action: 'deleteStaffMember',
+                        type: type,
+                        id: id,
+                        name: name
+                    })
+                });
+                const result = await res.json();
+                if (result.success) {
+                    alert(`✅ ${result.message}`);
+                    loadStaffList(type);
+                } else {
+                    alert('❌ เกิดข้อผิดพลาด: ' + result.message);
+                }
+            } catch (e) {
+                console.error('Delete staff error:', e);
+                alert('❌ Connection Error: ' + e.toString());
+            }
+        }
+
+        async function loadStaffList(type) {
+            const listId = type === 'Outsource' ? 'outsourceStaffList' : 'sprStaffList';
+            const listEl = document.getElementById(listId);
+
+            listEl.innerHTML = '<p style="text-align:center; color:var(--text-muted);">กำลังโหลด...</p>';
+
+            try {
+                const res = await fetch(`${GAS_URL}?action=getStaffListByType&type=${type}`);
+                const result = await res.json();
+
+                if (result.success && result.data.length > 0) {
+                    staffListStates[type] = result.data; // Cache it
+                    let html = `
+                        <div class="table-responsive">
+                            <table class="attendance-table staff-list-table" style="width:100%; border-collapse: collapse; min-width:650px;">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>ชื่อ-นามสกุล</th>
+                                        <th>ชื่อเล่น</th>
+                                        <th>ตำแหน่ง</th>
+                                        <th>ฝั่ง (Section)</th>
+                                        <th style="text-align:center;">จัดการ</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                    `;
+
+                    result.data.forEach((staff, idx) => {
+                        html += `
+                            <tr style="border-bottom:1px solid var(--border);">
+                                <td style="color:var(--text-muted); font-family:monospace; font-weight:600;">${staff.id || '-'}</td>
+                                <td style="font-weight:600;">${staff.name}</td>
+                                <td>${staff.nick || '-'}</td>
+                                <td>
+                                    <span style="background:#F1F5F9; padding:4px 8px; border-radius:6px; font-size:12px; color:#475569;">${staff.pos || '-'}</span>
+                                </td>
+                                <td>
+                                    <span style="padding:4px 10px; border-radius:20px; background:${staff.side === 'Veg' ? '#DCFCE7' : '#DBEAFE'}; color:${staff.side === 'Veg' ? '#166534' : '#1E40AF'}; font-size:12px; font-weight:700; border:1px solid ${staff.side === 'Veg' ? '#BBF7D0' : '#BFDBFE'};">
+                                        ${staff.side === 'Veg' ? 'ผัก (Ambient)' : 'เนื้อ (Chill)'}
+                                    </span>
+                                </td>
+                                <td>
+                                    <div style="display:flex; gap:8px; justify-content:center;">
+                                        <div class="btn-icon-manage edit" onclick='openStaffModal("${type}", ${idx})' title="แก้ไขข้อมูล">
+                                            <i data-lucide="edit-3" style="width:16px;"></i>
+                                        </div>
+                                        <div class="btn-icon-manage delete" onclick="deleteStaff('${staff.id}', '${staff.name}', '${type}')" title="ลบรายชื่อ">
+                                            <i data-lucide="trash-2" style="width:16px;"></i>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        `;
+                    });
+
+                    html += '</tbody></table></div>';
+                    listEl.innerHTML = html;
+                    lucide.createIcons();
+                } else {
+                    listEl.innerHTML = '<p style="text-align:center; color:var(--text-muted); padding:40px;">ยังไม่มีข้อมูลพนักงาน</p>';
+                }
+            } catch (e) {
+                console.error('Load staff list error:', e);
+                listEl.innerHTML = '<p style="text-align:center; color:var(--danger);">เกิดข้อผิดพลาดในการโหลดข้อมูล</p>';
+            }
+        }
+
+        async function repairIds() {
+            if (!confirm('ต้องการเปลี่ยนรหัสพนักงาน (ช่องคำนำหน้า) ให้เป็นรหัสมาตรฐาน (OSxxx / SPRxxx) ใช่หรือไม่?\\n\\nระบบจะช่วยจัดระเบียบให้สามารถแก้ไขข้อมูลรายบุคคลได้ถูกต้องครับ')) return;
+
+            try {
+                const res = await fetch(GAS_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({ action: 'repairStaffIds' })
+                });
+                const result = await res.json();
+                alert(result.message);
+                loadStaffList('Outsource');
+                loadStaffList('SPR');
+            } catch (e) {
+                alert('Repair Error: ' + e.toString());
             }
         }
     </script>
