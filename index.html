@@ -374,10 +374,12 @@
 
         /* Planner Summary */
         .summary-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            display: flex;
+            overflow-x: auto;
             gap: 16px;
             margin-bottom: 24px;
+            padding-bottom: 8px;
+            -webkit-overflow-scrolling: touch;
         }
 
         .summary-card {
@@ -386,6 +388,8 @@
             border-radius: var(--radius-md);
             padding: 16px;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            min-width: 180px;
+            flex-shrink: 0;
         }
 
         .summary-card-header {
@@ -2931,7 +2935,8 @@
                     // Calculate requirements for each date in plannerDates
                     plannerDates.forEach(dateStr => {
                         const totalValue = summedForecasts[dateStr] || 0;
-                        const needed = Math.ceil(totalValue / 435.28);
+                        const divisor = currentDept === 'Meat' ? 357.50 : 435.28;
+                        const needed = Math.ceil(totalValue / divisor);
                         const night21 = Math.round(needed * 0.25);
                         const night22 = needed - night21;
                         const dayOff = 34 - needed;
@@ -2940,7 +2945,8 @@
                             needed,
                             night21,
                             night22,
-                            dayOff
+                            dayOff,
+                            forecast: totalValue
                         };
                     });
 
@@ -3005,8 +3011,12 @@
                             <span style="color:var(--muted)">${thaiDay}</span>
                         </div>
                         <div class="badge-list">
+                            <div class="req-badge" style="background: var(--primary-light); color: var(--primary); font-weight: 700;">
+                                <span class="req-label">Forecast:</span>
+                                <span class="req-value">${(req.forecast || 0).toLocaleString()}</span>
+                            </div>
                             <div class="req-badge">
-                                <span class="req-label">รวม:</span>
+                                <span class="req-label">รวม (HC):</span>
                                 <span class="req-value ${getStatusClass(totalAssigned, req.needed)}">${totalAssigned}/${req.needed}</span>
                             </div>
                             <div class="req-badge">
@@ -3022,8 +3032,8 @@
                                 <span class="req-value ${getStatusClass(countOff, req.dayOff)}">${countOff}/${req.dayOff}</span>
                             </div>
                             ${missingCount > 0 ? `
-                            <div class="req-badge badge-missing">
-                                <span class="req-label" style="color:var(--danger)">หาเพิ่ม:</span>
+                            <div class="req-badge badge-missing" style="background: #FEE2E2; color: #B91C1C; font-weight: 700;">
+                                <span class="req-label" style="color: #B91C1C">หาเพิ่ม:</span>
                                 <span class="req-value status-low">${missingCount}</span>
                             </div>` : ''}
                             ${countVacation > 0 ? `
