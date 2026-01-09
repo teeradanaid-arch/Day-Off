@@ -3000,7 +3000,7 @@
                         }
                     });
 
-                    const totalAssigned = count21 + count22;
+                    const totalAssigned = count21 + count22 + countOT;
                     const missingCount = Math.max(0, req.needed - totalAssigned);
                     const getStatusClass = (cur, reqVal) => cur >= reqVal ? 'status-ok' : 'status-low';
 
@@ -3064,6 +3064,7 @@
             // Update Staff Day-Off Warning
             plannerStaff.forEach(st => {
                 let staffOffCount = 0;
+                let hasOT = false;
                 plannerDates.forEach((date, i) => {
                     const cell = document.getElementById(`cell_${st.id}_${i}`);
                     if (cell) {
@@ -3071,23 +3072,28 @@
                         if (shift === 'Day Off' || shift === 'พักร้อน' || shift === 'ลาป่วย' || shift === 'ลากิจ') {
                             staffOffCount++;
                         }
+                        if (shift === 'OT') hasOT = true;
                     } else if (window.existingSchedule) {
                         const existing = window.existingSchedule.find(s => s.employeeId === st.id && s.date === date);
                         const shift = existing ? existing.shift : '22:00';
                         if (shift === 'Day Off' || shift === 'พักร้อน' || shift === 'ลาป่วย' || shift === 'ลากิจ') {
                             staffOffCount++;
                         }
+                        if (shift === 'OT') hasOT = true;
                     }
                 });
 
                 const statusEl = document.getElementById(`staff_status_${st.id}`);
                 if (statusEl) {
-                    if (staffOffCount === 0) {
-                        statusEl.className = 'staff-status status-no-off';
-                        statusEl.innerHTML = '⚠️ ยังไม่มีวันหยุด';
-                    } else {
+                    if (staffOffCount > 0) {
                         statusEl.className = 'staff-status status-has-off';
                         statusEl.innerHTML = `✅ หยุดแล้ว ${staffOffCount} วัน`;
+                    } else if (hasOT) {
+                        statusEl.className = 'staff-status status-has-off';
+                        statusEl.innerHTML = '✅ ลงกะ OT แล้ว';
+                    } else {
+                        statusEl.className = 'staff-status status-no-off';
+                        statusEl.innerHTML = '⚠️ ยังไม่มีวันหยุด';
                     }
                 }
             });
