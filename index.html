@@ -446,6 +446,143 @@
             }
         }
 
+        /* RBAC & Landing Page Styles */
+        .landing-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            background-image: radial-gradient(circle at 10% 20%, rgba(124, 58, 237, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(6, 182, 212, 0.05) 0%, transparent 40%);
+        }
+
+        .landing-container {
+            max-width: 900px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .landing-header {
+            margin-bottom: 48px;
+        }
+
+        .landing-header h1 {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+        }
+
+        .landing-header p {
+            color: var(--text-muted);
+            font-size: 18px;
+        }
+
+        .role-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 32px;
+        }
+
+        @media (max-width: 768px) {
+            .role-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .landing-header h1 {
+                font-size: 32px;
+            }
+        }
+
+        .role-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 40px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .role-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px rgba(124, 58, 237, 0.1);
+        }
+
+        .role-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--primary-light);
+            color: var(--primary);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .role-card:hover .role-icon {
+            background: var(--primary);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .role-card h3 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .role-card p {
+            color: var(--text-muted);
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        /* Access Control Classes */
+        .supervisor-only {
+            display: none !important;
+        }
+
+        [data-role="supervisor"].role-active {
+            display: flex !important;
+        }
+
+        .logout-btn {
+            margin-top: auto;
+            border-top: 1px solid var(--border);
+            padding-top: 20px;
+        }
+
+        #mainSidebar,
+        .main-layout,
+        .mobile-nav {
+            display: none;
+        }
+
+        body.app-ready #mainSidebar,
+        body.app-ready .mobile-nav {
+            display: flex;
+        }
+
+        body.app-ready .main-layout {
+            display: block;
+        }
+
         /* Planner Summary */
         .summary-grid {
             display: flex;
@@ -1955,6 +2092,39 @@
         }
     </style>
 
+    <!-- Landing Area (RBAC) -->
+    <div id="landingArea" class="landing-overlay">
+        <div class="landing-container">
+            <div class="landing-header">
+                <h1>WORK PORTAL</h1>
+                <p>กรุณาเลือกประเภทการใช้งานเพื่อเข้าสู่ระบบ</p>
+            </div>
+            <div class="role-grid">
+                <!-- Staff Card -->
+                <div class="role-card" onclick="selectRole('staff')">
+                    <div class="role-icon">
+                        <i data-lucide="users" style="width:40px; height:40px;"></i>
+                    </div>
+                    <h3>สำหรับพนักงาน</h3>
+                    <p>เข้าชมแดชบอร์ด, ตรวจสอบตารางกะ, สรุปผลงาน และแจ้งลา/สาย</p>
+                    <div class="btn" style="width:100%; justify-content:center; margin-top:auto;">เข้าใช้งานพนักงาน
+                    </div>
+                </div>
+                <!-- Supervisor Card -->
+                <div class="role-card" onclick="selectRole('supervisor')">
+                    <div class="role-icon" style="background:rgba(6, 182, 212, 0.1); color:var(--secondary);">
+                        <i data-lucide="shield-check" style="width:40px; height:40px;"></i>
+                    </div>
+                    <h3>สำหรับหัวหน้างาน</h3>
+                    <p>จัดการตารางกะ, ดู Forecast, เช็คชื่อพนักงาน และจัดการข้อมูลทั้งหมด</p>
+                    <div class="btn"
+                        style="width:100%; justify-content:center; margin-top:auto; background:var(--secondary);">
+                        เข้าใช้งานหัวหน้างาน</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Sidebar Overlay -->
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
@@ -1981,63 +2151,68 @@
             </button>
         </div>
         <nav class="nav-menu">
-            <a onclick="showView('dashboard')" class="nav-item" id="nav-dashboard">
+            <a onclick="showView('dashboard')" class="nav-item" id="nav-dashboard" data-role="staff">
                 <i data-lucide="layout-dashboard"></i> <span>Dashboard</span>
             </a>
-            <a onclick="showView('personal-dashboard')" class="nav-item" id="nav-personal-dashboard">
+            <a onclick="showView('personal-dashboard')" class="nav-item" id="nav-personal-dashboard" data-role="staff">
                 <i data-lucide="user"></i> <span>แดชบอร์ดส่วนตัว</span>
             </a>
-            <a onclick="showView('home')" class="nav-item active" id="nav-home">
+            <a onclick="showView('home')" class="nav-item active" id="nav-home" data-role="staff">
                 <i data-lucide="home"></i> <span>หน้าหลัก</span>
             </a>
-            <a onclick="showView('schedule')" class="nav-item" id="nav-schedule">
+            <a onclick="showView('schedule')" class="nav-item" id="nav-schedule" data-role="staff">
                 <i data-lucide="calendar"></i> <span>ตารางกะ</span>
             </a>
-            <a onclick="showView('history')" class="nav-item" id="nav-history">
+            <a onclick="showView('history')" class="nav-item" id="nav-history" data-role="staff">
                 <i data-lucide="file-text"></i> <span>สรุปผลงาน</span>
             </a>
-            <a onclick="showView('overview')" class="nav-item" id="nav-overview">
+            <a onclick="showView('overview')" class="nav-item" id="nav-overview" data-role="supervisor">
                 <i data-lucide="table"></i> <span>สรุปตารางรวม</span>
             </a>
-            <a onclick="showView('forecast')" class="nav-item" id="nav-forecast">
+            <a onclick="showView('forecast')" class="nav-item" id="nav-forecast" data-role="supervisor">
                 <i data-lucide="bar-chart-3"></i> <span>Forecast</span>
             </a>
-            <a onclick="showView('planner', 'Veg')" class="nav-item" id="nav-planner-veg">
+            <a onclick="showView('planner', 'Veg')" class="nav-item" id="nav-planner-veg" data-role="supervisor">
                 <i data-lucide="user-plus"></i> <span>จัดกะ (ผัก)</span>
             </a>
-            <a onclick="showView('planner', 'Meat')" class="nav-item" id="nav-planner-meat">
+            <a onclick="showView('planner', 'Meat')" class="nav-item" id="nav-planner-meat" data-role="supervisor">
                 <i data-lucide="user-plus"></i> <span>จัดกะ (เนื้อ)</span>
             </a>
-            <a onclick="showView('request')" class="nav-item" id="nav-request">
+            <a onclick="showView('request')" class="nav-item" id="nav-request" data-role="staff">
                 <i data-lucide="send"></i> <span>ยื่นลา/แจ้งสาย</span>
             </a>
-            <a onclick="showView('outsource-checkin')" class="nav-item" id="nav-outsource-checkin">
+            <a onclick="showView('outsource-checkin')" class="nav-item" id="nav-outsource-checkin" data-role="staff">
                 <i data-lucide="user-check"></i> <span>ลงชื่อทำงาน Outsource</span>
             </a>
-            <a onclick="showView('attendance')" class="nav-item" id="nav-attendance">
+            <a onclick="showView('attendance')" class="nav-item" id="nav-attendance" data-role="supervisor">
                 <i data-lucide="clipboard-check"></i> <span>เช็คชื่อเข้างาน</span>
             </a>
-            <a onclick="showView('position-plan')" class="nav-item" id="nav-position-plan">
+            <a onclick="showView('position-plan')" class="nav-item" id="nav-position-plan" data-role="supervisor">
                 <i data-lucide="layout"></i> <span>Position Plan</span>
             </a>
-            <a onclick="showView('outsource-staff')" class="nav-item" id="nav-outsource-staff">
+            <a onclick="showView('outsource-staff')" class="nav-item" id="nav-outsource-staff" data-role="supervisor">
                 <i data-lucide="users"></i> <span>พนักงาน Outsource</span>
             </a>
-            <a onclick="showView('spr-staff')" class="nav-item" id="nav-spr-staff">
+            <a onclick="showView('spr-staff')" class="nav-item" id="nav-spr-staff" data-role="supervisor">
                 <i data-lucide="user-plus"></i> <span>พนักงาน SPR</span>
             </a>
+            <div class="logout-btn">
+                <a onclick="logout()" class="nav-item" style="color:var(--danger)">
+                    <i data-lucide="log-out"></i> <span>ออกจากระบบ</span>
+                </a>
+            </div>
         </nav>
     </aside>
 
     <!-- Mobile Navigation (Simplified) -->
     <nav class="mobile-nav">
-        <a onclick="showView('home')" class="mobile-nav-item active" id="m-nav-home">
+        <a onclick="showView('home')" class="mobile-nav-item active" id="m-nav-home" data-role="staff">
             <i data-lucide="home"></i> หน้าหลัก
         </a>
-        <a onclick="showView('dashboard')" class="mobile-nav-item" id="m-nav-dashboard">
+        <a onclick="showView('dashboard')" class="mobile-nav-item" id="m-nav-dashboard" data-role="staff">
             <i data-lucide="pie-chart"></i> แดชบอร์ด
         </a>
-        <a onclick="showView('schedule')" class="mobile-nav-item" id="m-nav-schedule">
+        <a onclick="showView('schedule')" class="mobile-nav-item" id="m-nav-schedule" data-role="staff">
             <i data-lucide="calendar"></i> ตารางกะ
         </a>
         <a onclick="toggleSidebar()" class="mobile-nav-item">
@@ -3491,6 +3666,10 @@
         let currentDept = 'Veg'; // Default department
         window.plannerRequirements = {};
 
+        // RBAC State
+        let currentUserRole = null;
+        const SUPERVISOR_PWD = '20260001';
+
         // Display current date on Home
         const now = new Date();
         const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -3516,14 +3695,72 @@
             lucide.createIcons();
         }
 
-        // Initialize Sidebar State
+        // Initialize Sidebar State & RBAC
         document.addEventListener('DOMContentLoaded', () => {
             const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
             if (isCollapsed && window.innerWidth > 991) {
                 document.getElementById('mainSidebar').classList.add('collapsed');
                 document.querySelector('.main-layout').classList.add('collapsed');
             }
+
+            // RBAC Check
+            const savedRole = localStorage.getItem('userRole');
+            if (savedRole) {
+                currentUserRole = savedRole;
+                enterApp();
+            } else {
+                document.getElementById('landingArea').style.display = 'flex';
+                lucide.createIcons();
+            }
         });
+
+        function selectRole(role) {
+            if (role === 'supervisor') {
+                const pwd = prompt('กรุณาใส่รหัสผ่านหัวหน้างาน:');
+                if (pwd !== SUPERVISOR_PWD) {
+                    alert('รหัสผ่านไม่ถูกต้อง!');
+                    return;
+                }
+            }
+
+            currentUserRole = role;
+            localStorage.setItem('userRole', role);
+            enterApp();
+        }
+
+        function enterApp() {
+            document.getElementById('landingArea').style.display = 'none';
+            document.body.classList.add('app-ready');
+            applyRoleAccess();
+            showView('home'); // Default view
+        }
+
+        function applyRoleAccess() {
+            // Select both desktop and mobile nav items
+            const navItems = document.querySelectorAll('.nav-item, .mobile-nav-item');
+            navItems.forEach(item => {
+                const role = item.getAttribute('data-role');
+                if (role === 'supervisor' && currentUserRole !== 'supervisor') {
+                    item.style.display = 'none';
+                } else if (role) {
+                    // For staff items or items with specific role, ensure they show correctly
+                    // Mobile nav items use 'flex' for display in CSS usually
+                    if (item.classList.contains('mobile-nav-item')) {
+                        item.style.display = 'flex';
+                    } else {
+                        item.style.display = 'flex'; // sidebar items
+                    }
+                }
+            });
+            lucide.createIcons();
+        }
+
+        function logout() {
+            if (confirm('ยืนยันออกจากระบบ?')) {
+                localStorage.removeItem('userRole');
+                location.reload();
+            }
+        }
 
         function showView(view, dept) {
             // Hide all
