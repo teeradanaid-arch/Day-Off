@@ -583,6 +583,78 @@
             display: block;
         }
 
+        /* Optimal Layout for 2 Columns on Desktop */
+        .op-grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(550px, 1fr));
+            gap: 12px;
+            align-items: start;
+            background: #f8fafc;
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            border-top: none;
+            border-radius: 0 0 12px 12px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .dispatch-section {
+            background: white !important;
+            border: 1px solid var(--border) !important;
+            border-radius: 10px !important;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) !important;
+            overflow: hidden;
+            min-width: 0;
+            /* Important for grid items */
+        }
+
+        .dispatch-section:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1) !important;
+        }
+
+        .dispatch-section-header {
+            background: #f1f5f9;
+            padding: 10px 15px;
+            font-weight: 800;
+            color: var(--primary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .op-table th,
+        .op-table td {
+            padding: 4px 6px !important;
+            font-size: 11px !important;
+            /* Extremely compact */
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .op-table th {
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+        }
+
+        .op-table input.input-modern {
+            padding: 2px 4px !important;
+            font-size: 11px !important;
+            height: 24px !important;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            width: 100%;
+        }
+
+        /* Specialized table responsiveness */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            scrollbar-width: thin;
+        }
+
         /* Planner Summary */
         .summary-grid {
             display: flex;
@@ -1988,7 +2060,7 @@
 
         .pos-assign-item {
             display: grid;
-            grid-template-columns: 1fr 1fr auto auto;
+            grid-template-columns: 1fr 1.6fr auto auto;
             gap: 8px;
             align-items: center;
             background: white;
@@ -2090,6 +2162,190 @@
             font-size: 14px;
             padding: 16px 12px !important;
         }
+
+        /* Truck Sorting Styles */
+        .truck-input-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 8px;
+        }
+
+        .truck-input-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .truck-input-row input {
+            flex: 1;
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            font-size: 14px;
+        }
+
+        .assign-grid {
+            display: grid;
+            grid-template-columns: 200px repeat(3, 1fr);
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            background: #f1f5f9;
+        }
+
+        .assign-header {
+            background: #1e293b;
+            color: white;
+            padding: 12px;
+            font-weight: 700;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .assign-row-header {
+            background: white;
+            padding: 12px;
+            font-weight: 600;
+            font-size: 14px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .assign-cell {
+            background: white;
+            padding: 8px;
+            border-bottom: 1px solid var(--border);
+            border-left: 1px solid var(--border);
+        }
+
+        .sel-truck {
+            width: 100%;
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            font-size: 13px;
+            background: #fff;
+            transition: all 0.2s;
+        }
+
+        .sel-truck:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+
+        .sel-truck.type-hb {
+            background-color: #fff7ed;
+            color: #9a3412;
+        }
+
+        /* HUB - Orange */
+        .sel-truck.type-mr {
+            background-color: #f3e8ff;
+            color: #6b21a8;
+        }
+
+        /* Other - Green */
+
+        /* Operation Dashboard Styles */
+        .op-kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .op-kpi-card {
+            background: white;
+            padding: 16px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .op-kpi-card .val {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--primary);
+            margin: 8px 0;
+        }
+
+        .op-kpi-card .lbl {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .op-table-container {
+            background: white;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+
+        .op-table-header {
+            background: #1e293b;
+            color: white;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .op-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .op-table th {
+            background: #f8fafc;
+            padding: 12px 16px;
+            text-align: left;
+            font-size: 12px;
+            font-weight: 700;
+            color: #64748b;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .op-table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 14px;
+        }
+
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .status-ontime {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-late {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .status-waiting {
+            background: #fef9c3;
+            color: #854d0e;
+        }
     </style>
 
     <!-- Landing Area (RBAC) -->
@@ -2189,6 +2445,15 @@
             </a>
             <a onclick="showView('position-plan')" class="nav-item" id="nav-position-plan" data-role="supervisor">
                 <i data-lucide="layout"></i> <span>Position Plan</span>
+            </a>
+            <a onclick="showView('truck-sorting')" class="nav-item" id="nav-truck-sorting" data-role="supervisor">
+                <i data-lucide="truck"></i> <span>จัดรอบยกสินค้า</span>
+            </a>
+            <a onclick="showView('operation-report')" class="nav-item" id="nav-operation-report" data-role="supervisor">
+                <i data-lucide="file-check"></i> <span>รายงานการปล่อยรถ</span>
+            </a>
+            <a onclick="showView('truck-plan')" class="nav-item" id="nav-truck-plan" data-role="supervisor">
+                <i data-lucide="map"></i> <span>จัดการแผนเดินรถ</span>
             </a>
             <a onclick="showView('outsource-staff')" class="nav-item" id="nav-outsource-staff" data-role="supervisor">
                 <i data-lucide="users"></i> <span>พนักงาน Outsource</span>
@@ -2553,6 +2818,44 @@
                 <button class="btn btn-primary" onclick="saveForecast()">
                     <i data-lucide="save"></i>
                     บันทึก Forecast ทั้งหมด
+                </button>
+            </div>
+        </div>
+
+        <!-- Truck Plan Area (Manage Daily Rounds) -->
+        <div id="truckPlanArea" class="content-area" style="display: none;">
+            <div class="header-card">
+                <div class="header-title">
+                    <i data-lucide="truck"></i>
+                    <h2>จัดการแผนเดินรถ (Truck Round Plan)</h2>
+                </div>
+                <p class="header-subtitle">กำหนดรอบเวลาและรายชื่อรถประจำวัน</p>
+
+                <div class="forecast-controls">
+                    <div class="control-group">
+                        <label for="truckPlanDate">เลือกวันที่:</label>
+                        <input type="date" id="truckPlanDate" class="input-modern" onchange="loadTruckPlanData()">
+                    </div>
+                </div>
+            </div>
+
+            <div id="truckPlanContainer" style="display:flex; flex-direction:column; gap:20px;">
+                <!-- Truck Plan Categories will be rendered here -->
+            </div>
+
+            <div class="action-bar-modern" style="margin-top:20px; display:flex; justify-content:space-between;">
+                <div style="display:flex; gap:10px;">
+                    <button class="btn btn-outline-primary" onclick="addPlanCategory()">
+                        <i data-lucide="plus"></i> เพิ่มรอบรถ
+                    </button>
+                    <button class="btn btn-outline-secondary" onclick="document.getElementById('csvFileInput').click()">
+                        <i data-lucide="upload"></i> Import CSV
+                    </button>
+                    <input type="file" id="csvFileInput" accept=".csv" style="display:none;"
+                        onchange="importTruckPlanCSV(event)">
+                </div>
+                <button class="btn btn-primary" onclick="saveTruckPlanData()">
+                    <i data-lucide="save"></i> บันทึกแผนเดินรถ
                 </button>
             </div>
         </div>
@@ -3517,8 +3820,11 @@
                     <div style="display:flex; gap:12px;">
                         <input type="date" id="posPlanDate" class="input-modern" style="width:140px;"
                             onchange="loadPositionPlan()">
-                        <button class="btn btn-primary" onclick="savePositionPlanData()">
+                        <button class="btn btn-primary" onclick="savePositionPlanData(event)">
                             <i data-lucide="save"></i> บันทึกแผน
+                        </button>
+                        <button class="export-btn" onclick="exportToImage('positionPlanArea', 'Position_Plan')">
+                            <i data-lucide="download"></i> Export Image
                         </button>
                     </div>
                 </div>
@@ -3555,7 +3861,325 @@
             </div>
         </div>
 
+        <!-- Truck Sorting Area -->
+        <div id="truckSortingArea" style="display:none;">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title" style="color:var(--primary)"><i data-lucide="truck"></i> จัดรอบยกสินค้า
+                        (Truck Sorting Assignment)</h2>
+                    <div style="display:flex; gap:12px;">
+                        <input type="date" id="truckSortingDate" class="input-modern" style="width:140px;"
+                            onchange="loadTruckRoundData()">
+                        <button class="btn btn-primary" onclick="saveTruckAssignment()">
+                            <i data-lucide="save"></i> บันทึกข้อมูล
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 1: Input Truck Rounds -->
+                <div id="truckStep1" style="padding: 20px;">
+                    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap:24px;">
+                        <!-- HUB (Orange) -->
+                        <div class="card"
+                            style="box-shadow: none; border: 1px solid var(--border); background: #fffcf9; margin-bottom:0;">
+                            <div class="card-header" style="background: #fff7ed; border-bottom: 2px solid #fdba74;">
+                                <h4 style="color:#9a3412; margin:0; display:flex; align-items:center; gap:8px;">
+                                    <span
+                                        style="background:#f97316; width:12px; height:24px; border-radius:3px;"></span>
+                                    HUB (Orange)
+                                </h4>
+                                <button class="btn-icon-manage edit" onclick="openTruckPasteModal('HB')"
+                                    title="Quick Paste">
+                                    <i data-lucide="clipboard"></i>
+                                </button>
+                            </div>
+                            <div id="truck-round-hub-list" class="truck-input-list"
+                                style="padding:15px; min-height:200px;">
+                                <!-- Input rows here -->
+                            </div>
+                            <button class="btn" style="margin:15px; margin-top:0;" onclick="addTruckInputRow('HB')">
+                                <i data-lucide="plus"></i> เพิ่มแถว
+                            </button>
+                        </div>
+
+                        <!-- Milk Run (Purple) -->
+                        <div class="card"
+                            style="box-shadow: none; border: 1px solid var(--border); background: #faf5ff; margin-bottom:0;">
+                            <div class="card-header" style="background: #f3e8ff; border-bottom: 2px solid #d8b4fe;">
+                                <h4 style="color:#6b21a8; margin:0; display:flex; align-items:center; gap:8px;">
+                                    <span
+                                        style="background:#a855f7; width:12px; height:24px; border-radius:3px;"></span>
+                                    Milk Run (Purple)
+                                </h4>
+                                <button class="btn-icon-manage edit" onclick="openTruckPasteModal('MR')"
+                                    title="Quick Paste">
+                                    <i data-lucide="clipboard"></i>
+                                </button>
+                            </div>
+                            <div id="truck-round-mr-list" class="truck-input-list"
+                                style="padding:15px; min-height:200px;">
+                                <!-- Input rows here -->
+                            </div>
+                            <button class="btn" style="margin:15px; margin-top:0;" onclick="addTruckInputRow('MR')">
+                                <i data-lucide="plus"></i> เพิ่มแถว
+                            </button>
+                        </div>
+                    </div>
+
+                    <div style="margin-top:24px; display:flex; justify-content:center;">
+                        <button class="btn btn-primary" style="padding: 12px 40px; font-size:16px;"
+                            onclick="generateTruckAssignGrid()">
+                            ถัดไป (จัดตำแหน่งพนักงาน) <i data-lucide="chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 2: Assignment Grid -->
+                <div id="truckStep2" style="display:none; padding: 20px;">
+                    <div style="margin-bottom:15px; display:flex; justify-content:space-between; align-items:center;">
+                        <button class="btn" onclick="backToTruckStep1()">
+                            <i data-lucide="chevron-left"></i> ย้อนกลับไปแก้ไขรอบรถ
+                        </button>
+                        <div style="font-weight:600; color:var(--text-muted);" id="truckTotalInfo"></div>
+                    </div>
+
+                    <div id="truckAssignContainer" style="overflow-x: auto;">
+                        <div class="assign-grid" id="truckAssignGrid">
+                            <!-- Generated by JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Paste Modal -->
+        <div id="truckPasteModal" class="modal-spr" style="display:none; z-index:4000;">
+            <div class="modal-spr-content" style="max-width:500px;">
+                <h3 style="margin-bottom:15px; color:var(--primary); display:flex; align-items:center; gap:8px;">
+                    <i data-lucide="clipboard"></i> Quick Paste Truck Codes
+                </h3>
+                <p style="font-size:13px; color:var(--text-muted); margin-bottom:15px;">วางรหัสรอบรถที่คัดลอกมา (เช่น
+                    HB01, HB02) ระบบจะแยกรายบรรทัดให้อัตโนมัติ</p>
+                <input type="hidden" id="pasteType">
+                <textarea id="truckPasteArea"
+                    style="width:100%; height:200px; padding:12px; border-radius:8px; border:1px solid var(--border); resize:none; font-family:monospace;"
+                    placeholder="ตัวอย่าง:&#10;HB01&#10;HB02&#10;HB03"></textarea>
+                <div style="display:flex; gap:10px; margin-top:20px;">
+                    <button class="btn" style="flex:1;" onclick="closeTruckPasteModal()">ยกเลิก</button>
+                    <button class="btn btn-primary" style="flex:1;" onclick="processTruckPaste()">ยืนยัน</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Operation Dashboard Area (Daily Summary Report) -->
+        <div id="operationDashboardArea" style="display:none;">
+            <div class="card" id="opReportCard" style="background:#f8fafc;">
+                <div class="card-header" style="background:white; border-bottom:1px solid var(--border);">
+                    <div>
+                        <h2 class="card-title" style="color:var(--primary); font-size:24px;"><i
+                                data-lucide="file-check"></i> IYARA Night Shift Report</h2>
+                        <p style="font-size:14px; color:var(--text-muted); margin-top:4px;" id="opReportDateDisplay">
+                        </p>
+                    </div>
+                    <div style="display:flex; gap:12px;">
+                        <input type="date" id="opReportDate" class="input-modern" style="width:140px;"
+                            onchange="loadOperationDashboardData()">
+                        <button class="btn btn-primary" onclick="saveOperationDashboardData()">
+                            <i data-lucide="save"></i> บันทึกข้อมูล
+                        </button>
+                        <button class="export-btn" onclick="exportOperationToImage()">
+                            <i data-lucide="download"></i> Export Image
+                        </button>
+                    </div>
+                </div>
+
+                <div style="padding:24px;">
+                    <!-- KPI Summary Cards -->
+                    <!-- NEW Header Grid -->
+                    <style>
+                        .op-header-grid {
+                            display: grid;
+                            grid-template-columns: repeat(12, 1fr);
+                            gap: 1px;
+                            background: #cbd5e1;
+                            /* Grid border color */
+                            border: 1px solid #cbd5e1;
+                            margin-bottom: 24px;
+                            font-family: 'Inter', sans-serif;
+                            border-radius: 6px;
+                            overflow: hidden;
+                        }
+
+                        .op-h-cell {
+                            background: white;
+                            padding: 8px 4px;
+                            text-align: center;
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: center;
+                            align-items: center;
+                        }
+
+                        .op-h-title {
+                            background: #334155;
+                            color: white;
+                            font-size: 13px;
+                            font-weight: 700;
+                            padding: 8px;
+                        }
+
+                        .op-h-sub {
+                            background: #64748b;
+                            color: white;
+                            font-size: 11px;
+                            font-weight: 600;
+                        }
+
+                        .op-val-lg {
+                            font-size: 20px;
+                            font-weight: 800;
+                            color: #0f172a;
+                        }
+
+                        .op-val-md {
+                            font-size: 16px;
+                            font-weight: 700;
+                            color: #0f172a;
+                        }
+
+                        .bg-dark {
+                            background: #1e293b;
+                            color: white;
+                        }
+
+                        .bg-gray {
+                            background: #f1f5f9;
+                        }
+
+                        .text-green {
+                            color: #16a34a;
+                        }
+
+                        .text-red {
+                            color: #dc2626;
+                        }
+
+                        .bg-green {
+                            background: #dcfce7;
+                        }
+
+                        .bg-red {
+                            background: #fee2e2;
+                        }
+
+                        /* Merge Cells */
+                        .col-span-2 {
+                            grid-column: span 2;
+                        }
+
+                        .col-span-3 {
+                            grid-column: span 3;
+                        }
+
+                        .col-span-7 {
+                            grid-column: span 7;
+                        }
+                    </style>
+
+                    <div class="op-header-grid">
+                        <!-- Row 1 Headers -->
+                        <div class="op-h-title col-span-2">Total Pack</div>
+                        <div class="op-h-title">Pack</div>
+                        <div class="op-h-title col-span-3">Truck Stats</div>
+                        <div class="op-h-title col-span-6">Head Count Breakdown</div>
+
+                        <!-- Row 2 Values & Sub-headers -->
+                        <div class="op-h-cell col-span-2 bg-white">
+                            <span class="op-val-lg" id="op-total-pack">0</span>
+                        </div>
+                        <div class="op-h-cell" style="font-size:12px; font-weight:600;">PCS</div>
+
+                        <!-- Truck Sub-headers -->
+                        <div class="op-h-sub">On Time</div>
+                        <div class="op-h-sub">Late</div>
+                        <div class="op-h-sub">Total</div>
+
+                        <!-- HC Sub-headers -->
+                        <div class="op-h-sub">Optimum</div>
+                        <div class="op-h-sub">Total HC</div>
+                        <div class="op-h-sub">Active HC</div>
+                        <div class="op-h-sub">OT 2.0</div>
+                        <div class="op-h-sub">SPR/JOB</div>
+                        <!-- Changed from SRP to JOB per user image? Let's use SPR/JOB for clarity -->
+                        <div class="op-h-sub">Outsource</div>
+
+                        <!-- Row 3: Truck Values & OnTime % -->
+                        <div class="op-h-title col-span-2" style="background:#475569;">On Time %</div>
+                        <div class="op-h-cell col-span-1">
+                            <!-- Spacer or Unit -->
+                        </div>
+
+                        <!-- Truck Values -->
+                        <div class="op-h-cell bg-green"><span class="op-val-md text-green" id="op-truck-ontime">0</span>
+                        </div>
+                        <div class="op-h-cell bg-red"><span class="op-val-md text-red" id="op-truck-late">0</span></div>
+                        <div class="op-h-cell"><span class="op-val-md" id="op-total-truck">0</span></div>
+
+                        <!-- HC Values -->
+                        <div class="op-h-cell"><input type="number" id="op-optimum-hc" class="input-modern"
+                                style="width:50px; text-align:center; padding:4px;" placeholder="-"></div>
+                        <div class="op-h-cell"><span class="op-val-md" id="op-total-hc">0</span></div>
+                        <div class="op-h-cell bg-green"><span class="op-val-md" id="op-active-hc">0</span></div>
+                        <div class="op-h-cell"><input type="number" id="op-ot-20" class="input-modern"
+                                style="width:50px; text-align:center; padding:4px;" placeholder="-"></div>
+                        <div class="op-h-cell"><span class="op-val-md" id="op-spr-hc">0</span></div>
+                        <div class="op-h-cell"><span class="op-val-md" id="op-os-hc">0</span></div>
+
+                        <!-- Row 4: Throughput (Spanning or Floating) -->
+                        <div class="op-h-cell col-span-2 bg-white">
+                            <span class="op-val-lg" id="op-on-time-pct">0%</span>
+                        </div>
+                        <div class="op-h-cell col-span-9" style="background:#f8fafc; border:none;"></div>
+                        <div class="op-h-cell" style="background:#3b82f6; color:white;">
+                            <span style="font-size:10px;">Throughput</span>
+                            <span class="op-val-md" style="color:white;" id="op-throughput">0</span>
+                        </div>
+                    </div>
+
+                    <div style="display:flex; flex-direction:column; gap:24px;">
+                        <!-- Dispatch Monitor (Full Width) -->
+                        <div>
+                            <div class="card-header"
+                                style="background:#1e293b; color:white; padding:12px 20px; border-radius:12px 12px 0 0; margin-bottom:0;">
+                                <h3
+                                    style="margin:0; font-size:16px; display:flex; justify-content:space-between; align-items:center;">
+                                    <span style="display:flex; align-items:center; gap:8px;"><i data-lucide="truck"
+                                            style="width:20px;"></i> รายการปล่อยรถ (Truck Dispatch Monitor)</span>
+                                    <span id="op-dispatch-summary" style="font-size:12px; opacity:0.8;">Completed: 0 |
+                                        On Time: 0</span>
+                                </h3>
+                            </div>
+                            <div id="op-dispatch-container" class="op-grid-container">
+                                <!-- Categorized Sections Render Here -->
+                                <p style="text-align:center; padding:20px; color:#94a3b8;">กำลังโหลดข้อมูล...</p>
+                            </div>
+                        </div>
+
+                        <!-- Remark (Moved to bottom, full width) -->
+                        <div class="card" style="border-color:var(--border);">
+                            <h4 style="margin-bottom:12px; font-size:14px; color:var(--text-main);">
+                                หมายเหตุเพิ่มเติม (Remark)</h4>
+                            <textarea id="op-remark" class="input-modern" style="width:100%; height:80px; resize:none;"
+                                placeholder="ระบุรายละเอียดปัญหา หรือหมายเหตุ..."></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Outsource Staff Area -->
+
+
         <div id="outsourceStaffArea" style="display:none;">
             <div class="card">
                 <div class="card-header">
@@ -3666,6 +4290,21 @@
         let currentDept = 'Veg'; // Default department
         window.plannerRequirements = {};
 
+        // Truck Sorting State
+        let truckSortingData = {
+            date: '',
+            hubCodes: [],
+            mrCodes: [],
+            assignments: []
+        };
+
+        // Operation Dashboard State
+        let operationData = {
+            date: '',
+            dispatch: [],
+            inbound: {}
+        };
+
         // RBAC State
         let currentUserRole = null;
         const SUPERVISOR_PWD = '20260001';
@@ -3735,6 +4374,77 @@
             showView('home'); // Default view
         }
 
+        function showView(view, dept) {
+            // 1. Hide all areas
+            const areaIds = [
+                'homeArea', 'dashboardArea', 'personalDashboardArea', 'scheduleArea',
+                'attendanceArea', 'positionPlanArea', 'historyArea', 'outsourceStaffArea',
+                'sprStaffArea', 'forecastArea', 'plannerArea', 'overviewArea',
+                'truckSortingArea', 'operationDashboardArea', 'truckPlanArea'
+            ];
+            areaIds.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.style.display = 'none';
+            });
+
+            // 2. Remove active from all nav
+            document.querySelectorAll('.nav-item, .mobile-nav-item').forEach(el => el.classList.remove('active'));
+
+            // 3. Set active nav
+            const nav = document.getElementById('nav-' + view);
+            if (nav) nav.classList.add('active');
+            const mNav = document.getElementById('m-nav-' + view);
+            if (mNav) mNav.classList.add('active');
+
+            // 4. View Logic
+            if (view === 'home') {
+                document.getElementById('homeArea').style.display = 'block';
+                fetchAnnouncement();
+            } else if (view === 'dashboard') {
+                document.getElementById('dashboardArea').style.display = 'block';
+                loadDashboardData(0);
+            } else if (view === 'personal-dashboard') {
+                document.getElementById('personalDashboardArea').style.display = 'block';
+                const empId = document.getElementById('empId').value;
+                if (empId) loadPersonalDashboardData(empId);
+            } else if (view === 'schedule' || view === 'history') {
+                document.getElementById('scheduleArea').style.display = 'block';
+                const type = view === 'schedule' ? 'schedule' : 'history';
+                fetchData(type);
+            } else if (view === 'attendance') {
+                showAttendance();
+            } else if (view === 'pos-plan') {
+                showPositionPlan();
+            } else if (view === 'outsource-staff') {
+                document.getElementById('outsourceStaffArea').style.display = 'block';
+                loadStaffList('Outsource');
+            } else if (view === 'spr-staff') {
+                document.getElementById('sprStaffArea').style.display = 'block';
+                loadStaffList('SPR');
+            } else if (view === 'forecast') {
+                showForecast();
+            } else if (view === 'planner') {
+                showPlanner(dept);
+            } else if (view === 'overview') {
+                showOverview();
+            } else if (view === 'truck-sorting') {
+                showTruckSorting();
+            } else if (view === 'operation-report') {
+                showOperationDashboard();
+            } else if (view === 'truck-plan') {
+                showTruckPlan();
+            }
+
+            if (window.innerWidth <= 991) {
+                const sidebar = document.getElementById('mainSidebar');
+                const overlay = document.getElementById('sidebarOverlay');
+                if (sidebar.classList.contains('open')) {
+                    sidebar.classList.remove('open');
+                    overlay.classList.remove('active');
+                }
+            }
+        }
+
         function applyRoleAccess() {
             // Select both desktop and mobile nav items
             const navItems = document.querySelectorAll('.nav-item, .mobile-nav-item');
@@ -3762,101 +4472,883 @@
             }
         }
 
-        function showView(view, dept) {
-            // Hide all
-            ['homeArea', 'resultArea', 'forecastArea', 'plannerArea', 'requestArea', 'dashboardArea', 'personalDashboardArea', 'overviewArea', 'outsourceCheckInArea', 'attendanceArea', 'positionPlanArea', 'outsourceStaffArea', 'sprStaffArea'].forEach(id => {
-                const el = document.getElementById(id);
-                if (el) el.style.display = 'none';
+        function showTruckSorting() {
+            document.getElementById('truckSortingArea').style.display = 'block';
+            if (!document.getElementById('truckSortingDate').value) {
+                document.getElementById('truckSortingDate').valueAsDate = new Date();
+            }
+            backToTruckStep1(); // Always start at step 1
+            loadTruckRoundData();
+        }
+
+        // ========== TRUCK PLAN LOGIC ==========
+
+        function showTruckPlan() {
+            document.getElementById('truckPlanArea').style.display = 'block';
+            if (!document.getElementById('truckPlanDate').value) {
+                document.getElementById('truckPlanDate').valueAsDate = new Date();
+            }
+            loadTruckPlanData();
+        }
+
+        async function loadTruckPlanData() {
+            const date = document.getElementById('truckPlanDate').value;
+            const container = document.getElementById('truckPlanContainer');
+            container.innerHTML = '<p style="text-align:center; color:#94a3b8;">Loading plan...</p>';
+
+            try {
+                const res = await fetch(`${GAS_URL}?action=getTruckRoundPlan&date=${date}`);
+                const result = await res.json();
+
+                if (result.success && result.data && result.data.length > 0) {
+                    renderTruckPlan(result.data);
+                } else {
+                    // Default Plan if empty
+                    renderTruckPlan([
+                        { category: 'รอบ 8 โมง', trucks: [] },
+                        { category: 'รอบ 9 โมง', trucks: [] },
+                        { category: 'Expansions', trucks: [] }
+                    ]);
+                }
+            } catch (e) {
+                console.error(e);
+                container.innerHTML = `<p style="color:red; text-align:center;">Error loading plan: ${e.message}</p>`;
+            }
+        }
+
+        function renderTruckPlan(plans) {
+            const container = document.getElementById('truckPlanContainer');
+            container.innerHTML = '';
+
+            plans.forEach(p => {
+                const catId = 'plan-cat-' + Math.random().toString(36).substr(2, 9);
+                const section = document.createElement('div');
+                section.className = 'card';
+                section.style.padding = '15px';
+                section.setAttribute('data-category-id', catId);
+
+                section.innerHTML = `
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                        <input type="text" class="input-modern plan-cat-name" value="${p.category}" style="font-weight:bold; font-size:16px; width:60%;">
+                        <div style="display:flex; gap:10px;">
+                            <button class="btn-sm btn-outline-danger" onclick="removePlanItem(this)" title="ลบรอบ"><i data-lucide="trash-2"></i></button>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="op-table" style="font-size:14px;">
+                            <thead>
+                                <tr style="background:#f1f5f9;">
+                                    <th style="width:12%; text-align:center;">เนื้อ</th>
+                                    <th style="width:12%; text-align:center;">ผัก</th>
+                                    <th style="width:45%;">ทะเบียน/ชื่อรถ</th>
+                                    <th style="width:18%; text-align:center;">Target Time</th>
+                                    <th style="width:8%;"></th>
+                                </tr>
+                            </thead>
+                            <tbody class="plan-truck-list">
+                                <!-- Trucks Go Here -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <button class="btn-sm btn-outline-primary" style="margin-top:10px; width:100%;" onclick="addPlanTruck(this)">
+                        <i data-lucide="plus"></i> เพิ่มรถ
+                    </button>
+                `;
+
+                container.appendChild(section);
+
+                const tbody = section.querySelector('tbody');
+                if (p.trucks && p.trucks.length > 0) {
+                    p.trucks.forEach(t => {
+                        addPlanTruckRow(tbody, t);
+                    });
+                } else {
+                    // Add empty row? No, keep empty.
+                }
             });
-
-            // Close mobile sidebar if open
-            const sidebar = document.getElementById('mainSidebar');
-            if (sidebar.classList.contains('open')) {
-                toggleSidebar();
-            }
-
-            // Update Nav Classes
-            document.querySelectorAll('.nav-item, .mobile-nav-item').forEach(el => {
-                el.classList.remove('active');
-            });
-
-            // Show target
-            if (view === 'home') {
-                document.getElementById('homeArea').style.display = 'block';
-            } else if (view === 'schedule' || view === 'history') {
-                const empId = document.getElementById('empId').value.trim();
-                if (!empId && (view === 'schedule' || view === 'history')) {
-                    alert('กรุณากรอกรหัสพนักงานก่อนครับ');
-                    showView('home');
-                    return;
-                }
-                fetchData(view);
-                document.getElementById('resultArea').style.display = 'block';
-            } else if (view === 'forecast') {
-                showForecast();
-            } else if (view === 'overview') {
-                showOverview();
-            } else if (view === 'planner') {
-                if (dept) currentDept = dept;
-                showPlanner(currentDept);
-            } else if (view === 'attendance') {
-                showAttendanceView();
-            } else if (view === 'position-plan') {
-                showPositionPlan();
-            } else if (view === 'request') {
-                const empId = document.getElementById('empId').value.trim();
-                if (!empId) {
-                    alert('กรุณากรอกรหัสพนักงานก่อนครับ');
-                    showView('home');
-                    return;
-                }
-                document.getElementById('requestArea').style.display = 'block';
-                document.getElementById('requestDate').valueAsDate = new Date();
-            } else if (view === 'dashboard') {
-                document.getElementById('dashboardArea').style.display = 'block';
-                loadDashboardData();
-            } else if (view === 'personal-dashboard') {
-                const empId = document.getElementById('empId').value.trim();
-                if (!empId) {
-                    alert('กรุณากรอกรหัสพนักงานก่อนครับ');
-                    showView('home');
-                    return;
-                }
-                document.getElementById('personalDashboardArea').style.display = 'block';
-                loadPersonalDashboardData(empId);
-            } else if (view === 'outsource-checkin') {
-                document.getElementById('outsourceCheckInArea').style.display = 'block';
-                loadOutsourceStaff();
-            } else if (view === 'outsource-staff') {
-                document.getElementById('outsourceStaffArea').style.display = 'block';
-                loadStaffList('Outsource');
-            } else if (view === 'spr-staff') {
-                document.getElementById('sprStaffArea').style.display = 'block';
-                loadStaffList('SPR');
-            }
-
-            // Set dynamic active class
-            let navId = `nav-${view}`;
-            let mNavId = `m-nav-${view}`;
-            if (view === 'planner') {
-                navId = `nav-planner-${currentDept.toLowerCase()}`;
-                mNavId = `m-nav-planner-${currentDept.toLowerCase()}`;
-            }
-
-            if (document.getElementById(navId)) document.getElementById(navId).classList.add('active');
-            if (document.getElementById(mNavId)) document.getElementById(mNavId).classList.add('active');
-
-            // Close sidebar on mobile after selection
-            if (window.innerWidth <= 991) {
-                const sidebar = document.getElementById('mainSidebar');
-                const overlay = document.getElementById('sidebarOverlay');
-                if (sidebar) sidebar.classList.remove('open');
-                if (overlay) overlay.classList.remove('active');
-            }
-
-            // Refresh icons
             lucide.createIcons();
         }
+
+        function addPlanCategory() {
+            const container = document.getElementById('truckPlanContainer');
+            // Reuse render logic for single item
+            // Mock plan
+            const dummy = [{ category: 'รอบใหม่', trucks: [] }];
+            // Append HTML manually or reuse render logic if refined.
+            // Let's just append HTML similar to render.
+            const section = document.createElement('div');
+            section.className = 'card';
+            section.style.padding = '15px';
+            section.innerHTML = `
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                    <input type="text" class="input-modern plan-cat-name" value="รายชื่อรอบใหม่" style="font-weight:bold; font-size:16px; width:60%;">
+                    <button class="btn-sm btn-outline-danger" onclick="removePlanItem(this)"><i data-lucide="trash-2"></i></button>
+                </div>
+                <div class="table-responsive">
+                    <table class="op-table" style="font-size:14px;">
+                        <thead>
+                            <tr style="background:#f1f5f9;">
+                                <th style="width:12%; text-align:center;">เนื้อ</th>
+                                <th style="width:12%; text-align:center;">ผัก</th>
+                                <th style="width:45%;">ทะเบียน/ชื่อรถ</th>
+                                <th style="width:18%; text-align:center;">Target Time</th>
+                                <th style="width:8%;"></th>
+                            </tr>
+                        </thead>
+                        <tbody class="plan-truck-list">
+                             <!-- Empty -->
+                        </tbody>
+                    </table>
+                </div>
+                <button class="btn-sm btn-outline-primary" style="margin-top:10px; width:100%;" onclick="addPlanTruck(this)">
+                    <i data-lucide="plus"></i> เพิ่มรถ
+                </button>
+             `;
+            container.appendChild(section);
+            lucide.createIcons();
+            addPlanTruck(section.querySelector('.btn-sm')); // Add 1 empty row
+        }
+
+        function addPlanTruck(btn) {
+            const tbody = btn.closest('.card').querySelector('tbody');
+            addPlanTruckRow(tbody, {});
+        }
+
+        function addPlanTruckRow(tbody, data) {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td><input type="text" class="input-modern text-center plan-meat" value="${data.meat || ''}"></td>
+                <td><input type="text" class="input-modern text-center plan-veg" value="${data.veg || ''}"></td>
+                <td><input type="text" class="input-modern plan-code" value="${data.code || ''}"></td>
+                <td><input type="time" class="input-modern text-center plan-target-time" value="${data.targetTime || ''}"></td>
+                <td><button class="btn-icon-manage delete" onclick="removePlanItem(this)"><i data-lucide="x"></i></button></td>
+            `;
+            tbody.appendChild(tr);
+            lucide.createIcons();
+            // Focus on code if new
+            if (!data.code) {
+                // tr.querySelector('.plan-code').focus(); 
+                // Focus logic might jump around, optional.
+            }
+        }
+
+        function removePlanItem(btn) {
+            // Can remove row (tr) or category (div.card)
+            const tr = btn.closest('tr');
+            if (tr) {
+                tr.remove();
+            } else {
+                const card = btn.closest('.card');
+                if (card && confirm('ลบรอบรถนี้?')) {
+                    card.remove();
+                }
+            }
+        }
+
+        async function saveTruckPlanData() {
+            const btn = event.currentTarget;
+            const originalText = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = 'Saving...';
+
+            try {
+                const date = document.getElementById('truckPlanDate').value;
+                const container = document.getElementById('truckPlanContainer');
+                const plans = [];
+
+                container.querySelectorAll('.card').forEach(card => {
+                    const catName = card.querySelector('.plan-cat-name').value.trim();
+                    if (!catName) return;
+
+                    const trucks = [];
+                    card.querySelectorAll('tbody tr').forEach(tr => {
+                        trucks.push({
+                            meat: tr.querySelector('.plan-meat').value,
+                            veg: tr.querySelector('.plan-veg').value,
+                            code: tr.querySelector('.plan-code').value,
+                            targetTime: tr.querySelector('.plan-target-time').value
+                        });
+                    });
+
+                    plans.push({
+                        category: catName,
+                        trucks: trucks
+                    });
+                });
+
+                const payload = {
+                    action: 'saveTruckRoundPlan',
+                    date: date,
+                    plans: plans
+                };
+
+                const res = await fetch(GAS_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(payload)
+                });
+                const result = await res.json();
+
+                if (result.success) {
+                    alert('✅ บันทึกแผนเดินรถเรียบร้อยแล้ว');
+                } else {
+                    alert('❌ Save Failed: ' + result.message);
+                }
+            } catch (e) {
+                console.error(e);
+                alert('Error: ' + e.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+            }
+        }
+
+        function importTruckPlanCSV(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                try {
+                    const text = e.target.result;
+                    const lines = text.split('\n').map(l => l.trim()).filter(l => l);
+
+                    if (lines.length < 2) {
+                        alert('❌ ไฟล์ CSV ว่างเปล่าหรือไม่ถูกต้อง');
+                        return;
+                    }
+
+                    // Parse CSV (simple parser, assumes no commas in values)
+                    const header = lines[0].split(',').map(h => h.trim());
+
+                    // Flexible header matching (accept "Target time" or "TargetTime")
+                    const normalizeHeader = (h) => h.toLowerCase().replace(/\s+/g, '');
+                    const expectedNormalized = ['category', 'meat', 'veg', 'truckcode', 'targettime'];
+
+                    // Validate header (flexible matching)
+                    const isValid = header.length >= 5 && expectedNormalized.every((expected, i) =>
+                        normalizeHeader(header[i] || '') === expected
+                    );
+
+                    if (!isValid) {
+                        alert(`❌ CSV Header ไม่ถูกต้อง\nต้องการ: Category, Meat, Veg, TruckCode, TargetTime (หรือ Target time)\nได้รับ: ${header.join(', ')}`);
+                        return;
+                    }
+
+                    // Group by category
+                    const planMap = new Map();
+                    for (let i = 1; i < lines.length; i++) {
+                        const cols = lines[i].split(',').map(c => c.trim());
+                        if (cols.length < 5) continue;
+
+                        const [category, meat, veg, code, targetTime] = cols;
+                        if (!category) continue;
+
+                        if (!planMap.has(category)) {
+                            planMap.set(category, []);
+                        }
+
+                        // Normalize time format: "6:00" -> "06:00"
+                        let normalizedTime = targetTime || '';
+                        if (normalizedTime && normalizedTime.includes(':')) {
+                            const parts = normalizedTime.split(':');
+                            if (parts[0].length === 1) {
+                                normalizedTime = '0' + normalizedTime;
+                            }
+                        }
+
+                        planMap.get(category).push({
+                            meat: meat || '',
+                            veg: veg || '',
+                            code: code || '',
+                            targetTime: normalizedTime
+                        });
+                    }
+
+                    // Convert to plans array
+                    const plans = [];
+                    planMap.forEach((trucks, category) => {
+                        plans.push({ category, trucks });
+                    });
+
+                    // Render imported data
+                    renderTruckPlan(plans);
+                    alert(`✅ Import สำเร็จ!\n- ${plans.length} รอบรถ\n- ${lines.length - 1} รายการรถ`);
+
+                } catch (err) {
+                    console.error(err);
+                    alert('❌ Error parsing CSV: ' + err.message);
+                }
+            };
+
+            reader.readAsText(file);
+            // Reset input so same file can be re-imported
+            event.target.value = '';
+        }
+
+        function addTruckInputRow(type, value = '') {
+            const listId = type === 'HB' ? 'truck-round-hub-list' : 'truck-round-mr-list';
+            const listEl = document.getElementById(listId);
+            const row = document.createElement('div');
+            row.className = 'truck-input-row';
+            row.style.marginBottom = '8px';
+            row.innerHTML = `
+                <input type="text" class="input-modern" placeholder="${type === 'HB' ? 'HB01' : 'MR01'}" value="${value}" oninput="this.value = this.value.toUpperCase()">
+                <button class="btn-icon-manage delete" onclick="removeTruckInputRow(this)">
+                    <i data-lucide="trash-2"></i>
+                </button>
+            `;
+            listEl.appendChild(row);
+            lucide.createIcons();
+        }
+
+        function removeTruckInputRow(btn) {
+            btn.closest('.truck-input-row').remove();
+        }
+
+        function openTruckPasteModal(type) {
+            document.getElementById('pasteType').value = type;
+            document.getElementById('truckPasteArea').value = '';
+            document.getElementById('truckPasteModal').style.display = 'flex';
+            document.getElementById('truckPasteArea').focus();
+        }
+
+        function closeTruckPasteModal() {
+            document.getElementById('truckPasteModal').style.display = 'none';
+        }
+
+        function processTruckPaste() {
+            const type = document.getElementById('pasteType').value;
+            const text = document.getElementById('truckPasteArea').value;
+            const codes = text.split('\n').map(c => c.trim()).filter(c => c.length > 0);
+
+            codes.forEach(code => addTruckInputRow(type, code));
+            closeTruckPasteModal();
+        }
+
+        function backToTruckStep1() {
+            document.getElementById('truckStep1').style.display = 'block';
+            document.getElementById('truckStep2').style.display = 'none';
+        }
+
+        async function generateTruckAssignGrid() {
+            const date = document.getElementById('truckSortingDate').value;
+            const hubCodes = Array.from(document.querySelectorAll('#truck-round-hub-list input')).map(i => i.value.trim()).filter(v => v);
+            const mrCodes = Array.from(document.querySelectorAll('#truck-round-mr-list input')).map(i => i.value.trim()).filter(v => v);
+
+            if (hubCodes.length === 0 && mrCodes.length === 0) {
+                return alert('กรุณาระบุรหัสรอบรถอย่างน้อย 1 รายการ');
+            }
+
+            // Save to state
+            truckSortingData.hubCodes = hubCodes;
+            truckSortingData.mrCodes = mrCodes;
+
+            document.getElementById('truckStep1').style.display = 'none';
+            document.getElementById('truckStep2').style.display = 'block';
+
+            const gridEl = document.getElementById('truckAssignGrid');
+            gridEl.innerHTML = '<p style="text-align:center; padding:20px; grid-column: 1/-1;">กำลังโหลดข้อมูลพนักงาน...</p>';
+
+            try {
+                const response = await fetch(`${GAS_URL}?action=getAttendanceViewData&date=${date}`);
+                const result = await response.json();
+
+                if (!result.success) throw new Error('Failed to fetch staff data');
+
+                // Filter for present staff (Ma, Sai, OT)
+                const staffList = (result.data.existing || []).filter(s => s.status === 'มา' || s.status === 'สาย' || s.status === 'OT');
+
+                if (staffList.length === 0) {
+                    gridEl.innerHTML = '<p style="text-align:center; padding:20px; grid-column: 1/-1; color:var(--danger);">ยังไม่มีข้อมูลพนักงานที่มางานในวันนี้</p>';
+                    return;
+                }
+
+                // Prepare HTML
+                let html = `
+                    <div class="assign-header">พนักงานที่มางาน</div>
+                    <div class="assign-header">รอบที่ 1</div>
+                    <div class="assign-header">รอบที่ 2</div>
+                    <div class="assign-header">รอบที่ 3</div>
+                `;
+
+                const allTruckOptions = [
+                    ...hubCodes.map(c => `<option value="${c}">${c} (HUB)</option>`),
+                    ...mrCodes.map(c => `<option value="${c}">${c} (MR)</option>`),
+                    `<option value="OTHER">อื่นๆ / ช่วยงาน</option>`
+                ].join('');
+
+                staffList.forEach(s => {
+                    html += `
+                        <div class="assign-row-header" data-id="${s.id}">
+                            <div>
+                                <div style="font-weight:700;">${s.name}</div>
+                                <div style="font-size:11px; color:var(--text-muted);">${s.pos} | ${s.side}</div>
+                            </div>
+                        </div>
+                        <div class="assign-cell"><select class="sel-truck" onchange="styleTruckSelect(this)"><option value="">-</option>${allTruckOptions}</select></div>
+                        <div class="assign-cell"><select class="sel-truck" onchange="styleTruckSelect(this)"><option value="">-</option>${allTruckOptions}</select></div>
+                        <div class="assign-cell"><select class="sel-truck" onchange="styleTruckSelect(this)"><option value="">-</option>${allTruckOptions}</select></div>
+                    `;
+                });
+
+                gridEl.innerHTML = html;
+                document.getElementById('truckTotalInfo').innerText = `พนักงาน: ${staffList.length} คน | HUB: ${hubCodes.length} | MR: ${mrCodes.length}`;
+
+                // Restore assignments from current state if any (was loaded from server)
+                restoreTruckAssignments();
+
+            } catch (e) {
+                console.error('Generate grid error:', e);
+                gridEl.innerHTML = `<p style="text-align:center; padding:20px; color:var(--danger); grid-column:1/-1;">เกิดข้อผิดพลาด: ${e.message}</p>`;
+            }
+        }
+
+        function styleTruckSelect(sel) {
+            const val = sel.value;
+            sel.classList.remove('type-hb', 'type-mr', 'type-other');
+            if (val.startsWith('HB')) sel.classList.add('type-hb');
+            else if (val.startsWith('MR')) sel.classList.add('type-mr');
+            else if (val === 'OTHER') sel.classList.add('type-other');
+        }
+
+        function restoreTruckAssignments() {
+            if (!truckSortingData.assignments || truckSortingData.assignments.length === 0) return;
+
+            const grid = document.getElementById('truckAssignGrid');
+            const rowHeaders = grid.querySelectorAll('.assign-row-header');
+
+            rowHeaders.forEach(header => {
+                const empId = header.getAttribute('data-id');
+                const assign = truckSortingData.assignments.find(a => a.empId === empId);
+                if (assign) {
+                    const selects = [];
+                    let next = header.nextElementSibling;
+                    for (let i = 0; i < 3; i++) {
+                        if (next && next.classList.contains('assign-cell')) {
+                            const sel = next.querySelector('select');
+                            if (sel) {
+                                if (i === 0) sel.value = assign.round1 || '';
+                                if (i === 1) sel.value = assign.round2 || '';
+                                if (i === 2) sel.value = assign.round3 || '';
+                                styleTruckSelect(sel);
+                            }
+                        }
+                        next = next.nextElementSibling;
+                    }
+                }
+            });
+        }
+
+        async function saveTruckAssignment() {
+            const btn = event.currentTarget || event.target;
+            const originalText = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '<i data-lucide="loader-2" class="animate-spin"></i> บันทึก...';
+            lucide.createIcons();
+
+            try {
+                const date = document.getElementById('truckSortingDate').value;
+                const hubCodes = Array.from(document.querySelectorAll('#truck-round-hub-list input')).map(i => i.value.trim()).filter(v => v);
+                const mrCodes = Array.from(document.querySelectorAll('#truck-round-mr-list input')).map(i => i.value.trim()).filter(v => v);
+
+                const assignments = [];
+                const grid = document.getElementById('truckAssignGrid');
+                const rowHeaders = grid.querySelectorAll('.assign-row-header');
+
+                rowHeaders.forEach(header => {
+                    const empId = header.getAttribute('data-id');
+                    const selects = [];
+                    let next = header.nextElementSibling;
+                    for (let i = 0; i < 3; i++) {
+                        if (next && next.classList.contains('assign-cell')) {
+                            const sel = next.querySelector('select');
+                            if (sel) selects.push(sel.value);
+                        }
+                        next = next.nextElementSibling;
+                    }
+                    if (selects.some(v => v)) {
+                        assignments.push({
+                            empId: empId,
+                            round1: selects[0] || '',
+                            round2: selects[1] || '',
+                            round3: selects[2] || ''
+                        });
+                    }
+                });
+
+                const payload = {
+                    action: 'saveTruckAssignment',
+                    date: date,
+                    hubCodes: hubCodes,
+                    mrCodes: mrCodes,
+                    assignments: assignments
+                };
+
+                const res = await fetch(GAS_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(payload)
+                });
+                const result = await res.json();
+                if (result.success) {
+                    alert('✅ บันทึกข้อมูลการจัดรอบรถเรียบร้อยแล้ว');
+                } else {
+                    throw new Error(result.message);
+                }
+            } catch (e) {
+                alert('❌ Error: ' + e.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+                lucide.createIcons();
+            }
+        }
+
+        async function loadTruckRoundData() {
+            const date = document.getElementById('truckSortingDate').value;
+            if (!date) return;
+
+            // Clear Step 1 UI
+            document.getElementById('truck-round-hub-list').innerHTML = '';
+            document.getElementById('truck-round-mr-list').innerHTML = '';
+
+            try {
+                const res = await fetch(`${GAS_URL}?action=getTruckRoundData&date=${date}`);
+                const result = await res.json();
+
+                if (result.success && result.data) {
+                    const d = result.data;
+                    truckSortingData = {
+                        date: date,
+                        hubCodes: d.hubCodes || [],
+                        mrCodes: d.mrCodes || [],
+                        assignments: d.assignments || []
+                    };
+
+                    // Fill Step 1
+                    truckSortingData.hubCodes.forEach(c => addTruckInputRow('HB', c));
+                    truckSortingData.mrCodes.forEach(c => addTruckInputRow('MR', c));
+                } else {
+                    truckSortingData = { date, hubCodes: [], mrCodes: [], assignments: [] };
+                }
+            } catch (e) {
+                console.error('Load truck data error:', e);
+            }
+        }
+
+        // ========== OPERATION DASHBOARD LOGIC ==========
+
+        const DISPATCH_CATEGORIES = ['รอบ 8 โมง', 'รอบ 9 โมง', 'รอบ 10 โมง', 'MILK RUN', 'Expansions', 'Cluster', 'Iberry group'];
+
+        function showOperationDashboard() {
+            document.getElementById('operationDashboardArea').style.display = 'block';
+            if (!document.getElementById('opReportDate').value) {
+                document.getElementById('opReportDate').valueAsDate = new Date();
+            }
+            loadOperationDashboardData();
+        }
+
+        async function loadOperationDashboardData() {
+            const date = document.getElementById('opReportDate').value;
+            const dateDisplay = document.getElementById('opReportDateDisplay');
+            if (dateDisplay) {
+                const d = new Date(date);
+                const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                dateDisplay.innerText = d.toLocaleDateString('th-TH', options);
+            }
+
+            // Show loading / Reset
+            document.getElementById('op-total-pack').innerText = '...';
+            document.getElementById('op-dispatch-container').innerHTML = '<p style="text-align:center; padding:20px;">กำลังโหลด...</p>';
+
+            try {
+                const res = await fetch(`${GAS_URL}?action=getOperationDashboardViewData&date=${date}`);
+                const result = await res.json();
+
+                if (result.success && result.data) {
+                    const data = result.data;
+                    operationData = data; // Store globally
+
+                    // 1. Header Grid Data
+                    document.getElementById('op-total-pack').innerText = (data.totalPack || 0).toLocaleString();
+
+                    // Headcounts
+                    const hc = data.hc || {};
+                    document.getElementById('op-total-hc').innerText = hc.total || 0;
+                    document.getElementById('op-active-hc').innerText = hc.active || 0;
+                    document.getElementById('op-spr-hc').innerText = hc.spr || 0;
+                    document.getElementById('op-os-hc').innerText = hc.outsource || 0;
+
+                    // Inputs (Optimum, OT)
+                    document.getElementById('op-optimum-hc').value = hc.optimum || '';
+                    document.getElementById('op-ot-20').value = hc.ot2_0 || '';
+
+                    // 2. Dispatch Monitor Sections
+                    renderDispatchSections(data.dispatch || []);
+
+                    // 3. Inbound Data - REMOVED
+                    // if (data.inbound) { ... }
+
+                    // 4. Remark
+                    document.getElementById('op-remark').value = data.remark || '';
+
+                    // 5. Calculate Stats (Trucks, Throughput, OnTime%)
+                    calculateOpStats();
+
+                }
+            } catch (e) {
+                console.error('Load Op Dashboard error:', e);
+                // alert('ไม่สามารถโหลดข้อมูลได้: ' + e.message);
+            }
+        }
+
+        function renderDispatchSections(dispatchData) {
+            const container = document.getElementById('op-dispatch-container');
+            container.innerHTML = '';
+
+            DISPATCH_CATEGORIES.forEach(cat => {
+                const catRows = dispatchData.filter(d => d.category === cat);
+
+                const section = document.createElement('div');
+                section.className = 'dispatch-section';
+
+                const header = document.createElement('div');
+                header.className = 'dispatch-section-header';
+                header.innerHTML = `
+                    <span>${cat}</span>
+                    <button class="btn-sm btn-outline-primary" onclick="addDispatchRow('${cat}')" style="font-size:11px; padding:4px 8px; border-radius:6px;">
+                        <i data-lucide="plus" style="width:14px; margin-right:4px;"></i> เพิ่มรถ
+                    </button>
+                `;
+                section.appendChild(header);
+
+                const tableResponsive = document.createElement('div');
+                tableResponsive.className = 'table-responsive';
+
+                const table = document.createElement('table');
+                table.className = 'attendance-table op-table';
+                table.style.width = '100%';
+                table.innerHTML = `
+                    <thead>
+                    <tr>
+                        <th style="width:20%;">สายรถ (TRUCK ZONE)</th>
+                        <th style="width:14%;">TARGET</th>
+                        <th style="width:14%;">TRUCK IN</th>
+                        <th style="width:14%;">TRUCK OUT</th>
+                        <th style="width:12%;">STATUS</th>
+                        <th style="width:12%;">DELAY</th>
+                        <th class="hide-in-report" style="width:4%;"></th>
+                    </tr>
+                    </thead>
+                    <tbody id="tbody-${cat.replace(/\s+/g, '-')}" class="dispatch-tbody" data-category="${cat}">
+                    </tbody>
+                `;
+
+                tableResponsive.appendChild(table);
+                section.appendChild(tableResponsive);
+                container.appendChild(section);
+
+                const tbody = table.querySelector('tbody');
+                if (catRows.length > 0) {
+                    catRows.forEach(row => {
+                        tbody.insertAdjacentHTML('beforeend', createDispatchRowHTML(row));
+                    });
+                } else {
+                    tbody.insertAdjacentHTML('beforeend', createDispatchRowHTML());
+                }
+            });
+            lucide.createIcons();
+        }
+
+        function createDispatchRowHTML(data = {}) {
+            return `
+                <tr class="op-dispatch-row">
+                    <td><input type="text" class="input-modern op-zone" value="${data.zone || ''}" placeholder="ระบุสายรถ"></td>
+                    <td><input type="time" class="input-modern op-target" value="${data.target || ''}" onchange="checkOpRowStatus(this)"></td>
+                    <td><input type="time" class="input-modern op-in" value="${data.truckIn || ''}"></td>
+                    <td><input type="time" class="input-modern op-out" value="${data.truckOut || ''}" onchange="checkOpRowStatus(this)"></td>
+                    <td class="op-status-cell"><span class="badge ${getStatusBadgeClass(data.status)}">${data.status || '-'}</span></td>
+                    <td class="op-delay-cell">${data.delay || ''}</td>
+                    <td><button class="btn-icon-manage delete" onclick="removeDispatchRow(this)"><i data-lucide="trash-2"></i></button></td>
+                </tr>
+            `;
+        }
+
+        function addDispatchRow(category) {
+            const tbodyId = `tbody-${category.replace(/\s+/g, '-')}`;
+            const tbody = document.getElementById(tbodyId);
+            if (tbody) {
+                tbody.insertAdjacentHTML('beforeend', createDispatchRowHTML());
+                lucide.createIcons();
+            }
+        }
+
+        function removeDispatchRow(btn) {
+            btn.closest('tr').remove();
+            calculateOpStats();
+        }
+
+        function checkOpRowStatus(input) {
+            const row = input.closest('tr');
+            const target = row.querySelector('.op-target').value;
+            const out = row.querySelector('.op-out').value;
+            const statusCell = row.querySelector('.op-status-cell');
+            const delayCell = row.querySelector('.op-delay-cell');
+
+            if (target && out) {
+                const tDate = new Date(`2000-01-01T${target}`);
+                const oDate = new Date(`2000-01-01T${out}`);
+
+                // Handle Cross-day (if out is early morning vs target late night, OR target early morning vs out late)
+                // Assuming night shift context: 
+                // If Target is 23:00 and Out is 01:00, Out is NEXT day (+1).
+                // If Target is 01:00 and Out is 01:30, Same day.
+                // Simple heuristic: If difference > 12 hours, adjust day.
+
+                let diff = (oDate - tDate) / 60000; // minutes
+
+                if (diff < -720) { // e.g. T=23:00, O=01:00 -> diff = -22h -> Add 24h to Out
+                    diff += 1440;
+                } else if (diff > 720) { // T=01:00, O=23:00 -> diff = +22h -> Subtract 24h from Out
+                    diff -= 1440;
+                }
+
+                if (diff <= 0) {
+                    statusCell.innerHTML = '<span class="badge status-ontime">On Time</span>';
+                    delayCell.innerText = '';
+                } else {
+                    statusCell.innerHTML = '<span class="badge status-late">Delay</span>';
+                    delayCell.innerText = `+${diff} m`;
+                }
+            } else {
+                statusCell.innerHTML = '<span class="badge status-waiting">-</span>';
+                delayCell.innerText = '';
+            }
+            calculateOpStats();
+        }
+
+        function getStatusBadgeClass(status) {
+            if (status === 'On Time') return 'status-ontime';
+            if (status === 'Delay') return 'status-late';
+            return 'status-waiting';
+        }
+
+        function calculateOpStats() {
+            // Count rows
+            let total = 0;
+            let onTime = 0;
+            let late = 0;
+            const rows = document.querySelectorAll('.op-dispatch-row');
+
+            rows.forEach(r => {
+                const zone = r.querySelector('.op-zone').value.trim();
+                const status = r.querySelector('.op-status-cell').innerText.trim();
+                if (zone) { // Count only valid rows
+                    total++;
+                    if (status === 'On Time') onTime++;
+                    else if (status === 'Delay') late++;
+                }
+            });
+
+            // Update Truck Stats in Header
+            document.getElementById('op-total-truck').innerText = total;
+            document.getElementById('op-truck-ontime').innerText = onTime;
+            document.getElementById('op-truck-late').innerText = late;
+
+            // On Time %
+            const pct = total > 0 ? Math.round((onTime / total) * 100) : 0;
+            document.getElementById('op-on-time-pct').innerText = `${pct}%`;
+
+            // Calculate Throughput (Total Pack / Active HC)
+            const totalPackStr = document.getElementById('op-total-pack').innerText.replace(/,/g, '');
+            const activeHcStr = document.getElementById('op-active-hc').innerText.replace(/,/g, '');
+            const totalPack = parseInt(totalPackStr) || 0;
+            const activeHc = parseInt(activeHcStr) || 0;
+
+            const throughput = activeHc > 0 ? Math.round(totalPack / activeHc) : 0;
+            document.getElementById('op-throughput').innerText = throughput.toLocaleString();
+
+            // Summary text
+            const summary = document.getElementById('op-dispatch-summary');
+            if (summary) summary.innerText = `Completed: ${total} | On Time: ${onTime} | Late: ${late}`;
+        }
+
+        async function saveOperationDashboardData() {
+            const btn = event.currentTarget || document.querySelector('#opReportCard button.btn-primary');
+            const originalText = btn ? btn.innerHTML : 'Save';
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<i data-lucide="loader-2" class="animate-spin"></i> บันทึก...';
+                lucide.createIcons();
+            }
+
+            try {
+                const date = document.getElementById('opReportDate').value;
+
+                // 1. Gather Dispatch Data
+                const dispatchRows = [];
+                document.querySelectorAll('.dispatch-tbody').forEach(tbody => {
+                    const category = tbody.getAttribute('data-category');
+                    tbody.querySelectorAll('tr.op-dispatch-row').forEach(r => {
+                        const zone = r.querySelector('.op-zone').value.trim();
+                        if (!zone) return;
+
+                        dispatchRows.push({
+                            category: category,
+                            zone: zone,
+                            target: r.querySelector('.op-target').value,
+                            truckIn: r.querySelector('.op-in').value,
+                            truckOut: r.querySelector('.op-out').value,
+                            status: r.querySelector('.op-status-cell').innerText,
+                            delay: r.querySelector('.op-delay-cell').innerText
+                        });
+                    });
+                });
+
+                // 2. Gather Inbound Data - REMOVED
+                const inboundData = null;
+
+                // 3. Remark & Summary Stats
+                const remark = document.getElementById('op-remark').value;
+                const optimumHC = document.getElementById('op-optimum-hc').value;
+                const ot2_0 = document.getElementById('op-ot-20').value;
+
+                const payload = {
+                    action: 'saveOperationDashboard',
+                    date: date,
+                    dispatch: dispatchRows,
+                    inbound: inboundData,
+                    remark: remark,
+                    optimumHC: optimumHC,
+                    ot2_0: ot2_0
+                };
+
+                const res = await fetch(GAS_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(payload)
+                });
+                const result = await res.json();
+
+                if (result.success) {
+                    alert('✅ บันทึกรายงายเรียบร้อยแล้ว');
+                    loadOperationDashboardData(); // Reload to refresh/confirm
+                } else {
+                    throw new Error(result.message);
+                }
+            } catch (e) {
+                alert('❌ Save Error: ' + e.message);
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = originalText;
+                    lucide.createIcons();
+                }
+            }
+        }
+
+        async function exportOperationToImage() {
+            await exportToImage('opReportCard', 'One_Report');
+        }
+
 
         // ========== ORIGINAL FUNCTIONS (Keep as is) ==========
 
@@ -4126,9 +5618,7 @@
             }
 
             container.style.display = 'block';
-            container.innerHTML = `<h4 style="margin-bottom:15px; font-size:14px; text-transform:uppercase; color:var(--text-muted); display:flex; align-items:center; gap:8px;">
-                <i data-lucide="target" style="width:16px;"></i> Team Goal Progress (Avg P/H)
-            </h4>`;
+            container.innerHTML = `<h4 style="margin-bottom:15px; display:flex; align-items:center; gap:8px;">📊 สรุปความต้องการพนักงาน</h4>`;
 
             const targets = { 'Receiver': 750, 'Dropper': 280, 'Cashier': 350 };
             const colors = { 'Receiver': '#7C3AED', 'Dropper': '#06B6D4', 'Cashier': '#F59E0B' };
@@ -4486,7 +5976,7 @@
 
         async function fetchData(type) {
             const inputVal = document.getElementById('empId').value.trim();
-            if (!inputVal) return alert('กรุณากรอกรหัสพนักงาน');
+            if (!inputVal) return alert('กรุณากรอกรหัสพนักงานก่อนครับ');
 
             try {
                 // 1. Fetch Ordered Schedule (Truth)
@@ -5401,35 +6891,93 @@
             }
         }
 
-        function exportToImage(elementId, fileNamePrefix) {
+        async function exportToImage(elementId, fileNamePrefix) {
             const element = document.getElementById(elementId);
-            if (!element) return;
+            if (!element) {
+                alert('ไม่พบ element ที่ต้องการ export');
+                return;
+            }
 
             const btn = event.currentTarget || event.target;
             const originalContent = btn.innerHTML;
-            // Use simple loading text
-            btn.innerHTML = '⌛';
-            btn.disabled = true;
 
-            html2canvas(element, {
-                scale: 2,
-                useCORS: true,
-                backgroundColor: '#F8FAFC',
-                logging: false,
-                ignoreElements: (el) => el.tagName === 'BUTTON' && el.innerText.includes('Export') // Don't include the export button itself if possible
-            }).then(canvas => {
+            try {
+                btn.innerHTML = '⌛ กำลังสร้างภาพ (โหมดเสถียร)...';
+                btn.disabled = true;
+
+                // Scale 1.1 is safer for memory with long reports to prevent black canvas crash.
+                const canvas = await html2canvas(element, {
+                    scale: 1.1,
+                    useCORS: true,
+                    backgroundColor: '#FFFFFF',
+                    onclone: (clonedDoc) => {
+                        const clonedEl = clonedDoc.getElementById(elementId);
+
+                        // Force layout and solid background for the entire capture area
+                        clonedEl.style.width = '1400px';
+                        clonedEl.style.padding = '30px';
+                        clonedEl.style.background = '#FFFFFF';
+                        clonedEl.style.color = '#333';
+
+                        const grid = clonedEl.querySelector('.op-grid-container');
+                        if (grid) {
+                            grid.style.display = 'grid';
+                            grid.style.gridTemplateColumns = '1fr 1fr';
+                            grid.style.gap = '20px';
+                            grid.style.width = '100%';
+                            grid.style.background = '#FFFFFF';
+                        }
+
+                        const tables = clonedEl.querySelectorAll('.op-table');
+                        tables.forEach(table => {
+                            table.style.width = '100%';
+                            table.style.fontSize = '12px';
+                            table.style.background = '#FFFFFF';
+
+                            // Ensure every row and cell has a white background
+                            const cells = table.querySelectorAll('th, td');
+                            cells.forEach(c => {
+                                c.style.background = '#FFFFFF';
+                                c.style.border = '1px solid #ddd';
+                                c.style.color = '#333';
+                            });
+
+                            const toHideInReport = table.querySelectorAll('.hide-in-report');
+                            toHideInReport.forEach(el => el.style.display = 'none');
+
+                            const rows = table.querySelectorAll('tr');
+                            rows.forEach(row => {
+                                row.style.background = '#FFFFFF';
+                                if (row.cells.length > 0) {
+                                    row.cells[row.cells.length - 1].style.display = 'none';
+                                }
+                            });
+                        });
+
+                        const responsives = clonedEl.querySelectorAll('.table-responsive');
+                        responsives.forEach(r => {
+                            r.style.overflow = 'visible';
+                            r.style.width = '100%';
+                            r.style.background = '#FFFFFF';
+                        });
+
+                        const toHide = clonedEl.querySelectorAll('button, .export-btn, .btn-sm');
+                        toHide.forEach(el => el.style.display = 'none');
+                    }
+                });
+
                 const link = document.createElement('a');
                 link.download = `${fileNamePrefix}_${new Date().toISOString().slice(0, 10)}.png`;
                 link.href = canvas.toDataURL('image/png');
                 link.click();
+
+            } catch (err) {
+                console.error('Export error:', err);
+                alert('ไม่สามารถบันทึกรายงานได้เนื่องจากข้อมูลยาวเกินไป: ลองแบ่งรอบรถออกเป็นส่วนๆ หรือติดต่อผู้พัฒนา');
+            } finally {
                 btn.innerHTML = originalContent;
                 btn.disabled = false;
-            }).catch(err => {
-                console.error(err);
-                alert('Export failed: ' + err.message);
-                btn.innerHTML = originalContent;
-                btn.disabled = false;
-            });
+            }
         }
 
         async function submitUserRequest() {
@@ -5601,6 +7149,15 @@
             loadPositionPlan();
         }
 
+        // Helper to normalize time strings (e.g. "01:00" -> "1:00")
+        window.normalizeTime = function (s) {
+            if (!s) return "";
+            let t = String(s).trim().replace(/\./g, ':');
+            // Strip leading zero if it's like 01:00 but NOT if it's 0:40
+            if (t.startsWith('0') && t.length > 4 && t.charAt(1) !== ':') t = t.substring(1);
+            return t.split(':').slice(0, 2).join(':');
+        };
+
         async function loadPositionPlan() {
             const date = document.getElementById('posPlanDate').value;
             const side = window.currentPosSide;
@@ -5690,26 +7247,8 @@
         }
 
         function formatPosSelectDisplay(select) {
-            const selectedOpt = select.options[select.selectedIndex];
-            if (!selectedOpt || !selectedOpt.value) return;
-
-            // When closed, we only want the Nickname.
-            // When opening/re-rendering, we want Nickname (Position).
-            // This is a bit tricky with standard selects. 
-            // We'll update the TEXT of the selected option to just be the nick.
-            // But we must restore others to Nick (Pos) so they look good in the list.
-
-            Array.from(select.options).forEach(opt => {
-                if (!opt.value) return;
-                const staff = window.presentStaffForPlan.find(s => s.id === opt.value);
-                if (staff) {
-                    if (opt === selectedOpt) {
-                        opt.text = staff.nick || staff.name.split(' ')[0];
-                    } else {
-                        opt.text = `${staff.nick || staff.name.split(' ')[0]} (${staff.pos || ''})`;
-                    }
-                }
-            });
+            // Trigger a refresh of all selectors to update colors and labels
+            refreshStaffSelectors();
         }
 
         function renderPositionPlanGrid(existingAssignments) {
@@ -5754,6 +7293,7 @@
             div.className = 'pos-assign-item';
             div.id = itemId;
 
+            // 1. Staff Options
             const staffOptions = (window.presentStaffForPlan || [])
                 .filter(s => s.side === window.currentPosSide)
                 .map(s => {
@@ -5761,6 +7301,7 @@
                     return `<option value="${s.id}" ${data && data.empId === s.id ? 'selected' : ''}>${nick} (${s.pos || ''})</option>`;
                 }).join('');
 
+            // 2. Build HTML (No "selected" logic in template literal for break, we'll do it programmatically)
             div.innerHTML = `
                 <select class="sel-staff" onchange="formatPosSelectDisplay(this); calculatePositionHC()">
                     <option value="">-- เลือกพนักงาน --</option>
@@ -5769,22 +7310,42 @@
                 <input type="text" class="input-subrole" placeholder="Role/Table" value="${data ? (data.subRole || '') : ''}" oninput="calculatePositionHC()">
                 <select class="sel-break" onchange="calculatePositionHC()">
                     <option value="">Break</option>
-                    <option value="0:40" ${data && data.breakTime === '0:40' ? 'selected' : ''}>0:40</option>
-                    <option value="1:00" ${data && data.breakTime === '1:00' ? 'selected' : ''}>1:00</option>
-                    <option value="1:20" ${data && data.breakTime === '1:20' ? 'selected' : ''}>1:20</option>
-                    <option value="1:40" ${data && data.breakTime === '1:40' ? 'selected' : ''}>1:40</option>
-                    <option value="2:00" ${data && data.breakTime === '2:00' ? 'selected' : ''}>2:00</option>
-                    <option value="2:20" ${data && data.breakTime === '2:20' ? 'selected' : ''}>2:20</option>
-                    <option value="3:00" ${data && data.breakTime === '3:00' ? 'selected' : ''}>3:00</option>
+                    <option value="0:40">0:40</option>
+                    <option value="1:00">1:00</option>
+                    <option value="1:20">1:20</option>
+                    <option value="1:40">1:40</option>
+                    <option value="2:00">2:00</option>
+                    <option value="2:20">2:20</option>
+                    <option value="3:00">3:00</option>
                 </select>
                 <button class="btn-remove-pos" onclick="removePosRow('${itemId}')"><i data-lucide="trash-2" style="width:14px;"></i></button>
             `;
 
             list.appendChild(div);
 
-            // Format display immediately if we have data
-            const sel = div.querySelector('.sel-staff');
-            if (sel.value) formatPosSelectDisplay(sel);
+            // 3. Ultra-Robust Digit-Only Matching for Break Time
+            if (data && data.breakTime) {
+                const sel = div.querySelector('.sel-break');
+                const rawVal = String(data.breakTime).replace(/\D/g, '').replace(/^0+/, ''); // only digits, no leading zero
+
+                if (rawVal) {
+                    let matched = false;
+                    for (let i = 0; i < sel.options.length; i++) {
+                        const optVal = sel.options[i].value.replace(/\D/g, '').replace(/^0+/, '');
+                        if (optVal === rawVal) {
+                            sel.selectedIndex = i;
+                            matched = true;
+                            break;
+                        }
+                    }
+                    // Fallback to direct value assignment if loop fails
+                    if (!matched) sel.value = data.breakTime;
+                }
+            }
+
+            // 4. Initial Display Logic
+            const selStaff = div.querySelector('.sel-staff');
+            if (selStaff.value) formatPosSelectDisplay(selStaff);
 
             lucide.createIcons();
             calculatePositionHC();
@@ -5827,9 +7388,49 @@
                 gapEl.innerText = (gap >= 0 ? '+' : '') + gap.toFixed(2);
                 gapEl.style.color = gap < 0 ? '#EF4444' : '#10B981';
             }
+
+            // Highlighting Assigned Staff
+            refreshStaffSelectors();
         }
 
-        async function savePositionPlanData() {
+        function refreshStaffSelectors() {
+            const allSelects = document.querySelectorAll('.sel-staff');
+            const assignedIds = Array.from(allSelects).map(s => s.value).filter(v => v !== "");
+
+            allSelects.forEach(select => {
+                const currentValue = select.value;
+                Array.from(select.options).forEach(opt => {
+                    if (!opt.value) return;
+                    const staff = window.presentStaffForPlan.find(s => s.id === opt.value);
+                    if (!staff) return;
+
+                    const nick = staff.nick || staff.name.split(' ')[0];
+                    const pos = staff.pos || '';
+
+                    const count = assignedIds.filter(id => id === opt.value).length;
+                    const isAssigned = count > 0;
+
+                    if (opt.value === currentValue) {
+                        // Current selection: show nickname only for a cleaner look
+                        opt.text = nick;
+                        opt.style.color = 'var(--primary)';
+                        opt.style.fontWeight = '700';
+                    } else if (isAssigned) {
+                        // Already assigned elsewhere: highlight in green
+                        opt.text = `${nick} (${pos}) ✓`;
+                        opt.style.color = '#10B981';
+                        opt.style.fontWeight = '700';
+                    } else {
+                        // Not assigned: normal look
+                        opt.text = `${nick} (${pos})`;
+                        opt.style.color = '';
+                        opt.style.fontWeight = '';
+                    }
+                });
+            });
+        }
+
+        async function savePositionPlanData(ev) {
             const date = document.getElementById('posPlanDate').value;
             const side = window.currentPosSide;
             const sections = side === 'Veg'
@@ -5865,7 +7466,8 @@
                 return;
             }
 
-            const btn = event.target.closest('button');
+            const btn = ev ? ev.target.closest('button') : null;
+            if (!btn) return; // Safety check
             const originalText = btn.innerHTML;
             btn.innerHTML = '<i data-lucide="loader" class="animate-spin" style="width:16px;"></i> กำลังบันทึก...';
             btn.disabled = true;
