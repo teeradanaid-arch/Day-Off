@@ -3750,6 +3750,9 @@
                             <option value="ลาป่วย">🤒 ลาป่วย</option>
                             <option value="ลากิจ">👤 ลากิจ</option>
                             <option value="แจ้งเข้าสาย">⏰ แจ้งเข้าสาย</option>
+                            <option value="แก้ไขวันหยุด">🗓️ แก้ไขวันหยุด</option>
+                            <option value="แก้ไขกะ">🔄 แก้ไขกะ</option>
+                            <option value="แก้ไขเวลาเข้า - ออก">⏱️ แก้ไขเวลาเข้า - ออก</option>
                             <option value="อื่นๆ">📝 อื่นๆ</option>
                         </select>
                     </div>
@@ -4377,10 +4380,11 @@
         function showView(view, dept) {
             // 1. Hide all areas
             const areaIds = [
-                'homeArea', 'dashboardArea', 'personalDashboardArea', 'scheduleArea',
+                'homeArea', 'dashboardArea', 'personalDashboardArea', 'resultArea',
                 'attendanceArea', 'positionPlanArea', 'historyArea', 'outsourceStaffArea',
                 'sprStaffArea', 'forecastArea', 'plannerArea', 'overviewArea',
-                'truckSortingArea', 'operationDashboardArea', 'truckPlanArea'
+                'truckSortingArea', 'operationDashboardArea', 'truckPlanArea',
+                'requestArea', 'outsourceCheckInArea'
             ];
             areaIds.forEach(id => {
                 const el = document.getElementById(id);
@@ -4408,12 +4412,12 @@
                 const empId = document.getElementById('empId').value;
                 if (empId) loadPersonalDashboardData(empId);
             } else if (view === 'schedule' || view === 'history') {
-                document.getElementById('scheduleArea').style.display = 'block';
+                document.getElementById('resultArea').style.display = 'block';
                 const type = view === 'schedule' ? 'schedule' : 'history';
                 fetchData(type);
             } else if (view === 'attendance') {
                 showAttendance();
-            } else if (view === 'pos-plan') {
+            } else if (view === 'position-plan') {
                 showPositionPlan();
             } else if (view === 'outsource-staff') {
                 document.getElementById('outsourceStaffArea').style.display = 'block';
@@ -4433,6 +4437,11 @@
                 showOperationDashboard();
             } else if (view === 'truck-plan') {
                 showTruckPlan();
+            } else if (view === 'request') {
+                document.getElementById('requestArea').style.display = 'block';
+            } else if (view === 'outsource-checkin') {
+                document.getElementById('outsourceCheckInArea').style.display = 'block';
+                loadOutsourceStaff();
             }
 
             if (window.innerWidth <= 991) {
