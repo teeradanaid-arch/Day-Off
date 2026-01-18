@@ -2440,6 +2440,9 @@
             <a onclick="showView('outsource-checkin')" class="nav-item" id="nav-outsource-checkin" data-role="staff">
                 <i data-lucide="user-check"></i> <span>ลงชื่อทำงาน Outsource</span>
             </a>
+            <a onclick="showView('truck-dispatch')" class="nav-item" id="nav-truck-dispatch" data-role="staff">
+                <i data-lucide="truck-off"></i> <span>ปล่อยรถ (Truck Release)</span>
+            </a>
             <a onclick="showView('attendance')" class="nav-item" id="nav-attendance" data-role="supervisor">
                 <i data-lucide="clipboard-check"></i> <span>เช็คชื่อเข้างาน</span>
             </a>
@@ -2848,6 +2851,9 @@
                     <button class="btn btn-outline-primary" onclick="addPlanCategory()">
                         <i data-lucide="plus"></i> เพิ่มรอบรถ
                     </button>
+                    <button class="btn btn-outline-warning" onclick="repairTruckPlanData()">
+                        <i data-lucide="wrench"></i> ซ่อมแซมข้อมูล
+                    </button>
                     <button class="btn btn-outline-secondary" onclick="document.getElementById('csvFileInput').click()">
                         <i data-lucide="upload"></i> Import CSV
                     </button>
@@ -2857,6 +2863,59 @@
                 <button class="btn btn-primary" onclick="saveTruckPlanData()">
                     <i data-lucide="save"></i> บันทึกแผนเดินรถ
                 </button>
+            </div>
+        </div>
+
+        <!-- Truck Dispatch Area (ปล่อยรถ) -->
+        <div id="truckDispatchArea" class="content-area" style="display: none;">
+            <div class="header-card">
+                <div class="header-title">
+                    <i data-lucide="truck-off"></i>
+                    <h2>บันทึกการปล่อยรถ (Truck Release)</h2>
+                </div>
+                <p class="header-subtitle">สำหรับพนักงานบันทึกข้อมูลการปล่อยรถออกจากคลังและถ่ายรูปปิดท้ายรถ</p>
+            </div>
+
+            <div class="card" style="max-width: 600px; margin: 0 auto;">
+                <div class="control-group" style="margin-bottom: 20px;">
+                    <label>เลือกรอบรถ:</label>
+                    <select id="dispatchRoundSelector" class="select-custom"
+                        style="width: 100%; height: 50px; font-size: 16px;">
+                        <option value="">-- กรุณาเลือกรอบรถ --</option>
+                    </select>
+                </div>
+
+                <div class="control-group" style="margin-bottom: 20px;">
+                    <label>เวลาปล่อยรถ:</label>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="time" id="dispatchTime" class="input-modern" style="flex: 1; font-size: 18px;">
+                        <button class="btn-primary" onclick="stampCurrentTime()" style="padding: 0 20px;">
+                            <i data-lucide="clock"></i> ปัจจุบัน
+                        </button>
+                    </div>
+                </div>
+
+                <div class="control-group" style="margin-bottom: 20px;">
+                    <label>ถ่ายรูปปิดท้ายรถ (มากกว่า 1 รูป):</label>
+                    <div id="photoPreviewContainer"
+                        style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 10px;">
+                        <!-- Photo previews will appear here -->
+                    </div>
+                    <button class="btn btn-outline-primary" onclick="document.getElementById('photoInput').click()"
+                        style="width: 100%; height: 60px; border-style: dashed; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                        <i data-lucide="camera" style="width: 24px; height: 24px;"></i>
+                        <span>ถ่ายรูป / เลือกรูปภาพ</span>
+                    </button>
+                    <input type="file" id="photoInput" accept="image/*" multiple capture="environment"
+                        style="display: none;" onchange="handleDispatchPhotos(event)">
+                </div>
+
+                <div style="margin-top: 30px;">
+                    <button id="saveDispatchBtn" class="btn btn-primary" onclick="saveTruckDispatchData()"
+                        style="width: 100%; height: 55px; font-size: 18px;">
+                        <i data-lucide="save"></i> บันทึกข้อมูล
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -4384,7 +4443,7 @@
                 'attendanceArea', 'positionPlanArea', 'historyArea', 'outsourceStaffArea',
                 'sprStaffArea', 'forecastArea', 'plannerArea', 'overviewArea',
                 'truckSortingArea', 'operationDashboardArea', 'truckPlanArea',
-                'requestArea', 'outsourceCheckInArea'
+                'requestArea', 'outsourceCheckInArea', 'truckDispatchArea'
             ];
             areaIds.forEach(id => {
                 const el = document.getElementById(id);
@@ -4442,6 +4501,9 @@
             } else if (view === 'outsource-checkin') {
                 document.getElementById('outsourceCheckInArea').style.display = 'block';
                 loadOutsourceStaff();
+            } else if (view === 'truck-dispatch') {
+                document.getElementById('truckDispatchArea').style.display = 'block';
+                loadDispatchRounds();
             }
 
             if (window.innerWidth <= 991) {
@@ -4651,6 +4713,22 @@
                 if (card && confirm('ลบรอบรถนี้?')) {
                     card.remove();
                 }
+            }
+        }
+
+        async function repairTruckPlanData() {
+            if (!confirm('ต้องการตรวจสอบและซ่อมแซมการจัดเรียงคอลัมน์ในฐานข้อมูลแผนรถใช่หรือไม่ ระบบจะพยายามย้ายข้อมูลที่เบี้ยวให้กลับมาตรงหลักครับ')) return;
+
+            try {
+                const res = await fetch(GAS_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({ action: 'cleanTruckPlanData' })
+                });
+                const result = await res.json();
+                alert(result.message);
+                loadTruckPlanData();
+            } catch (e) {
+                alert('Repair Error: ' + e.toString());
             }
         }
 
@@ -7709,6 +7787,167 @@
             } catch (e) {
                 alert('Repair Error: ' + e.toString());
             }
+        }
+
+        // ========== TRUCK DISPATCH FUNCTIONS ==========
+        let dispatchPhotos = [];
+
+        async function compressImage(file, maxWidth = 1024, quality = 0.7) {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = (event) => {
+                    const img = new Image();
+                    img.src = event.target.result;
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        let width = img.width;
+                        let height = img.height;
+
+                        if (width > maxWidth) {
+                            height = Math.round((height * maxWidth) / width);
+                            width = maxWidth;
+                        }
+
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+                        resolve(canvas.toDataURL('image/jpeg', quality));
+                    };
+                };
+            });
+        }
+
+        async function loadDispatchRounds() {
+            const selector = document.getElementById('dispatchRoundSelector');
+            selector.innerHTML = '<option value="">กำลังโหลดรอบรถ...</option>';
+
+            try {
+                // Get today's date in YYYY-MM-DD format
+                const today = new Date().toISOString().split('T')[0];
+                const res = await fetch(`${GAS_URL}?action=getTruckRoundPlan&date=${today}`);
+                const result = await res.json();
+
+                selector.innerHTML = '<option value="">-- กรุณาเลือกรอบรถ --</option>';
+                if (result.success && result.data) {
+                    result.data.forEach(cat => {
+                        if (cat.trucks && cat.trucks.length > 0) {
+                            cat.trucks.forEach(t => {
+                                if (t.code) {
+                                    const option = document.createElement('option');
+                                    option.value = t.code;
+                                    option.textContent = t.code;
+                                    selector.appendChild(option);
+                                }
+                            });
+                        }
+                    });
+                }
+            } catch (e) {
+                console.error(e);
+                selector.innerHTML = '<option value="">❌ โหลดข้อมูลล้มเหลว</option>';
+            }
+        }
+
+        function stampCurrentTime() {
+            const now = new Date();
+            const timeStr = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+            document.getElementById('dispatchTime').value = timeStr;
+        }
+
+        async function handleDispatchPhotos(event) {
+            const files = event.target.files;
+            const container = document.getElementById('photoPreviewContainer');
+
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                if (!file.type.startsWith('image/')) continue;
+
+                try {
+                    const photoId = 'photo-' + Date.now() + Math.random().toString(36).substr(2, 5);
+                    const base64 = await compressImage(file);
+
+                    dispatchPhotos.push({ id: photoId, base64: base64, name: file.name });
+
+                    const div = document.createElement('div');
+                    div.style.position = 'relative';
+                    div.style.width = '80px';
+                    div.style.height = '80px';
+                    div.id = photoId;
+                    div.innerHTML = `
+                        <img src="${base64}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px; border: 1px solid var(--border);">
+                        <button onclick="removeDispatchPhoto('${photoId}')" style="position: absolute; top: -5px; right: -5px; background: var(--danger); color: white; border: none; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 10px; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+                            <i data-lucide="x" style="width:12px; height:12px;"></i>
+                        </button>
+                    `;
+                    container.appendChild(div);
+                } catch (err) {
+                    console.error('Error processing photo:', err);
+                }
+            }
+            lucide.createIcons();
+            // Clear input so same file can be selected again if removed
+            event.target.value = '';
+        }
+
+        function removeDispatchPhoto(id) {
+            dispatchPhotos = dispatchPhotos.filter(p => p.id !== id);
+            document.getElementById(id).remove();
+        }
+
+        async function saveTruckDispatchData() {
+            const round = document.getElementById('dispatchRoundSelector').value;
+            const time = document.getElementById('dispatchTime').value;
+            const btn = document.getElementById('saveDispatchBtn');
+
+            if (!round) return alert('กรุณาเลือกรอบรถครับ');
+            if (!time) return alert('กรุณาระบุเวลาปล่อยรถครับ');
+            if (dispatchPhotos.length === 0) return alert('กรุณาถ่ายรูปปิดท้ายรถอย่างน้อย 1 รูปครับ');
+
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i data-lucide="loader-2" class="animate-spin" style="width:18px;"></i> กำลังบันทึก...';
+            btn.disabled = true;
+            lucide.createIcons();
+
+            try {
+                const payload = {
+                    action: 'saveTruckDispatch',
+                    truckCode: round,
+                    releaseTime: time,
+                    photos: dispatchPhotos.map(p => ({ base64: p.base64, name: p.name })),
+                    date: new Date().toISOString().split('T')[0]
+                };
+
+                const res = await fetch(GAS_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(payload)
+                });
+                const result = await res.json();
+
+                if (result.success) {
+                    alert('✅ บันทึกข้อมูลการปล่อยรถเรียบร้อยแล้วครับ ขอบคุณครับ!');
+                    resetDispatchForm();
+                } else {
+                    alert('❌ ไม่สามารถบันทึกข้อมูลได้: ' + result.message);
+                }
+            } catch (e) {
+                console.error(e);
+                alert('❌ เกิดข้อผิดพลาดในการเชื่อมต่อ: ' + e.message);
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                lucide.createIcons();
+            }
+        }
+
+        function resetDispatchForm() {
+            document.getElementById('dispatchRoundSelector').value = '';
+            document.getElementById('dispatchTime').value = '';
+            document.getElementById('photoPreviewContainer').innerHTML = '';
+            const photoInput = document.getElementById('dispatchPhotoInput');
+            if (photoInput) photoInput.value = '';
+            dispatchPhotos = [];
         }
     </script>
     </body>
