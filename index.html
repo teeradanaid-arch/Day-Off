@@ -953,9 +953,9 @@
         }
 
         .shift-off {
-            background: #F1F5F9;
-            color: #475569;
-            border: 1px solid #E2E8F0;
+            background: #FEE2E2;
+            color: #B91C1C;
+            border: 1px solid #FECACA;
         }
 
         .shift-ot {
@@ -6202,7 +6202,7 @@
                                 <strong style="font-size:16px; color:var(--text-main)">${date}</strong>
                                 <span style="color:var(--text-muted); font-size:12px;">(${thaiDay})</span>
                             </div>
-                            <div class="badge ${shift.includes('ลา') || shift.includes('พักร้อน') ? 'bg-blue' : shift === 'Day Off' ? 'bg-muted' : 'bg-green'}" style="font-size:16px; padding:8px 16px;">
+                            <div class="badge shift-${getShiftClass(shift)}" style="font-size:16px; padding:8px 16px;">
                                 ${shift}
                             </div>
                         </div>`;
@@ -6288,7 +6288,9 @@
                                 <div>${date}</div>
                                 <div class="sub-text">${thaiDay}</div>
                             </td>
-                            <td style="border-bottom:1px solid var(--border); font-weight:700; color:var(--primary)">${shiftOrganized}</td>
+                            <td style="border-bottom:1px solid var(--border); text-align:center;">
+                                <div class="badge shift-${getShiftClass(shiftOrganized)}">${shiftOrganized}</div>
+                            </td>
                             <td style="border-bottom:1px solid var(--border)">
                                 <div class="flex-col">
                                     <span>${timeIn} - ${timeOut}</span>
@@ -6927,13 +6929,15 @@
         }
 
         function getShiftClass(shift) {
-            if (shift === '22:00') return '22';
-            if (shift === '21:00') return '21';
-            if (shift === 'Day Off') return 'off';
-            if (shift === 'OT') return 'ot';
-            if (shift === 'พักร้อน') return 'vacation';
-            if (shift === 'ลากิจ') return 'personal';
-            if (shift === 'ลาป่วย') return 'sick';
+            if (!shift) return '22';
+            const s = String(shift).toLowerCase();
+            if (s.includes('22:00')) return '22';
+            if (s.includes('21:00')) return '21';
+            if (s.includes('off') || s.includes('วันหยุด')) return 'off';
+            if (s.includes('ot')) return 'ot';
+            if (s.includes('พักร้อน')) return 'vacation';
+            if (s.includes('ลากิจ')) return 'personal';
+            if (s.includes('ลาป่วย')) return 'sick';
             return '22';
         }
 
