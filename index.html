@@ -849,6 +849,79 @@
             color: var(--danger);
         }
 
+        /* Photo Action Cards */
+        .photo-card-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .photo-action-card {
+            border-radius: 16px;
+            padding: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .photo-action-card.primary {
+            background: linear-gradient(135deg, var(--primary), #9333EA);
+            color: white;
+            box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);
+            border: none;
+        }
+
+        .photo-action-card.secondary {
+            background: white;
+            color: var(--text-main);
+            border: 1px solid var(--border);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .photo-action-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .photo-action-card.primary:hover {
+            box-shadow: 0 8px 25px rgba(124, 58, 237, 0.4);
+        }
+
+        .photo-action-card.secondary:hover {
+            border-color: var(--primary-light);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .photo-card-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .photo-action-card.primary .photo-card-icon {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .photo-action-card.secondary .photo-card-icon {
+            background: #F1F5F9;
+            color: var(--text-muted);
+        }
+
+        .photo-action-card:hover .photo-card-icon {
+            transform: scale(1.1);
+        }
+
+
         /* Shift Cells */
         .shift-cell {
             padding: 8px;
@@ -2901,13 +2974,30 @@
                         style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 10px;">
                         <!-- Photo previews will appear here -->
                     </div>
-                    <button class="btn btn-outline-primary" onclick="document.getElementById('photoInput').click()"
-                        style="width: 100%; height: 60px; border-style: dashed; display: flex; align-items: center; justify-content: center; gap: 10px;">
-                        <i data-lucide="camera" style="width: 24px; height: 24px;"></i>
-                        <span>ถ่ายรูป / เลือกรูปภาพ</span>
-                    </button>
-                    <input type="file" id="photoInput" accept="image/*" multiple capture="environment"
-                        style="display: none;" onchange="handleDispatchPhotos(event)">
+
+                    <div class="photo-card-grid">
+                        <div class="photo-action-card primary" onclick="document.getElementById('cameraInput').click()">
+                            <div class="photo-card-icon">
+                                <i data-lucide="camera" style="width: 22px; height: 22px;"></i>
+                            </div>
+                            <span style="font-size: 14px; font-weight: 700;">ถ่ายรูปใหม่</span>
+                        </div>
+                        <div class="photo-action-card secondary"
+                            onclick="document.getElementById('photoInput').click()">
+                            <div class="photo-card-icon">
+                                <i data-lucide="image" style="width: 22px; height: 22px;"></i>
+                            </div>
+                            <span style="font-size: 14px; font-weight: 700;">เลือกจากอัลบั้ม</span>
+                        </div>
+                    </div>
+
+                    <!-- Input สำหรับกล้องโดยตรง (ไม่ใส่ multiple เพื่อให้ Android ยอมเปิดกล้องทันที) -->
+                    <input type="file" id="cameraInput" accept="image/*" capture="environment" style="display: none;"
+                        onchange="handleDispatchPhotos(event)">
+
+                    <!-- Input สำหรับเลือกจากอัลบั้ม (ใส่ multiple แต่ไม่ใส่ capture) -->
+                    <input type="file" id="photoInput" accept="image/*" multiple style="display: none;"
+                        onchange="handleDispatchPhotos(event)">
                 </div>
 
                 <div style="margin-top: 30px;">
