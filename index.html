@@ -2951,6 +2951,12 @@
 
             <div class="card" style="max-width: 600px; margin: 0 auto;">
                 <div class="control-group" style="margin-bottom: 20px;">
+                    <label>วันที่ของแผนงาน:</label>
+                    <input type="date" id="dispatchDate" class="input-modern" style="width: 100%; font-size: 16px;"
+                        onchange="loadDispatchRounds()">
+                </div>
+
+                <div class="control-group" style="margin-bottom: 20px;">
                     <label>เลือกรอบรถ:</label>
                     <select id="dispatchRoundSelector" class="select-custom"
                         style="width: 100%; height: 50px; font-size: 16px;">
@@ -2966,6 +2972,13 @@
                             <i data-lucide="clock"></i> ปัจจุบัน
                         </button>
                     </div>
+                </div>
+
+                <div class="control-group" style="margin-bottom: 20px;">
+                    <label>สินค้าไม่ครบ (ถ้ามี):</label>
+                    <textarea id="dispatchShortageItems" class="input-modern"
+                        placeholder="ระบุเลขร้าน และรายการที่ขาด เช่น:&#10;BN-20 ขาด กล่องเขียว 1&#10;BN-40 ขาด คลับแพ็ค 2"
+                        style="width: 100%; height: 100px; padding: 12px; font-size: 16px; font-family: inherit; resize: vertical;"></textarea>
                 </div>
 
                 <div class="control-group" style="margin-bottom: 20px;">
@@ -4587,6 +4600,11 @@
                 loadOutsourceStaff();
             } else if (view === 'truck-dispatch') {
                 document.getElementById('truckDispatchArea').style.display = 'block';
+                if (!document.getElementById('dispatchDate').value) {
+                    const now = new Date();
+                    const today = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0');
+                    document.getElementById('dispatchDate').value = today;
+                }
                 loadDispatchRounds();
             }
 
@@ -7835,9 +7853,11 @@
             selector.innerHTML = '<option value="">กำลังโหลดรอบรถ...</option>';
 
             try {
-                // Get today's date in YYYY-MM-DD format
-                const today = new Date().toISOString().split('T')[0];
-                const res = await fetch(`${API_URL}?action=getTruckRoundPlan&date=${today}`);
+                // Get date from picker
+                const dateStr = document.getElementById('dispatchDate').value;
+                if (!dateStr) return; // Should allow user to pick
+
+                const res = await fetch(`${API_URL}?action=getTruckRoundPlan&date=${dateStr}`);
                 const result = await res.json();
 
                 selector.innerHTML = '<option value="">-- กรุณาเลือกรอบรถ --</option>';
@@ -7910,6 +7930,7 @@
         async function saveTruckDispatchData() {
             const round = document.getElementById('dispatchRoundSelector').value;
             const time = document.getElementById('dispatchTime').value;
+            const shortageItems = document.getElementById('dispatchShortageItems').value;
             const btn = document.getElementById('saveDispatchBtn');
 
             if (!round) return alert('กรุณาเลือกรอบรถครับ');
@@ -7926,6 +7947,7 @@
                     action: 'saveTruckDispatch',
                     truckCode: round,
                     releaseTime: time,
+                    shortageItems: shortageItems,
                     photos: dispatchPhotos.map(p => ({ base64: p.base64, name: p.name })),
                     date: new Date().toISOString().split('T')[0]
                 };
@@ -7955,6 +7977,7 @@
         function resetDispatchForm() {
             document.getElementById('dispatchRoundSelector').value = '';
             document.getElementById('dispatchTime').value = '';
+            document.getElementById('dispatchShortageItems').value = '';
             document.getElementById('photoPreviewContainer').innerHTML = '';
             const photoInput = document.getElementById('dispatchPhotoInput');
             if (photoInput) photoInput.value = '';
